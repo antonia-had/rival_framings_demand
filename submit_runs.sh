@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name="statemod"
 #SBATCH --output="statemodruns.out"
-#SBATCH --nodes=1
+#SBATCH --nodes=3
 #SBATCH --ntasks-per-node=16
 #SBATCH --export=ALL
 #SBATCH -t 1:00:00            # set max wallclock time
