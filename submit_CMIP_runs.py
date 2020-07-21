@@ -27,6 +27,8 @@ else:
     start = remainder * (count + 1) + (rank - remainder) * count
     stop = start + count
 print(rank)
+print(nprocs)
+
 # =============================================================================
 # Go though all scenarios
 # =============================================================================
