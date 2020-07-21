@@ -10,4 +10,4 @@
 
 module load python
 module load mpi4py
-ibrun python3 submit_CMIP_runs.py
+mpirun python3 submit_CMIP_runs.py
