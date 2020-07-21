@@ -7,5 +7,5 @@
 #SBATCH -t 1:00:00            # set max wallclock time
 
 module load python/3.6.9
-module load mpi4py
-python3 submit_CMIP_runs.py
+mpirun python submit_CMIP_runs.py
+
