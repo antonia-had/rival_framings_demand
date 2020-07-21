@@ -1,13 +1,11 @@
 #!/bin/bash
-#SBATCH --nodes=3             # specify number of nodes
-#SBATCH --ntasks-per-node=16  # specify number of core per node
-#SBATCH --exclusive
-#SBATCH -t 1:00:00            # set max wallclock time
-#SBATCH --job-name="statemod" # name your job
+#SBATCH --job-name="statemod"
 #SBATCH --output="statemodruns.out"
-#SBATCH --mail-user=ah986@cornell.edu
-#SBATCH --mail-type=ALL
+#SBATCH --nodes=3
+#SBATCH --ntasks-per-node=16
+#SBATCH --export=ALL
+#SBATCH -t 1:00:00            # set max wallclock time
 
-module load python
+module load python/3.6.9
 module load mpi4py
-mpirun python3 submit_CMIP_runs.py
+mpirun python submit_CMIP_runs.py
