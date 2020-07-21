@@ -30,7 +30,7 @@ print(rank)
 # =============================================================================
 # Go though all scenarios
 # =============================================================================
-for k in range(start, stop):
+# for k in range(start, stop):
     # # Change to scenario subdirectory
     # os.chdir('/scratch/ah986/rival_framings_demand/CO_climate_scenarios/'+directories[k]+'/cm2015/StateMod/')
     # # Create symbolic link to statemod executable
