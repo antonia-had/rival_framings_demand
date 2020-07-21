@@ -8,4 +8,4 @@
 
 module load python/3.6.9
 module load mpi4py
-mpirun python submit_CMIP_runs.py
+python3 submit_CMIP_runs.py
