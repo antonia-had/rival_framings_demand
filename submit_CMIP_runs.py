@@ -2,7 +2,7 @@ from mpi4py import MPI
 import math
 import os
 
-directories = os.listdir()
+directories = os.listdir('./CO_climate_scenarios')
 scenarios = len(directories)
 # =============================================================================
 # Start parallelization
