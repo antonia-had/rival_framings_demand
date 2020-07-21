@@ -32,7 +32,7 @@ else:
 # =============================================================================
 for k in range(start, stop):
     # Change to scenario subdirectory
-    os.chdir('/CO_climate_scenarios/'+directories[k]+'/cm2015/StateMod/')
+    os.chdir('./CO_climate_scenarios/'+directories[k]+'/cm2015/StateMod/')
     # Create symbolic link to statemod executable
     os.system("ln -s /home/fs02/pmr82_0001/ah986/Colorado/cdss-app-statemod-fortran/src/main/fortran/statemod-15.00.14dev-gfortran-32bit .")
     # Run simulation
