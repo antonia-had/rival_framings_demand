@@ -38,3 +38,4 @@ for k in range(start, stop):
     #     os.system("ln -s /home/fs02/pmr82_0001/ah986/Colorado/cdss-app-statemod-fortran/src/main/fortran/statemod-15.00.14dev-gfortran-32bit .")
     # Run simulation
     os.system("./statemod-15.00.14dev-gfortran-32bit cm2015B -simulate")
+    print ('simulating '+ directories[k])
