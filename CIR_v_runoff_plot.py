@@ -85,7 +85,7 @@ for i in range(2):
 fig = plt.figure(figsize=(12, 9))
 ax = plt.axes()
 ax.scatter(anomalies_norm[:, 0], anomalies_norm[:, 1])
-ax.scatter(anomalies_norm[-1, 0], anomalies_norm[-1, 1], s=5, c='red')
+ax.scatter(anomalies_norm[-1, 0], anomalies_norm[-1, 1], s=20, c='red')
 ax.set_xlabel('Irrigation demand')
 ax.set_ylabel('Runoff')
 plt.savefig('IWR_v_runoff.png')
