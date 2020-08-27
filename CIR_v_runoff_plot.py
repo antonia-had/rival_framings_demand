@@ -1,45 +1,33 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from utils import search_string_in_file
 
 numSites = 379
 
-def search_string_in_file(file_name, string_to_search):
-    """Search for the given string in file and return the line numbers containing that string"""
-    line_number = 0
-    list_of_results = []
-    # Open the file in read only mode
-    with open(file_name, 'r') as read_obj:
-        # Read all lines in the file one by one
-        for line in read_obj:
-            # For each line, check if line contains the string
-            line_number += 1
-            if string_to_search in line:
-                # If yes, then add the line number & line as a tuple in the list
-                list_of_results.append((line_number))
-    # Return list of tuples containing line numbers and lines where string is found
-    return list_of_results
-
-def realization_mean_IWR(filename, firstline = 463):
+def realization_mean_IWR(filename, firstline = 463, h=0):
     '''Get historical irrigation and runoff values'''
     with open(filename, 'r') as f:
         all_split_data = [x.split('.') for x in f.readlines()]
     f.close()
     numYears = int((len(all_split_data) - firstline) / numSites)
+    # get monthly demands
     MonthlyIWR = np.zeros([12 * numYears, numSites])
     for i in range(numYears):
         for j in range(numSites):
             index = firstline + i * numSites + j
             all_split_data[index][0] = all_split_data[index][0].split()[2]
             MonthlyIWR[i * 12:(i + 1) * 12, j] = np.asfarray(all_split_data[index][0:12], float)
-    # calculate annual flows
+    if h==0:
+        np.savetxt(filename[:-28] + '/MonthlyIWR.csv', MonthlyIWR, fmt='%d', delimiter=',')
+    # calculate annual demands
     AnnualIWR = np.zeros([numYears, numSites])
     for i in range(numYears):
         AnnualIWR[i, :] = np.sum(MonthlyIWR[i * 12:(i + 1) * 12], 0)
     mean_IWR = np.mean(np.sum(AnnualIWR, axis=1))
     return mean_IWR
 
-def realization_mean_flow(filename):
+def realization_mean_flow(filename, h=0):
     file = open(filename,'r')
     all_split_data = [x.split('.') for x in file.readlines()]
     yearcount = 0
@@ -52,12 +40,14 @@ def realization_mean_flow(filename):
                 data_to_write = [row_data[2]] + all_split_data[i][1:12]
                 flows[yearcount, :] = [int(n) for n in data_to_write]
                 yearcount += 1
+    if h==0:
+        np.savetxt(filename[:-28] + '/MonthlyFlows.csv', flows, fmt='%d', delimiter=',')
     mean_flow = np.mean(np.sum(flows, axis=1))
     return mean_flow
 
 '''Get values from history'''
-hist_IWR = realization_mean_IWR('./hist_files/cm2015B.iwr', 16002)
-hist_flow = realization_mean_flow('./hist_files/cm2015x.xbm')
+hist_IWR = realization_mean_IWR('./hist_files/cm2015B.iwr', 16002, h=1)
+hist_flow = realization_mean_flow('./hist_files/cm2015x.xbm', h=1)
 
 '''Get values from every scenario'''
 if os.path.exists("anomalies.txt"):
@@ -73,8 +63,8 @@ else:
         directory = directories[i]
         filename = './CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015'
         firstline = int(search_string_in_file(filename+'B.iwr', '#>EndHeader')[0]) + 4
-        anomalies[i, 0] = realization_mean_IWR(filename+'B.iwr', firstline)
-        anomalies[i, 1] = realization_mean_flow(filename+ 'x.xbm')
+        anomalies[i, 0] = realization_mean_IWR(filename+'B.iwr', firstline, h=0)
+        anomalies[i, 1] = realization_mean_flow(filename+ 'x.xbm', h=0)
     np.savetxt('anomalies.txt', anomalies)
 
 '''Assign rank to every scenario, including history'''
