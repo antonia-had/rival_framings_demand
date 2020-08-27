@@ -72,6 +72,7 @@ else:
         directory = directories[i]
         print(directory)
         firstline = int(search_string_in_file('./hist_files/cm2015B.iwr', '#>EndHeader')[0]) + 4
+        print(firstline)
         anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr', firstline)
         anomalies[i, 1] = realization_mean_flow('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015x.xbm')
     np.savetxt('anomalies.txt', anomalies)
