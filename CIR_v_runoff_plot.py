@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 numSites = 379
-firstline = 463
 
-def realization_mean_IWR(filename):
+def realization_mean_IWR(filename, firstline = 463):
     '''Get historical irrigation and runoff values'''
     with open(filename, 'r') as f:
         all_split_data = [x.split('.') for x in f.readlines()]
@@ -15,8 +14,6 @@ def realization_mean_IWR(filename):
     for i in range(numYears):
         for j in range(numSites):
             index = firstline + i * numSites + j
-            print(index)
-            print(all_split_data[index])
             all_split_data[index][0] = all_split_data[index][0].split()[2]
             MonthlyIWR[i * 12:(i + 1) * 12, j] = np.asfarray(all_split_data[index][0:12], float)
     # calculate annual flows
@@ -58,7 +55,10 @@ else:
     for i in range(scenarios):
         directory = directories[i]
         print(directory)
-        anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr')
+        if directory == 'CMIP5_181':
+            anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr', firstline = 1197)
+        else:
+            anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr')
         anomalies[i, 1] = realization_mean_flow('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015x.xbm')
     np.savetxt('anomalies.txt', anomalies)
 
