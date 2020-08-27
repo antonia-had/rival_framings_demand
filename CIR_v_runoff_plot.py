@@ -15,6 +15,8 @@ def realization_mean_IWR(filename):
     for i in range(numYears):
         for j in range(numSites):
             index = firstline + i * numSites + j
+            print(index)
+            print(all_split_data[index])
             all_split_data[index][0] = all_split_data[index][0].split()[2]
             MonthlyIWR[i * 12:(i + 1) * 12, j] = np.asfarray(all_split_data[index][0:12], float)
     # calculate annual flows
