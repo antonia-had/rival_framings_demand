@@ -53,7 +53,7 @@ else:
     anomalies = np.zeros([scenarios, 2])
 
     '''Loop through every scenario and get total irrigation demand and runoff'''
-    for i in range(len(scenarios)):
+    for i in range(scenarios):
         directory = directories[i]
         anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr')
         anomalies[i, 1] = realization_mean_flow('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015x.xbm')
