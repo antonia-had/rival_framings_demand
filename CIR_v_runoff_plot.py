@@ -20,6 +20,8 @@ def realization_mean_IWR(filename, firstline = 463, h=0):
             MonthlyIWR[i * 12:(i + 1) * 12, j] = np.asfarray(all_split_data[index][0:12], float)
     if h==0:
         np.savetxt(filename[:-28] + '/MonthlyIWR.csv', MonthlyIWR, fmt='%d', delimiter=',')
+    if h==1:
+        np.savetxt('./hist_files/MonthlyIWR.csv', MonthlyIWR, fmt='%d', delimiter=',')
     # calculate annual demands
     AnnualIWR = np.zeros([numYears, numSites])
     for i in range(numYears):
@@ -42,6 +44,8 @@ def realization_mean_flow(filename, h=0):
                 yearcount += 1
     if h==0:
         np.savetxt(filename[:-28] + '/MonthlyFlows.csv', flows, fmt='%d', delimiter=',')
+    if h==1:
+        np.savetxt('./hist_files/MonthlyFlows.csv', flows, fmt='%d', delimiter=',')
     mean_flow = np.mean(np.sum(flows, axis=1))
     return mean_flow
 
