@@ -4,6 +4,22 @@ import matplotlib.pyplot as plt
 
 numSites = 379
 
+def search_string_in_file(file_name, string_to_search):
+    """Search for the given string in file and return the line numbers containing that string"""
+    line_number = 0
+    list_of_results = []
+    # Open the file in read only mode
+    with open(file_name, 'r') as read_obj:
+        # Read all lines in the file one by one
+        for line in read_obj:
+            # For each line, check if line contains the string
+            line_number += 1
+            if string_to_search in line:
+                # If yes, then add the line number & line as a tuple in the list
+                list_of_results.append((line_number))
+    # Return list of tuples containing line numbers and lines where string is found
+    return list_of_results
+
 def realization_mean_IWR(filename, firstline = 463):
     '''Get historical irrigation and runoff values'''
     with open(filename, 'r') as f:
@@ -55,10 +71,8 @@ else:
     for i in range(scenarios):
         directory = directories[i]
         print(directory)
-        if directory == 'CMIP5_181':
-            anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr', firstline = 1197)
-        else:
-            anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr')
+        firstline = int(search_string_in_file('./hist_files/cm2015B.iwr', '#>EndHeader')[0]) + 4
+        anomalies[i, 0] = realization_mean_IWR('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015B.iwr', firstline)
         anomalies[i, 1] = realization_mean_flow('./CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015x.xbm')
     np.savetxt('anomalies.txt', anomalies)
 
