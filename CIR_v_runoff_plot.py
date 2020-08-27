@@ -43,19 +43,20 @@ def realization_mean_flow(filename):
     file = open(filename,'r')
     all_split_data = [x.split('.') for x in file.readlines()]
     yearcount = 0
-    flows = np.zeros([105, 12])
+    flows = np.zeros([64, 12])
     for i in range(16, len(all_split_data)):
         row_data = []
         row_data.extend(all_split_data[i][0].split())
         if row_data[1] == '09163500':
-            data_to_write = [row_data[2]] + all_split_data[i][1:12]
-            flows[yearcount, :] = [int(n) for n in data_to_write]
-            yearcount += 1
+            if int(row_data[0]) >= 1950:
+                data_to_write = [row_data[2]] + all_split_data[i][1:12]
+                flows[yearcount, :] = [int(n) for n in data_to_write]
+                yearcount += 1
     mean_flow = np.mean(np.sum(flows, axis=1))
     return mean_flow
 
 '''Get values from history'''
-hist_IWR = realization_mean_IWR('./hist_files/cm2015B.iwr')
+hist_IWR = realization_mean_IWR('./hist_files/cm2015B.iwr', 16002)
 hist_flow = realization_mean_flow('./hist_files/cm2015x.xbm')
 
 '''Get values from every scenario'''
