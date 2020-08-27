@@ -70,10 +70,8 @@ else:
     '''Loop through every scenario and get total irrigation demand and runoff'''
     for i in range(scenarios):
         directory = directories[i]
-        print(directory)
         filename = './CMIP_scenarios/' + directory + '/cm2015/StateMod/cm2015'
         firstline = int(search_string_in_file(filename+'B.iwr', '#>EndHeader')[0]) + 4
-        print(firstline)
         anomalies[i, 0] = realization_mean_IWR(filename+'B.iwr', firstline)
         anomalies[i, 1] = realization_mean_flow(filename+ 'x.xbm')
     np.savetxt('anomalies.txt', anomalies)
@@ -87,6 +85,6 @@ for i in range(2):
 fig = plt.figure(figsize=(12, 9))
 ax = plt.axes()
 ax.scatter(anomalies_norm[:, 0], anomalies_norm[:, 1])
-ax.set_xtitle('Irrigation demand')
-ax.set_ytitle('Runoff')
+ax.set_xlabel('Irrigation demand')
+ax.set_ylabel('Runoff')
 plt.savefig('IWR_v_runoff.png')
