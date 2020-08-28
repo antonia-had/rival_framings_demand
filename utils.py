@@ -35,7 +35,6 @@ def writenewIWR(directory, filename, i, users, curtailment, curtailment_years):
         row_data = []
         # split first 3 columns of row on space and find 1st month's flow
         row_data.extend(all_split_data[i + firstLine][0].split())
-        print(row_data)
         # check if year is a curtailment year
         if row_data[0] in curtailment_years:
             # check if user is to be curtailed
@@ -48,7 +47,7 @@ def writenewIWR(directory, filename, i, users, curtailment, curtailment_years):
         # append row of adjusted data
         new_data.append(row_data)
 
-    f = open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+ filename[0:-4] + '_S' + str(i) + filename[-4::], 'w')
+    f = open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/' + filename[0:-4] + '_S' + str(i) + filename[-4::], 'w')
     # write firstLine # of rows as in initial file
     for i in range(firstLine):
         f.write(all_data[i])
@@ -62,5 +61,6 @@ def writenewIWR(directory, filename, i, users, curtailment, curtailment_years):
         # write last month of adjusted data
         f.write((9 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '.' + '\n')
     f.close()
+    print('./CMIP_scenarios/' + directory + '/cm2015/StateMod/' + filename[0:-4] + '_S' + str(i) + filename[-4::])
 
     return None
