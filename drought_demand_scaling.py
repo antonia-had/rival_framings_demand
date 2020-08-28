@@ -17,7 +17,7 @@ shortage_percentile = [100, 95, 90]
 no_users = [2, 5, 10]
 curtailment_levels = [20, 50, 100]
 
-sample = pyDOE2.fullfact([3, 3, 3])
+sample = pyDOE2.fullfact([3, 3, 3]).astype(int)
 
 numSites = 379
 
