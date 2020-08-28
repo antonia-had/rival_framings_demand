@@ -17,7 +17,8 @@ def search_string_in_file(file_name, string_to_search):
     return list_of_results
 
 
-def writenewIWR(directory, filename, firstLine, i, users, curtailment, curtailment_years):
+def writenewIWR(directory, filename, i, users, curtailment, curtailment_years):
+    firstLine = int(search_string_in_file('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, '#>EndHeader')[0]) + 4
     # split data on periods
     with open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, 'r') as f:
         all_split_data = [x.split('.') for x in f.readlines()]
