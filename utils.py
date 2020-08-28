@@ -17,7 +17,7 @@ def search_string_in_file(file_name, string_to_search):
     return list_of_results
 
 
-def writenewIWR(directory, filename, i, users, curtailment, curtailment_years):
+def writenewIWR(directory, filename, sample, users, curtailment, curtailment_years):
     firstLine = int(search_string_in_file('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, '#>EndHeader')[0]) + 4
     # split data on periods
     with open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, 'r') as f:
@@ -61,6 +61,6 @@ def writenewIWR(directory, filename, i, users, curtailment, curtailment_years):
         # write last month of adjusted data
         f.write((9 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '.' + '\n')
     f.close()
-    print('./CMIP_scenarios/' + directory + '/cm2015/StateMod/' + filename[0:-4] + '_S' + str(i) + filename[-4::])
+    print('./CMIP_curtailment/' + directory + '/cm2015/StateMod/' + filename[0:-4] + '_S' + str(sample) + filename[-4::])
 
     return None
