@@ -35,7 +35,7 @@ for scenario in directories[:1]:
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
     # Apply each sample to every CMIP scenario
-    for i in range(len(3)):#sample[:,0])):
+    for i in range(3):#len(sample[:,0])):
         trigger_flow = trigger_flows[sample[i,0]]
         users = users_to_curtail[sample[i,1]]
         curtailment = curtailment_levels[sample[i,2]]
