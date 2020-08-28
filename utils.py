@@ -34,6 +34,7 @@ def writenewIWR(directory, filename, firstLine, i, users, curtailment, curtailme
         row_data = []
         # split first 3 columns of row on space and find 1st month's flow
         row_data.extend(all_split_data[i + firstLine][0].split())
+        print(row_data)
         # check if year is a curtailment year
         if row_data[0] in curtailment_years:
             # check if user is to be curtailed
