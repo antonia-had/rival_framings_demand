@@ -19,12 +19,12 @@ def search_string_in_file(file_name, string_to_search):
 
 def writenewIWR(directory, filename, firstLine, i, users, curtailment, curtailment_years):
     # split data on periods
-    with open(filename, 'r') as f:
+    with open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, 'r') as f:
         all_split_data = [x.split('.') for x in f.readlines()]
     f.close()
 
     # get unsplit data to rewrite firstLine # of rows
-    with open(filename, 'r') as f:
+    with open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, 'r') as f:
         all_data = [x for x in f.readlines()]
     f.close()
 
