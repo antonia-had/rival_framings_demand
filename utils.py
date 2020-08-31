@@ -17,7 +17,8 @@ def search_string_in_file(file_name, string_to_search):
     return list_of_results
 
 
-def writenewIWR(directory, filename, sample, users, curtailment, curtailment_years):
+def writenewIWR(directory, filename, sample, users, curtailment_per_user, general_curtailment, curtailment_years):
+
     firstLine = int(search_string_in_file('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, '#>EndHeader')[0]) + 4
     # split data on periods
     with open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/'+filename, 'r') as f:
@@ -35,19 +36,19 @@ def writenewIWR(directory, filename, sample, users, curtailment, curtailment_yea
         row_data = []
         # split first 3 columns of row on space and find 1st month's flow
         row_data.extend(all_split_data[i + firstLine][0].split())
-        # check if year is a curtailment year
-        if row_data[0] in curtailment_years:
-            # check if user is to be curtailed
-            if row_data[1] in users:
-                #scale first month
-                row_data[2] = str(int(float(row_data[2])*(100-curtailment)/100))
-                #scale other months
-                for j in range(len(all_split_data[i + firstLine]) - 2):
-                    row_data.append(str(int(float(all_split_data[i + firstLine][j + 1]) *(100-curtailment)/100)))
+        # check if year is a curtailment year and if user is to be curtailed
+        if row_data[0] in curtailment_years and row_data[1] in users:
+            index = np.where(users==row_data[1])
+            remaining_demand = 1-(curtailment_per_user[index]*(100-general_curtailment)/100)
+            #scale first month
+            row_data[2] = str(int(float(row_data[2])*remaining_demand))
+            #scale other months
+            for j in range(len(all_split_data[i + firstLine]) - 2):
+                row_data.append(str(int(float(all_split_data[i + firstLine][j + 1]) * remaining_demand)))
         # append row of adjusted data
         new_data.append(row_data)
 
-    f = open('./CMIP_scenarios/' + directory + '/cm2015/StateMod/' + filename[0:-4] + '_S' + str(i) + filename[-4::], 'w')
+    f = open('./CMIP_curtailment/' + directory + '/cm2015/StateMod/' + filename[0:-4] + '_S' + str(i) + filename[-4::], 'w')
     # write firstLine # of rows as in initial file
     for i in range(firstLine):
         f.write(all_data[i])
