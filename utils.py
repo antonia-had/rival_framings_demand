@@ -44,9 +44,8 @@ def writenewIWR(directory, filename, sample, users, curtailment_per_user, genera
             row_data[2] = str(int(float(row_data[2])*remaining_demand))
             #scale other months
             for j in range(len(all_split_data[i + firstLine]) - 2):
-                print(len(all_split_data[i + firstLine]) - 2)
                 row_data.append(str(int(float(all_split_data[i + firstLine][j + 1]) * remaining_demand)))
-        print(row_data)
+        print(all_split_data[i + firstLine])
         # append row of adjusted data
         new_data.append(row_data)
 
