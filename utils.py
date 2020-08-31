@@ -36,7 +36,6 @@ def writenewIWR(directory, filename, sample, users, curtailment_per_user, genera
         row_data = []
         # split first 3 columns of row on space and find 1st month's flow
         row_data.extend(all_split_data[i + firstLine][0].split())
-        print(row_data)
         # check if year is a curtailment year and if user is to be curtailed
         if row_data[0] in curtailment_years and row_data[1] in users:
             index = np.where(users==row_data[1])
