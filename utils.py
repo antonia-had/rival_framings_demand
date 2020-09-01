@@ -39,7 +39,7 @@ def writenewIWR(directory, filename, sample, users, curtailment_per_user, genera
         row_data.extend(all_split_data[i + firstLine][0].split())
         # check if year is a curtailment year and if user is to be curtailed
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
-            index = np.where(users==row_data[1])
+            index = np.where(users==row_data[1])[0]
             remaining_demand = 1-(curtailment_per_user[index]*(100-general_curtailment)/100)
             #scale first month
             row_data[2] = str(int(float(row_data[2])*remaining_demand))
