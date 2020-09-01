@@ -48,6 +48,7 @@ for i in range(len(rights_to_curtail)):
 listofyears = np.arange(1950,2013)
 
 for scenario in directories[:2]:
+    print(scenario)
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
 
@@ -55,8 +56,8 @@ for scenario in directories[:2]:
     firstline_iwr = int(
         search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', '#>EndHeader')[0]) + 4
 
-    with open('../Statemod_files/cm2015B.iwr', 'r') as f:
-        CMIP_IWR = [x.split() for x in f.readlines()[firstLine:]]
+    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
+        CMIP_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
     f.close()
 
     # split data on periods
