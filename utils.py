@@ -75,9 +75,9 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
         row_data = all_split_data_DDM[i + firstline_ddm]
         # If the structure is not in the ones we care about then do nothing
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
+            index = np.where(users == row_data[1])[0][0]
             line_in_iwr = int(
-                irrigation_encounters[users.index(row_data[1])] * len(users) + users.index(
-                    row_data[1]))
+                irrigation_encounters[users.index(row_data[1])] * len(users) + index)
             irrigation_encounters[users.index(row_data[1])] = +1
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
