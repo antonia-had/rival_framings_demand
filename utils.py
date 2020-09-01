@@ -76,8 +76,7 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
         # If the structure is not in the ones we care about then do nothing
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
-            line_in_iwr = int(
-                irrigation_encounters[index] * len(users) + index)
+            line_in_iwr = int(irrigation_encounters[index] * len(users) + index)
             irrigation_encounters[index] = +1
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
@@ -92,12 +91,12 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
     for i in range(len(new_data)):
         # write year, ID and first month of adjusted data
         f.write(new_data[i][0] + ' ' + new_data[i][1] + (19 - len(new_data[i][1]) - len(new_data[i][2])) * ' ' +
-                new_data[i][2] + '.')
+                new_data[i][2])
         # write all but last month of adjusted data
         for j in range(len(new_data[i]) - 4):
-            f.write((7 - len(new_data[i][j + 3])) * ' ' + new_data[i][j + 3] + '.')
+            f.write((7 - len(new_data[i][j + 3])) * ' ' + new_data[i][j + 3])
             # write last month of adjusted data
-        f.write((9 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '.' + '\n')
+        f.write((9 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '\n')
     f.close()
 
     return None
