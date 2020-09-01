@@ -79,8 +79,11 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
             line_in_iwr = int(irrigation_encounters[index] * len(users) + index)
             irrigation_encounters[index] = +1
             for m in range(len(change)):
-                change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
-                row_data[m + 2] = str(int(float(row_data[m + 2]) + change[m]))
+                try:
+                    change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
+                    row_data[m + 2] = str(int(float(row_data[m + 2]) + change[m]))
+                except:
+                    print(scenario + '/cm2015/StateMod/cm2015B_S' + str(sow) + '.iwr')
                 # append row of adjusted data
         new_data.append(row_data)
         # write new data to file
