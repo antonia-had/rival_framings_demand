@@ -68,12 +68,11 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
     irrigation_encounters = np.zeros(len(users))
 
     for i in range(len(all_split_data_DDM) - firstline_ddm):
-        row_data = []
         # To store the change between historical and sample irrigation demand (12 months + Total)
         change = np.zeros(13)
         # Split first 3 columns of row on space
         # This is because the first month is lumped together with the year and the ID when spliting on periods
-        row_data.extend(all_split_data_DDM[i + firstline_ddm][0].split())
+        row_data = all_split_data_DDM[i + firstline_ddm]
         # If the structure is not in the ones we care about then do nothing
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             line_in_iwr = int(
@@ -82,11 +81,7 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
             irrigation_encounters[users.index(row_data[1])] = +1
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
-            # apply change to 1st month
-            row_data[2] = str(int(float(row_data[2]) + change[0]))
-            # apply multipliers to rest of the columns
-            for j in range(len(all_split_data_DDM[i + firstline_ddm]) - 2):
-                row_data.append(str(int(float(all_split_data_DDM[i + firstline_ddm][j + 1]) + change[j + 1])))
+                row_data[m+2] = str(int(float(row_data[m+2]) + change[m]))
         else:
             print(all_split_data_DDM[i + firstline_ddm])
             for j in range(len(all_split_data_DDM[i + firstline_ddm]) - 2):

@@ -75,7 +75,7 @@ for scenario in directories[:2]:
         search_string_in_file('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
                               '#>EndHeader')[0]) + 4
     with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
-        all_split_data_DDM = [x.split('.') for x in f.readlines()]
+        all_split_data_DDM = [x.split() for x in f.readlines()]
     f.close()
 
     with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
