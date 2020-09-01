@@ -53,11 +53,11 @@ for scenario in directories[:1]:
     # Apply each sample to every CMIP scenario
     for i in range(1):#len(sample[:,0])):
         trigger_flow = trigger_flows[sample[i,0]]
-        users = users_per_threshold[sample[i,1]]
-        curtailment_per_user = curtailment_per_threshold[sample[i,1]]
+        users = list(users_per_threshold[sample[i,1]])
+        curtailment_per_user = list(curtailment_per_threshold[sample[i,1]])
         general_curtailment = curtailment_levels[sample[i,2]]
 
         low_flows = annual_flows <= trigger_flow
-        curtailment_years = np.arange(1950,2014)[low_flows]
+        curtailment_years = list(np.arange(1950,2014)[low_flows])
 
         writenewIWR(scenario, 'cm2015B.iwr', i, users, curtailment_per_user, general_curtailment, curtailment_years)
