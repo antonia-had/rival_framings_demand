@@ -2,7 +2,7 @@ import os
 import pyDOE2
 import numpy as np
 import pandas as pd
-from utils import writenewIWR
+from utils import *
 
 directories = os.listdir('./CMIP_curtailment')
 scenarios = len(directories)
@@ -47,10 +47,40 @@ for i in range(len(rights_to_curtail)):
 
 listofyears = np.arange(1950,2013)
 
-for scenario in directories[11:13]:
+for scenario in directories[:2]:
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
-
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
+
+    '''Get data from original scenario IWR'''
+    firstline_iwr = int(
+        search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', '#>EndHeader')[0]) + 4
+
+    with open('../Statemod_files/cm2015B.iwr', 'r') as f:
+        CMIP_IWR = [x.split() for x in f.readlines()[firstLine:]]
+    f.close()
+
+    # split data on periods
+    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
+        all_split_data = [x.split('.') for x in f.readlines()]
+    f.close()
+
+    # get unsplit data to rewrite firstLine # of rows
+    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
+        all_data = [x for x in f.readlines()]
+    f.close()
+
+    '''Get data from original scenario DDM'''
+    firstline_ddm = int(
+        search_string_in_file('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
+                              '#>EndHeader')[0]) + 4
+    with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
+        all_split_data_DDM = [x.split('.') for x in f.readlines()]
+    f.close()
+
+    with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
+        all_data_DDM = [x for x in f.readlines()]
+    f.close()
+
     # Apply each sample to every CMIP scenario
     for i in range(3):#len(sample[:,0])):
         trigger_flow = trigger_flows[sample[i,0]]
@@ -61,4 +91,8 @@ for scenario in directories[11:13]:
         low_flows = annual_flows <= trigger_flow
         curtailment_years = list(np.arange(1950,2014)[low_flows])
 
-        writenewIWR(scenario, 'cm2015B.iwr', i, users, curtailment_per_user, general_curtailment, curtailment_years)
+        writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
+                    curtailment_per_user, general_curtailment, curtailment_years)
+
+        writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, sample, users,
+                    curtailment_years)
