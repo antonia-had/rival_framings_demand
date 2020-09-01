@@ -54,7 +54,7 @@ for scenario in directories[11:13]:
     # Apply each sample to every CMIP scenario
     for i in range(3):#len(sample[:,0])):
         trigger_flow = trigger_flows[sample[i,0]]
-        users = list(users_per_threshold[sample[i,1]])
+        users = users_per_threshold[sample[i,1]]
         curtailment_per_user = list(curtailment_per_threshold[sample[i,1]])
         general_curtailment = curtailment_levels[sample[i,2]]
 
