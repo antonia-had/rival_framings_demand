@@ -118,6 +118,8 @@ ax.scatter(anomalies_norm[-1, 0], anomalies_norm[-1, 1], s=50, c='red')
 ax.set_xlabel('Normalized irrigation demand', fontsize=12)
 ax.set_ylabel('Normalized runoff', fontsize=12)
 ax.set_title('Original CMIP scenarios', fontsize=14)
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
 # Plot curtailed CMIP anomalies
 ax = axes[1]
 ax.scatter(anomalies_curtailment_norm[:, 0], anomalies_curtailment_norm[:, 1])
@@ -125,7 +127,8 @@ ax.scatter(anomalies_curtailment_norm[-1, 0], anomalies_curtailment_norm[-1, 1],
 ax.set_xlabel('Normalized irrigation demand', fontsize=12)
 ax.set_ylabel('Normalized runoff', fontsize=12)
 ax.set_title('CMIP scenarios with curtailment', fontsize=14)
-
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
 fig.suptitle('Runoff anomaly vs. irrigation demand anomaly', fontsize=16)
 
 plt.savefig('IWR_v_runoff.png')
