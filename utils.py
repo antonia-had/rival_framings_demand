@@ -82,10 +82,6 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
                 row_data[m+2] = str(int(float(row_data[m+2]) + change[m]))
-        else:
-            print(all_split_data_DDM[i + firstline_ddm])
-            for j in range(len(all_split_data_DDM[i + firstline_ddm]) - 2):
-                row_data.append(str(int(float(all_split_data_DDM[i + firstline_ddm][j + 1]))))
                 # append row of adjusted data
         new_data.append(row_data)
         # write new data to file
