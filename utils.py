@@ -67,7 +67,7 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
     new_data = []
     irrigation_encounters = np.zeros(len(users))
 
-    n = [17, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10] #lengths of intervals to split rows in
+    n = [4, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10] #lengths of intervals to split rows in
 
     for i in range(len(all_data_DDM) - firstline_ddm):
         # To store the change between historical and sample irrigation demand (12 months + Total)
