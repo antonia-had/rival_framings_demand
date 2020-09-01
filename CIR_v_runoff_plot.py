@@ -6,7 +6,7 @@ from utils import search_string_in_file
 numSites = 379
 
 
-def realization_mean_IWR(filename, firstline=463, h=0, index=None):
+def realization_mean_IWR(filename, firstline=463, h=0, sample=None):
     '''Get historical irrigation and runoff values'''
     with open(filename, 'r') as f:
         all_split_data = [x.split('.') for x in f.readlines()]
@@ -24,7 +24,7 @@ def realization_mean_IWR(filename, firstline=463, h=0, index=None):
     if h == 1:
         np.savetxt('./hist_files/MonthlyIWR.csv', MonthlyIWR, fmt='%d', delimiter=',')
     if h == 2:
-        np.savetxt(filename[:29] + '/MonthlyIWR_S{}.csv'.format(index), MonthlyIWR, fmt='%d', delimiter=',')
+        np.savetxt(filename[:29] + '/MonthlyIWR_S{}.csv'.format(sample), MonthlyIWR, fmt='%d', delimiter=',')
     # calculate annual demands
     AnnualIWR = np.zeros([numYears, numSites])
     for i in range(numYears):
@@ -94,7 +94,7 @@ else:
         anomalies_curtailment[i * 10:i * 10 + 10, 1] = realization_mean_flow(filename + 'x.xbm', h=2)
         for j in range(sow):
             firstline = int(search_string_in_file(filename + 'B_S{}.iwr'.format(j), '#>EndHeader')[0]) + 4
-            anomalies_curtailment[i * 10 + j, 0] = realization_mean_IWR(filename + 'B_S{}.iwr'.format(j), firstline, h=2, index=j)
+            anomalies_curtailment[i * 10 + j, 0] = realization_mean_IWR(filename + 'B_S{}.iwr'.format(j), firstline, h=2, sample=j)
     np.savetxt('anomalies_CMIP_curtailment.txt', anomalies_curtailment)
 
 '''Assign rank to every scenario including history'''
