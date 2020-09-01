@@ -77,8 +77,8 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
             line_in_iwr = int(
-                irrigation_encounters[users.index(row_data[1])] * len(users) + index)
-            irrigation_encounters[users.index(row_data[1])] = +1
+                irrigation_encounters[index] * len(users) + index)
+            irrigation_encounters[index] = +1
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
                 row_data[m+2] = str(int(float(row_data[m+2]) + change[m]))
