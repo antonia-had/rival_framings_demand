@@ -3,6 +3,9 @@ import pyDOE2
 import pandas as pd
 from utils import *
 from string import Template
+from mpi4py import MPI
+import math
+
 
 directories = os.listdir('./CMIP_curtailment')
 scenarios = len(directories)
@@ -52,8 +55,26 @@ listofyears = np.arange(1950, 2013)
 T = open('./cm2015B_template.rsp', 'r')
 template_RSP = Template(T.read())
 
-for scenario in directories[:2]:
-    print(scenario)
+# Begin parallel simulation
+comm = MPI.COMM_WORLD
+
+# Get the number of processors and the rank of processors
+rank = comm.rank
+nprocs = comm.size
+
+# Determine the chunk which each processor will need to do
+count = int(math.floor(scenarios / nprocs))
+remainder = scenarios % nprocs
+
+# Use the processor rank to determine the chunk of work each processor will do
+if rank < remainder:
+    start = rank * (count + 1)
+    stop = start + count + 1
+else:
+    start = remainder * (count + 1) + (rank - remainder) * count
+    stop = start + count
+
+for scenario in directories[start:stop]:
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
 
@@ -88,7 +109,7 @@ for scenario in directories[:2]:
     f.close()
 
     # Apply each sample to every CMIP scenario
-    for i in range(3):  # len(sample[:,0])):
+    for i in range(len(sample[:, 0])):
         trigger_flow = trigger_flows[sample[i, 0]]
         users = users_per_threshold[sample[i, 1]]
         curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
