@@ -96,7 +96,7 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
         for j in range(len(new_data[i]) - 4):
             f.write((8 - len(new_data[i][j + 3])) * ' ' + new_data[i][j + 3])
             # write last month of adjusted data
-        f.write((9 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '\n')
+        f.write((10 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '\n')
     f.close()
 
     return None
