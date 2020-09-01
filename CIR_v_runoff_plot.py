@@ -106,7 +106,7 @@ anomalies_curtailment = np.vstack([anomalies_curtailment, [hist_IWR, hist_flow]]
 anomalies_curtailment_norm = np.zeros_like(anomalies_curtailment)
 for i in range(2):
     maxvalue = max(anomalies_curtailment[:, i].max(), anomalies[:, i].max())
-    minvalue = max(anomalies_curtailment[:, i].min(), anomalies[:, i].min())
+    minvalue = min(anomalies_curtailment[:, i].min(), anomalies[:, i].min())
     anomalies_curtailment_norm[:, i] = (anomalies_curtailment[:, i] - minvalue) / (maxvalue-minvalue)
     anomalies_norm[:, i] = (anomalies[:, i] - minvalue) / (maxvalue-minvalue)
 
@@ -115,17 +115,17 @@ fig,axes = plt.subplots(2,1, dpi=300)
 ax = axes[0]
 ax.scatter(anomalies_norm[:, 0], anomalies_norm[:, 1])
 ax.scatter(anomalies_norm[-1, 0], anomalies_norm[-1, 1], s=50, c='red')
-ax.set_xlabel('Normalized irrigation demand', fontsize=14)
-ax.set_ylabel('Normalized runoff', fontsize=14)
-ax.set_title('Original CMIP scenarios', fontsize=16)
+ax.set_xlabel('Normalized irrigation demand', fontsize=12)
+ax.set_ylabel('Normalized runoff', fontsize=12)
+ax.set_title('Original CMIP scenarios', fontsize=14)
 # Plot curtailed CMIP anomalies
 ax = axes[1]
 ax.scatter(anomalies_curtailment_norm[:, 0], anomalies_curtailment_norm[:, 1])
 ax.scatter(anomalies_curtailment_norm[-1, 0], anomalies_curtailment_norm[-1, 1], s=50, c='red')
-ax.set_xlabel('Normalized irrigation demand', fontsize=14)
-ax.set_ylabel('Normalized runoff', fontsize=14)
-ax.set_title('CMIP scenarios with curtailment', fontsize=16)
+ax.set_xlabel('Normalized irrigation demand', fontsize=12)
+ax.set_ylabel('Normalized runoff', fontsize=12)
+ax.set_title('CMIP scenarios with curtailment', fontsize=14)
 
-fig.suptitle('Runoff anomaly vs. irrigation demand anomaly', fontsize=18)
+fig.suptitle('Runoff anomaly vs. irrigation demand anomaly', fontsize=16)
 
 plt.savefig('IWR_v_runoff.png')
