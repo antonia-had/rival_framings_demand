@@ -58,7 +58,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
     return None
 
 
-def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_IWR,
+def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
                 firstline_iwr, sow, users, curtailment_years):
     with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(sow) + '.iwr') as f:
         sample_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
@@ -67,24 +67,23 @@ def writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_
     new_data = []
     irrigation_encounters = np.zeros(len(users))
 
-    for i in range(len(all_split_data_DDM) - firstline_ddm):
+    n = [17, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10] #lengths of intervals to split rows in
+
+    for i in range(len(all_data_DDM) - firstline_ddm):
         # To store the change between historical and sample irrigation demand (12 months + Total)
         change = np.zeros(13)
         # Split first 3 columns of row on space
         # This is because the first month is lumped together with the year and the ID when spliting on periods
-        row_data = all_split_data_DDM[i + firstline_ddm]
+        row = all_data_DDM[i + firstline_ddm]
+        row_data = [row[sum(n[:i]):sum(n[:i+1])] for i in range(len(n))]
         # If the structure is not in the ones we care about then do nothing
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
             line_in_iwr = int(irrigation_encounters[index] * len(users) + index)
             irrigation_encounters[index] = +1
             for m in range(len(change)):
-                try:
-                    change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
-                    row_data[m + 2] = str(int(float(row_data[m + 2]) + change[m]))
-                except:
-                    print(row_data[m + 2])
-                    print(scenario + '/cm2015/StateMod/cm2015B_S' + str(sow) + '.iwr')
+                change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
+                row_data[m + 2] = str(int(float(row_data[m + 2]) + change[m]))
                 # append row of adjusted data
         new_data.append(row_data)
         # write new data to file

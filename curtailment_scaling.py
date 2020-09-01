@@ -100,9 +100,6 @@ for scenario in directories[start:stop]:
     firstline_ddm = int(
         search_string_in_file('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
                               '#>EndHeader')[0]) + 4
-    with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
-        all_split_data_DDM = [x.split() for x in f.readlines()]
-    f.close()
 
     with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
         all_data_DDM = [x for x in f.readlines()]
@@ -121,7 +118,7 @@ for scenario in directories[start:stop]:
         writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                     curtailment_per_user, general_curtailment, curtailment_years)
 
-        writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
+        writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
                     curtailment_years)
 
         d = {'IWR': 'cm2015B_S' + str(i) + '.iwr',
