@@ -101,30 +101,31 @@ else:
 # CMIP scenarios
 anomalies = np.vstack([anomalies, [hist_IWR, hist_flow]])
 anomalies_norm = np.zeros_like(anomalies)
-for i in range(2):
-    anomalies_norm[:, i] = (anomalies[:, i] - anomalies[:, i].min()) / (np.ptp(anomalies[:, i]))
 # CMIP scenarios curtailed
 anomalies_curtailment = np.vstack([anomalies_curtailment, [hist_IWR, hist_flow]])
 anomalies_curtailment_norm = np.zeros_like(anomalies_curtailment)
 for i in range(2):
-    anomalies_curtailment_norm[:, i] = (anomalies_curtailment[:, i] - anomalies_curtailment[:, i].min()) / (np.ptp(anomalies_curtailment[:, i]))
+    maxvalue = max(anomalies_curtailment[:, i].max(), anomalies[:, i].max())
+    minvalue = max(anomalies_curtailment[:, i].min(), anomalies[:, i].min())
+    anomalies_curtailment_norm[:, i] = (anomalies_curtailment[:, i] - minvalue) / (maxvalue-minvalue)
+    anomalies_norm[:, i] = (anomalies[:, i] - minvalue) / (maxvalue-minvalue)
 
 fig,axes = plt.subplots(2,1, dpi=300)
 # Plot original CMIP anomalies
 ax = axes[0]
 ax.scatter(anomalies_norm[:, 0], anomalies_norm[:, 1])
 ax.scatter(anomalies_norm[-1, 0], anomalies_norm[-1, 1], s=50, c='red')
-ax.set_xlabel('Normalized irrigation demand', fontsize=16)
-ax.set_ylabel('Normalized runoff', fontsize=16)
-ax.set_title('Original CMIP scenarios', fontsize=18)
+ax.set_xlabel('Normalized irrigation demand', fontsize=14)
+ax.set_ylabel('Normalized runoff', fontsize=14)
+ax.set_title('Original CMIP scenarios', fontsize=16)
 # Plot curtailed CMIP anomalies
 ax = axes[1]
 ax.scatter(anomalies_curtailment_norm[:, 0], anomalies_curtailment_norm[:, 1])
 ax.scatter(anomalies_curtailment_norm[-1, 0], anomalies_curtailment_norm[-1, 1], s=50, c='red')
-ax.set_xlabel('Normalized irrigation demand', fontsize=16)
-ax.set_ylabel('Normalized runoff', fontsize=16)
-ax.set_title('CMIP scenarios with curtailment', fontsize=18)
+ax.set_xlabel('Normalized irrigation demand', fontsize=14)
+ax.set_ylabel('Normalized runoff', fontsize=14)
+ax.set_title('CMIP scenarios with curtailment', fontsize=16)
 
-fig.suptitle('Runoff anomaly vs. irrigation demand anomaly', fontsize=20)
+fig.suptitle('Runoff anomaly vs. irrigation demand anomaly', fontsize=18)
 
 plt.savefig('IWR_v_runoff.png')
