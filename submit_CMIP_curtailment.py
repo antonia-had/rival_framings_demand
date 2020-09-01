@@ -2,7 +2,7 @@ from mpi4py import MPI
 import math
 import os
 
-directories = os.listdir('./CMIP_scenarios')
+directories = os.listdir('./CMIP_curtailment')
 scenarios = len(directories)
 # =============================================================================
 # Start parallelization
@@ -32,10 +32,8 @@ else:
 # =============================================================================
 for k in range(start, stop):
     # Change to scenario subdirectory
-    os.chdir('/scratch/ah986/rival_framings_demand/CO_climate_scenarios/'+directories[k]+'/cm2015/StateMod/')
-    # # Create symbolic link to statemod executable if not already there
-    # if not os.path.isfile("./statemod"):
-    #     os.system("ln -s /home/fs02/pmr82_0001/ah986/Colorado/yates_statemod/src/src/main/fortran/statemod .")
-    # Run simulation
-    os.system("./statemod cm2015B -simulate")
-    print ('simulating '+ directories[k])
+    os.chdir('/scratch/ah986/rival_framings_demand/CMIP_curtailment/'+directories[k]+'/cm2015/StateMod/')
+    for i in range(27):
+        # Run simulation
+        os.system("./statemod cm2015B_S{} -simulate".format(i))
+        print ('simulating scenario {} sample {}'.format(directories[k], i))
