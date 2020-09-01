@@ -47,7 +47,7 @@ for i in range(len(rights_to_curtail)):
 
 listofyears = np.arange(1950,2013)
 
-for scenario in directories[:1]:
+for scenario in directories[11:13]:
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
     # Apply each sample to every CMIP scenario
