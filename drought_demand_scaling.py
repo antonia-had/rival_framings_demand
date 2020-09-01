@@ -1,8 +1,8 @@
 import os
 import pyDOE2
-import numpy as np
 import pandas as pd
 from utils import *
+from string import Template
 
 directories = os.listdir('./CMIP_curtailment')
 scenarios = len(directories)
@@ -27,11 +27,12 @@ sample = pyDOE2.fullfact([3, 3, 3]).astype(int)
 numSites = 379
 
 # Use historical shortages and flows to determine trigger flows for curtailment
-trigger_years = [abs(hist_shortages-np.percentile(hist_shortages, p, interpolation='nearest')).argmin() for p in shortage_percentile]
+trigger_years = [abs(hist_shortages - np.percentile(hist_shortages, p, interpolation='nearest')).argmin() for p in
+                 shortage_percentile]
 trigger_flows = [annual_flows[t] for t in trigger_years]
 
 # Use rights to determine users and portion to curtail
-threshold_admins = [np.percentile(rights['Admin'].values, 100-p, interpolation='nearest') for p in no_rights]
+threshold_admins = [np.percentile(rights['Admin'].values, 100 - p, interpolation='nearest') for p in no_rights]
 rights_to_curtail = [rights.loc[rights['Admin'] > t] for t in threshold_admins]
 users_per_threshold = [np.unique(rights_to_curtail[x]['WDID'].values) for x in range(3)]
 curtailment_per_threshold = []
@@ -41,11 +42,15 @@ for i in range(len(rights_to_curtail)):
     decrees_per_wdid_curtail = groupbyadmin_curtail.apply(lambda x: x['Decree'].values)
     curtailment_levels = np.zeros(len(users_per_threshold[i]))
     for j in range(len(users_per_threshold[i])):
-        wdid=decrees_per_wdid_curtail.index[j]
-        curtailment_levels[j] = np.sum(decrees_per_wdid_curtail[wdid])/np.sum(decrees_per_wdid[wdid])
+        wdid = decrees_per_wdid_curtail.index[j]
+        curtailment_levels[j] = np.sum(decrees_per_wdid_curtail[wdid]) / np.sum(decrees_per_wdid[wdid])
     curtailment_per_threshold.append(curtailment_levels)
 
-listofyears = np.arange(1950,2013)
+listofyears = np.arange(1950, 2013)
+
+'''Read RSP template'''
+T = open('./cm2015B_template.rsp', 'r')
+template_RSP = Template(T.read())
 
 for scenario in directories[:2]:
     print(scenario)
@@ -83,17 +88,24 @@ for scenario in directories[:2]:
     f.close()
 
     # Apply each sample to every CMIP scenario
-    for i in range(3):#len(sample[:,0])):
-        trigger_flow = trigger_flows[sample[i,0]]
-        users = users_per_threshold[sample[i,1]]
-        curtailment_per_user = list(curtailment_per_threshold[sample[i,1]])
-        general_curtailment = curtailment_levels[sample[i,2]]
+    for i in range(3):  # len(sample[:,0])):
+        trigger_flow = trigger_flows[sample[i, 0]]
+        users = users_per_threshold[sample[i, 1]]
+        curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
+        general_curtailment = curtailment_levels[sample[i, 2]]
 
         low_flows = annual_flows <= trigger_flow
-        curtailment_years = list(np.arange(1950,2014)[low_flows])
+        curtailment_years = list(np.arange(1950, 2014)[low_flows])
 
         writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                     curtailment_per_user, general_curtailment, curtailment_years)
 
         writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
                     curtailment_years)
+
+        d = {'IWR': 'cm2015B_S' + str(i) + '.iwr',
+             'DDM': 'cm2015B_S' + str(i) + '.ddm'}
+        S1 = template_RSP.safe_substitute(d)
+        f1 = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.rsp', 'w')
+        f1.write(S1)
+        f1.close()
