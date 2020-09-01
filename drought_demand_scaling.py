@@ -92,8 +92,8 @@ for scenario in directories[:2]:
         low_flows = annual_flows <= trigger_flow
         curtailment_years = list(np.arange(1950,2014)[low_flows])
 
-        writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
+        writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                     curtailment_per_user, general_curtailment, curtailment_years)
 
-        writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, sow, users,
+        writenewDDM(scenario, all_data_DDM, all_split_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
                     curtailment_years)
