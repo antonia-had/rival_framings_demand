@@ -49,9 +49,10 @@ listofyears = np.arange(1950,2013)
 
 for scenario in directories[11:13]:
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
+
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
     # Apply each sample to every CMIP scenario
-    for i in range(1):#len(sample[:,0])):
+    for i in range(3):#len(sample[:,0])):
         trigger_flow = trigger_flows[sample[i,0]]
         users = list(users_per_threshold[sample[i,1]])
         curtailment_per_user = list(curtailment_per_threshold[sample[i,1]])
