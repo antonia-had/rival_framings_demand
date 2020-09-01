@@ -38,15 +38,12 @@ def writenewIWR(directory, filename, sample, users, curtailment_per_user, genera
         # split first 3 columns of row on space and find 1st month's flow
         row_data.extend(all_split_data[i + firstLine][0].split())
         # check if year is a curtailment year and if user is to be curtailed
-        print(str(row_data[0]))
-        if str(row_data[0]) in curtailment_years and row_data[1] in users:
-            print('yes')
+        if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users==row_data[1])
             remaining_demand = 1-(curtailment_per_user[index]*(100-general_curtailment)/100)
             #scale first month
             row_data[2] = str(int(float(row_data[2])*remaining_demand))
             #scale other months
-            print(all_split_data[i + firstLine])
             for j in range(len(all_split_data[i + firstLine]) - 2):
                 row_data.append(str(int(float(all_split_data[i + firstLine][j + 1]) * remaining_demand)))
         # append row of adjusted data
