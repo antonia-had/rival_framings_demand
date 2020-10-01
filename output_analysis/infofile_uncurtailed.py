@@ -17,6 +17,7 @@ design = str(sys.argv[1])
 
 # Read in SOW parameters
 directories = glob.glob('../' + design+'/CMIP*_*')
+print(directories)
 scenarios = len(directories)
 sow = 27
 
