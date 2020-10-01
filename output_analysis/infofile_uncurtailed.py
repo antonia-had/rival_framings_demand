@@ -3,6 +3,7 @@ import math
 import numpy as np
 import os
 import sys
+import glob
 
 # =============================================================================
 # Experiment set up
@@ -15,7 +16,7 @@ nprocs = comm.size
 design = str(sys.argv[1])
 
 # Read in SOW parameters
-directories = os.listdir('../' + design)
+directories = glob.glob('../' + design+'/CMIP*')
 scenarios = len(directories)
 sow = 27
 
