@@ -1,2 +1,3 @@
-/CMIP_scenarios
-/CMIP_curtailement
+CMIP_*/
+CMIP_*/
+statemodruns.out
