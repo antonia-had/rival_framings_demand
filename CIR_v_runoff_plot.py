@@ -95,6 +95,7 @@ else:
         for j in range(sow):
             firstline = int(search_string_in_file(filename + 'B_S{}.iwr'.format(j), '#>EndHeader')[0]) + 4
             anomalies_curtailment[i * 10 + j, 0] = realization_mean_IWR(filename + 'B_S{}.iwr'.format(j), firstline, h=2, sample=j)
+            print(anomalies_curtailment[i * 10 + j, 0])
     np.savetxt('anomalies_CMIP_curtailment.txt', anomalies_curtailment)
 
 '''Assign rank to every scenario including history'''
