@@ -36,6 +36,7 @@ def realization_mean_IWR(filename, firstline=463, h=0, sample=None):
 def realization_mean_flow(filename, h=0):
     file = open(filename, 'r')
     all_split_data = [x.split('.') for x in file.readlines()]
+    file.close()
     yearcount = 0
     flows = np.zeros([64, 12])
     for i in range(16, len(all_split_data)):
