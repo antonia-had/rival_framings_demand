@@ -22,7 +22,7 @@ rights_per_wdid = groupbyadmin.apply(lambda x: x['Admin'].values)
 decrees_per_wdid = groupbyadmin.apply(lambda x: x['Decree'].values)
 
 shortage_percentile = [100, 95, 90]
-no_rights = [2, 5, 10]
+no_rights = [5, 10, 20]
 curtailment_levels = [20, 50, 100]
 
 sample = pyDOE2.fullfact([3, 3, 3]).astype(int)

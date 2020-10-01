@@ -102,7 +102,7 @@ else:
 anomalies = np.vstack([anomalies, [hist_IWR, hist_flow]])
 anomalies_norm = np.zeros_like(anomalies)
 # CMIP scenarios curtailed
-anomalies_curtailment = np.vstack([anomalies_curtailment, [hist_IWR, hist_flow]])
+anomalies_curtailment = np.vstack([anomalies_curtailment])
 anomalies_curtailment_norm = np.zeros_like(anomalies_curtailment)
 for i in range(2):
     maxvalue = max(anomalies_curtailment[:, i].max(), anomalies[:, i].max())
