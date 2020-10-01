@@ -91,12 +91,11 @@ else:
     for i in range(scenarios):
         directory = directories[i]
         filename = './CMIP_curtailment/' + directory + '/cm2015/StateMod/cm2015'
-        print(filename)
-        anomalies_curtailment[i * 10:i * 10 + 10, 1] = realization_mean_flow(filename + 'x.xbm', h=2)
+        print(i)
+        anomalies_curtailment[i * sow:i * sow + sow, 1] = realization_mean_flow(filename + 'x.xbm', h=2)
         for j in range(sow):
             firstline = int(search_string_in_file(filename + 'B_S{}.iwr'.format(j), '#>EndHeader')[0]) + 4
-            anomalies_curtailment[i * 10 + j, 0] = realization_mean_IWR(filename + 'B_S{}.iwr'.format(j), firstline, h=2, sample=j)
-            print(anomalies_curtailment[i * 10 + j, 0])
+            anomalies_curtailment[i * sow + j, 0] = realization_mean_IWR(filename + 'B_S{}.iwr'.format(j), firstline, h=2, sample=j)
     np.savetxt('anomalies_CMIP_curtailment.txt', anomalies_curtailment)
 
 '''Assign rank to every scenario including history'''
