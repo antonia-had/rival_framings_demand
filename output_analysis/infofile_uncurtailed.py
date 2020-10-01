@@ -16,7 +16,7 @@ nprocs = comm.size
 design = str(sys.argv[1])
 
 # Read in SOW parameters
-directories = glob.glob('../' + design+'/CMIP*')
+directories = glob.glob('../' + design+'/CMIP*_*')
 scenarios = len(directories)
 sow = 27
 
