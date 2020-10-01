@@ -106,6 +106,6 @@ else:
     stop = start + count
 
 for k in range(start, stop):
-    scenario = scenarios[k]
+    scenario = directories[k]
     for ID in IDs:
         getinfo(ID, scenario)
