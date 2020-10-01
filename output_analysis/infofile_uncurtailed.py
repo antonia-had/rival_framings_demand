@@ -10,7 +10,7 @@ import sys
 design = str(sys.argv[1])
 
 # Read in SOW parameters
-directories = os.listdir('./' + design)
+directories = os.listdir('../' + design)
 scenarios = len(directories)
 sow = 27
 
