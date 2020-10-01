@@ -10,4 +10,4 @@
 
 module load python/3.6.9
 source /home/fs02/pmr82_0001/ah986/envs/rival_framings/bin/activate
-mpirun python3 infofile_uncurtailed.py CMIP_scenarios
+mpirun python3 infofile_uncurtailed.py CMIP_curtailment
