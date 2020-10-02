@@ -54,9 +54,9 @@ def plotSDC(synthetic, structure_name):
 
     # Reshape synthetic data
     # Create matrix of [no. years x no. months x no. samples]
-    synthetic_global = np.zeros([int(786 / n), n, samples * realizations])
+    synthetic_global = np.zeros([int(786 / n), n, scenarios * sow])
     # Loop through every SOW and reshape to [no. years x no. months]
-    for j in range(samples * realizations):
+    for j in range(scenarios * sow):
         synthetic_global[:, :, j] = np.reshape(synthetic[:, j], (int(np.size(synthetic[:, j]) / n), n))
     # Reshape to annual totals
     synthetic_global_totals = np.sum(synthetic_global, 1)
@@ -65,9 +65,9 @@ def plotSDC(synthetic, structure_name):
     p = np.arange(100, -10, -10)
 
     # Calculate synthetic shortage duration curves
-    F_syn = np.empty([int(786 / n), samples * realizations])
+    F_syn = np.empty([int(786 / n), scenarios * sow])
     F_syn[:] = np.NaN
-    for j in range(samples * realizations):
+    for j in range(scenarios * sow):
         F_syn[:, j] = np.sort(synthetic_global_totals[:, j])
 
     # For each percentile of magnitude, calculate the percentile among the experiments ran
@@ -126,12 +126,12 @@ else:
 for i in range(start, stop):
     # histData = np.loadtxt('../' + design + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_0.txt')[:,
     #            2] * 1233.4818 / 1000000
-    synthetic = np.zeros([len(768), samples * realizations])
-    for j in range(samples):
+    synthetic = np.zeros([768, scenarios * sow])
+    for j in range(scenarios):
         path = '../' + design + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_' + directories[j] + '.txt'
         data = np.loadtxt(path)
         try:
-            synthetic[:, j * realizations:j * realizations + realizations] = data[:, idx] * 1233.4818 / 1000000
+            synthetic[:, j * sow:j * sow + sow] = data[:, idx] * 1233.4818 / 1000000
         except IndexError:
             print(all_IDs[i] + '_info_' + str(j + 1))
     plotSDC(synthetic, all_IDs[i])
