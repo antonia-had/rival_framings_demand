@@ -55,7 +55,7 @@ def plotSDC(synthetic, structure_name):
 
     # Reshape synthetic data
     # Create matrix of [no. years x no. months x no. samples]
-    synthetic_global = np.zeros([int(786 / n), n, scenarios * sow])
+    synthetic_global = np.zeros([int(768 / n), n, scenarios * sow])
     # Loop through every SOW and reshape to [no. years x no. months]
     for j in range(scenarios * sow):
         synthetic_global[:, :, j] = np.reshape(synthetic[:, j], (int(np.size(synthetic[:, j]) / n), n))
@@ -66,17 +66,17 @@ def plotSDC(synthetic, structure_name):
     p = np.arange(100, -10, -10)
 
     # Calculate synthetic shortage duration curves
-    F_syn = np.empty([int(786 / n), scenarios * sow])
+    F_syn = np.empty([int(768 / n), scenarios * sow])
     F_syn[:] = np.NaN
     for j in range(scenarios * sow):
         F_syn[:, j] = np.sort(synthetic_global_totals[:, j])
 
     # For each percentile of magnitude, calculate the percentile among the experiments ran
     perc_scores = np.zeros_like(F_syn)
-    for m in range(int(786 / n)):
+    for m in range(int(768 / n)):
         perc_scores[m, :] = [stats.percentileofscore(F_syn[m, :], j, 'rank') for j in F_syn[m, :]]
 
-    P = np.arange(1., 786/12 + 1) * 100 / 786/12
+    P = np.arange(1., 768/12 + 1) * 100 / 768/12
 
     ylimit = np.max(F_syn)
     fig, (ax1) = plt.subplots(1, 1, figsize=(14.5, 8))
