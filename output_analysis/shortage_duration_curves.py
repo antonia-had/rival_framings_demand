@@ -27,7 +27,7 @@ os.chdir('../output_analysis')
 scenarios = len(directories)
 sow = 27
 
-idx = np.arange(2, 22, 2)
+idx = np.arange(2, 56, 2)
 
 def alpha(i, base=0.2):
     l = lambda x: x + base - x * base
