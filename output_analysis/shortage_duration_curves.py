@@ -23,6 +23,7 @@ percentiles = np.arange(0, 100)
 
 os.chdir('../' + design)
 directories = glob.glob('CMIP*_*')
+directories.remove('CMIP3_070')
 os.chdir('../output_analysis')
 scenarios = len(directories)
 sow = 27
