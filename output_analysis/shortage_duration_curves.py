@@ -28,12 +28,14 @@ os.chdir('../output_analysis')
 scenarios = len(directories)
 if design == 'CMIP_curtailment':
     sow = 27
+
 else:
     sow = 1
 
+idx = np.arange(2, sow*2+2, 2)
 historical = pd.read_csv('../structures_files/shortages.csv', index_col=0)
 
-idx = np.arange(2, 56, 2)
+
 
 def alpha(i, base=0.2):
     l = lambda x: x + base - x * base
