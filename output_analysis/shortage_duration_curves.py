@@ -92,7 +92,7 @@ def plotSDC(synthetic, histData,  structure_name):
         handles.append(handle)
         label = "{:.0f} %".format(100 - p[i])
         labels.append(label)
-    #ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
+    ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
     ax1.set_ylim(0, ylimit)
     ax1.set_xlim(0, 100)
     ax1.legend(handles=handles, labels=labels, framealpha=1, fontsize=8, loc='upper left',
