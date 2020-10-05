@@ -61,7 +61,6 @@ def plotSDC(synthetic, structure_name):
         synthetic_global[:, :, j] = np.reshape(synthetic[:, j], (int(np.size(synthetic[:, j]) / n), n))
     # Reshape to annual totals
     synthetic_global_totals = np.sum(synthetic_global, 1)
-    print(np.shape(synthetic_global_totals))
 
     p = np.arange(100, -10, -10)
 
@@ -133,7 +132,7 @@ for i in range(start, stop):
         data = np.loadtxt(path)
         try:
             synthetic[:, j * sow:j * sow + sow] = data[:, idx] * 1233.4818 / 1000000
-        except IndexError:
+        except ValueError:
             print(all_IDs[i] + '_info_' + str(j + 1))
     plotSDC(synthetic, all_IDs[i])
 
