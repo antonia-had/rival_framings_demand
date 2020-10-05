@@ -28,6 +28,8 @@ os.chdir('../output_analysis')
 scenarios = len(directories)
 sow = 27
 
+historical = pd.read_csv('../structures_files/shortages.csv', index_col=0)
+
 idx = np.arange(2, 56, 2)
 
 def alpha(i, base=0.2):
@@ -124,8 +126,7 @@ else:
     stop = start + count
 
 for i in range(start, stop):
-    # histData = np.loadtxt('../' + design + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_0.txt')[:,
-    #            2] * 1233.4818 / 1000000
+    histData =  historical.loc[all_IDs[i]].values * 1233.4818 / 1000000
     synthetic = np.zeros([768, scenarios * sow])
     for j in range(scenarios):
         path = '../' + design + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_' + directories[j] + '.txt'
