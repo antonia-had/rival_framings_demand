@@ -75,7 +75,7 @@ def plotSDC(synthetic, structure_name):
     for m in range(int(768 / n)):
         perc_scores[m, :] = [stats.percentileofscore(F_syn[m, :], j, 'rank') for j in F_syn[m, :]]
 
-    P = np.arange(1., 768/12 + 1) * 100 / 768/12
+    P = np.arange(1., 768/12 + 1) * 100 / (768/12)
 
     ylimit = np.max(F_syn)
     fig, (ax1) = plt.subplots(1, 1, figsize=(14.5, 8))
@@ -133,7 +133,7 @@ for i in range(start, stop):
         try:
             synthetic[:, j * sow:j * sow + sow] = data[:, idx] * 1233.4818 / 1000000
         except ValueError:
-            print(all_IDs[i] + '_info_' + str(j + 1))
+            print(all_IDs[i] + '_info_' + directories[j])
     plotSDC(synthetic, all_IDs[i])
 
 
