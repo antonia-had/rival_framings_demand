@@ -26,7 +26,10 @@ directories = glob.glob('CMIP*_*')
 directories.remove('CMIP3_070')
 os.chdir('../output_analysis')
 scenarios = len(directories)
-sow = 27
+if design == 'CMIP_curtailment':
+    sow = 27
+else:
+    sow = 1
 
 historical = pd.read_csv('../structures_files/shortages.csv', index_col=0)
 
