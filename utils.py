@@ -32,6 +32,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
             index = np.where(users == row_data[1])[0][0]
             remaining_demand = 1 - (curtailment_per_user[index] * (100 - general_curtailment) / 100)
             # scale first month
+            print(row_data)
             row_data[2] = str(int(float(row_data[2]) * remaining_demand))
             # scale other months
             for j in range(len(all_split_data[i + firstline_iwr]) - 2):
