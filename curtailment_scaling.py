@@ -96,11 +96,12 @@ for scenario in directories[start:stop]:
     # get split data on periods
     with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
         all_data = [x for x in f.readlines()]
+    f.close()
+
+    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
         all_split_data = [x.split('.') for x in f.readlines()]
     f.close()
 
-    print(len(all_split_data))
-    print(firstline_iwr)
     '''Get data from original scenario DDM'''
     firstline_ddm = int(
         search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
