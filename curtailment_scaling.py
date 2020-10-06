@@ -48,7 +48,10 @@ for i in range(len(rights_to_curtail)):
     curtailment_levels = np.zeros(len(users_per_threshold[i]))
     for j in range(len(users_per_threshold[i])):
         wdid = decrees_per_wdid_curtail.index[j]
-        curtailment_levels[j] = np.sum(decrees_per_wdid_curtail[wdid]) / np.sum(decrees_per_wdid[wdid])
+        if np.sum(decrees_per_wdid[wdid])!=0:
+            curtailment_levels[j] = np.sum(decrees_per_wdid_curtail[wdid]) / np.sum(decrees_per_wdid[wdid])
+        else:
+            curtailment_levels[j] = 0
     curtailment_per_threshold.append(curtailment_levels)
 
 listofyears = np.arange(1950, 2013)
