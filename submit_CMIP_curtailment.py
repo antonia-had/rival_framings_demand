@@ -1,8 +1,10 @@
 from mpi4py import MPI
 import math
 import os
+import glob
 
-directories = os.listdir('./CMIP_curtailment')
+os.chdir('../CMIP_curtailment')
+directories = glob.glob('CMIP*_*')
 scenarios = len(directories)
 # =============================================================================
 # Start parallelization
