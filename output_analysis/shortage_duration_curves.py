@@ -36,7 +36,6 @@ idx = np.arange(2, sow*2+2, 2)
 historical = pd.read_csv('../structures_files/shortages.csv', index_col=0)
 
 
-
 def alpha(i, base=0.2):
     l = lambda x: x + base - x * base
     ar = [l(0)]

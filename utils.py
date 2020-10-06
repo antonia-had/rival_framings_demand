@@ -18,6 +18,7 @@ def search_string_in_file(file_name, string_to_search):
     return list_of_results
 
 
+
 def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
                 curtailment_per_user, general_curtailment, curtailment_years):
     # replace former iwr demands with new
@@ -56,7 +57,6 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
         f.write((9 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '.' + '\n')
     f.close()
     return None
-
 
 def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
                 firstline_iwr, sow, users, curtailment_years):

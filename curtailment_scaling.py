@@ -6,7 +6,6 @@ from string import Template
 from mpi4py import MPI
 import math
 
-
 directories = os.listdir('./CMIP_curtailment')
 scenarios = len(directories)
 
@@ -98,10 +97,10 @@ for scenario in directories[start:stop]:
 
     '''Get data from original scenario DDM'''
     firstline_ddm = int(
-        search_string_in_file('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
+        search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
                               '#>EndHeader')[0]) + 4
 
-    with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
+    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
         all_data_DDM = [x for x in f.readlines()]
     f.close()
 
