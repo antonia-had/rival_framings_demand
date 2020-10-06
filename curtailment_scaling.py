@@ -5,8 +5,11 @@ from utils import *
 from string import Template
 from mpi4py import MPI
 import math
+import glob
 
-directories = os.listdir('./CMIP_curtailment')
+os.chdir('./CMIP_curtailment')
+directories = glob.glob('CMIP*_*')
+os.chdir('..')
 scenarios = len(directories)
 
 hist_iwr = np.loadtxt('./hist_files/MonthlyIWR.csv', delimiter=',')
