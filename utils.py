@@ -1,5 +1,6 @@
 import numpy as np
 
+lengths = [5, 12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10]  # lengths of intervals to split rows in
 
 def search_string_in_file(file_name, string_to_search):
     """Search for the given string in file and return the line numbers containing that string"""
@@ -16,8 +17,6 @@ def search_string_in_file(file_name, string_to_search):
                 list_of_results.append(line_number)
     # Return list of tuples containing line numbers and lines where string is found
     return list_of_results
-
-
 
 def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
                 curtailment_per_user, general_curtailment, curtailment_years):
@@ -47,14 +46,14 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
     for i in range(firstline_iwr):
         f.write(all_data[i])
     for i in range(len(new_data)):
-        # write year, ID and first month of adjusted data
-        f.write(new_data[i][0] + ' ' + new_data[i][1] + (19 - len(new_data[i][1]) - len(new_data[i][2])) * ' ' +
-                new_data[i][2] + '.')
-        # write all but last month of adjusted data
-        for j in range(len(new_data[i]) - 4):
-            f.write((7 - len(new_data[i][j + 3])) * ' ' + new_data[i][j + 3] + '.')
-        # write last month of adjusted data
-        f.write((9 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '.' + '\n')
+        # write year and ID (spaces after the entry)
+        for j in range(2):
+            f.write(new_data[i][j] + (lengths[j] - len(new_data[i][j])) * ' ')
+        # write all the rest (spaces before the entry)
+        for j in range(2, len(new_data[i])):
+            f.write((lengths[j] - len(new_data[i][j])) * ' ' + new_data[i][j])
+        # write line break
+        f.write('\n')
     f.close()
     return None
 
@@ -66,8 +65,6 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
 
     new_data = []
     irrigation_encounters = np.zeros(len(users))
-
-    lengths = [5, 12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10] #lengths of intervals to split rows in
 
     for i in range(len(all_data_DDM) - firstline_ddm):
         # To store the change between historical and sample irrigation demand (12 months + Total)
@@ -101,5 +98,4 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
         # write line break
         f.write('\n')
     f.close()
-
     return None
