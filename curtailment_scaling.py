@@ -99,6 +99,8 @@ for scenario in directories[start:stop]:
         all_split_data = [x.split('.') for x in f.readlines()]
     f.close()
 
+    print(len(all_split_data))
+    print(firstline_iwr)
     '''Get data from original scenario DDM'''
     firstline_ddm = int(
         search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
