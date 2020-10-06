@@ -23,7 +23,6 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
                 curtailment_per_user, general_curtailment, curtailment_years):
     # replace former iwr demands with new
     new_data = []
-    print(scenario+'_S'+str(sow))
     for i in range(len(all_split_data) - firstline_iwr):
         row_data = []
         # split first 3 columns of row on space and find 1st month's flow
@@ -31,7 +30,6 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
         # check if year is a curtailment year and if user is to be curtailed
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
-            print(index)
             remaining_demand = 1 - (curtailment_per_user[index] * (100 - general_curtailment) / 100)
             # scale first month
             row_data[2] = str(int(float(row_data[2]) * remaining_demand))
