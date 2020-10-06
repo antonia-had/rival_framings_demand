@@ -38,6 +38,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
         else:
             for j in range(len(all_split_data[i + firstline_iwr]) - 2):
                 row_data.append(str(int(float(all_split_data[i + firstline_iwr][j + 1]))))
+        print(row_data)
         # append row of adjusted data
         new_data.append(row_data)
 
