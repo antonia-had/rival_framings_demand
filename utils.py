@@ -23,7 +23,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
                 curtailment_per_user, general_curtailment, curtailment_years):
     # replace former iwr demands with new
     new_data = []
-    print(scenario+'_S'+sow)
+    print(scenario+'_S'+str(sow))
     for i in range(len(all_split_data) - firstline_iwr):
         row_data = []
         # split first 3 columns of row on space and find 1st month's flow
