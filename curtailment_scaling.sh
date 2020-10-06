@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name="curtailment_scaling"
 #SBATCH --output="curtailment_scaling.out"
+#SBATCH --hint=nomultithread
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=16
 #SBATCH --export=ALL
