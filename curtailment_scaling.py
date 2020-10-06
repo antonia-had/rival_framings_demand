@@ -9,7 +9,6 @@ import glob
 
 os.chdir('./CMIP_curtailment')
 directories = glob.glob('CMIP*_*')
-print(directories)
 os.chdir('..')
 scenarios = len(directories)
 
