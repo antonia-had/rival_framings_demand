@@ -3,7 +3,7 @@ import math
 import os
 import glob
 
-os.chdir('../CMIP_curtailment')
+os.chdir('./CMIP_curtailment')
 directories = glob.glob('CMIP*_*')
 scenarios = len(directories)
 # =============================================================================

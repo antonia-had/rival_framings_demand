@@ -3,7 +3,7 @@ import math
 import os
 import glob
 
-os.chdir('../CO_climate_scenarios')
+os.chdir('./CO_climate_scenarios')
 directories = glob.glob('CMIP*_*')
 scenarios = len(directories)
 # =============================================================================
