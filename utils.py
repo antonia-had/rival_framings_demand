@@ -46,6 +46,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
     for i in range(firstline_iwr):
         f.write(all_data[i])
     for i in range(len(new_data)):
+        print(new_data)
         # write year and ID (spaces after the entry)
         for j in range(2):
             f.write(new_data[i][j] + (lengths[j] - len(new_data[i][j])) * ' ')
