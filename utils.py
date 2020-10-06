@@ -31,8 +31,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
         # check if year is a curtailment year and if user is to be curtailed
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
-            print(curtailment_per_user[index])
-            print(general_curtailment)
+            print(index)
             remaining_demand = 1 - (curtailment_per_user[index] * (100 - general_curtailment) / 100)
             # scale first month
             row_data[2] = str(int(float(row_data[2]) * remaining_demand))
