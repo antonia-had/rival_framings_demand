@@ -93,14 +93,11 @@ for scenario in directories[start:stop]:
         CMIP_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
     f.close()
 
-    # split data on periods
-    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
-        all_split_data = [x.split('.') for x in f.readlines()]
-    f.close()
-
     # get unsplit data to rewrite firstLine # of rows
+    # get split data on periods
     with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
         all_data = [x for x in f.readlines()]
+        all_split_data = [x.split('.') for x in f.readlines()]
     f.close()
 
     '''Get data from original scenario DDM'''

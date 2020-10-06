@@ -67,7 +67,7 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
     new_data = []
     irrigation_encounters = np.zeros(len(users))
 
-    n = [4, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10] #lengths of intervals to split rows in
+    lengths = [5, 12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10] #lengths of intervals to split rows in
 
     for i in range(len(all_data_DDM) - firstline_ddm):
         # To store the change between historical and sample irrigation demand (12 months + Total)
@@ -75,7 +75,7 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
         # Split first 3 columns of row on space
         # This is because the first month is lumped together with the year and the ID when spliting on periods
         row = all_data_DDM[i + firstline_ddm]
-        row_data = [row[sum(n[:i]):sum(n[:i+1])] for i in range(len(n))]
+        row_data = [row[sum(lengths[:i]):sum(lengths[:i+1])] for i in range(len(lengths))]
         # If the structure is not in the ones we care about then do nothing
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
@@ -92,13 +92,14 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
     for i in range(firstline_ddm):
         f.write(all_data_DDM[i])
     for i in range(len(new_data)):
-        # write year and ID
-        f.write(new_data[i][0] + ' ' + new_data[i][1] + (17 - len(new_data[i][0] + ' ' + new_data[i][1])) * ' ')
-        # write all but last month of adjusted data
-        for j in range(len(new_data[i]) - 3):
-            f.write((8 - len(new_data[i][j + 2])) * ' ' + new_data[i][j + 2])
-        # write last month of adjusted data
-        f.write((10 - len(new_data[i][-1])) * ' ' + new_data[i][-1] + '\n')
+        # write year and ID (spaces after the entry)
+        for j in range(2):
+            f.write(new_data[i][j] + (lengths[j] - len(new_data[i][j])) * ' ')
+        # write all the rest (spaces before the entry)
+        for j in range(2, len(new_data[i])):
+            f.write((lengths[j] - len(new_data[i][j])) * ' ' + new_data[i][j])
+        # write line break
+        f.write('\n')
     f.close()
 
     return None
