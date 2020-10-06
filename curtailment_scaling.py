@@ -9,6 +9,7 @@ import glob
 
 os.chdir('./CMIP_curtailment')
 directories = glob.glob('CMIP*_*')
+print(directories)
 os.chdir('..')
 scenarios = len(directories)
 
@@ -80,6 +81,7 @@ else:
     stop = start + count
 
 for scenario in directories[start:stop]:
+    print(scenario)
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
 
