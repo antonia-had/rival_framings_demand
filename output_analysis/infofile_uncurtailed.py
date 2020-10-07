@@ -40,6 +40,7 @@ def getinfo(ID, scenario):
     path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
     # Check if infofile doesn't already exist or if size is 0 (remove if wanting to overwrite old files)
     if not (os.path.exists(path) and os.path.getsize(path) > 0):
+        print(path)
         lines = []
         if design == 'CMIP_curtailment':
             with open(path, 'w') as f:
@@ -94,8 +95,6 @@ def getinfo(ID, scenario):
                         f.write("%s\t" % item)
                     f.write("\n")
             f.close()
-    else:
-        print(path)
 
 
 # Determine the chunk which each processor will need to do
