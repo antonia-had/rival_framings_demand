@@ -121,6 +121,7 @@ for scenario in directories[start:stop]:
 
         low_flows = annual_flows_scenario <= trigger_flow
         curtailment_years = list(np.arange(1950, 2014)[low_flows])
+        print(curtailment_years)
 
         writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                     curtailment_per_user, general_curtailment, curtailment_years)
