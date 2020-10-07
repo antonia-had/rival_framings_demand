@@ -135,11 +135,9 @@ for i in range(start, stop):
     for j in range(scenarios):
         path = '../' + design + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_' + directories[j] + '.txt'
         data = np.loadtxt(path)
-        try:
-            synthetic[:, j * sow:j * sow + sow] = data[:, idx] * 1233.4818 / 1000000
-        except ValueError:
-            print(all_IDs[i] + '_info_' + directories[j])
-            print(len(synthetic[0,:]))
+        synthetic[:, j * sow:j * sow + sow] = data[:, idx] * 1233.4818 / 1000000
+    print(all_IDs[i] + '_info_' + directories[j])
+    print(len(synthetic[0,:]))
     plotSDC(synthetic, histData, all_IDs[i])
 
 
