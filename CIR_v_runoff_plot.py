@@ -14,11 +14,18 @@ def realization_mean_IWR(filename, firstline=463, h=0, sample=None):
     numYears = int((len(all_split_data) - firstline) / numSites)
     # get monthly demands
     MonthlyIWR = np.zeros([12 * numYears, numSites])
-    for i in range(numYears):
-        for j in range(numSites):
-            index = firstline + i * numSites + j
-            all_split_data[index][0] = all_split_data[index][0].split()[2]
-            MonthlyIWR[i * 12:(i + 1) * 12, j] = np.asfarray(all_split_data[index][0:12], float)
+    if not h==2:
+        for i in range(numYears):
+            for j in range(numSites):
+                index = firstline + i * numSites + j
+                all_split_data[index][0] = all_split_data[index][0].split()[2]
+                MonthlyIWR[i * 12:(i + 1) * 12, j] = np.asfarray(all_split_data[index][0:12], float)
+    else:
+        for i in range(numYears):
+            for j in range(numSites):
+                index = firstline + i * numSites + j
+                all_split_data[index][0] = all_split_data[index][0].split()
+                MonthlyIWR[i * 12:(i + 1) * 12, j] = np.asfarray(all_split_data[index][0][-13:-1], float)
     if h == 0:
         np.savetxt(filename[:-28] + '/MonthlyIWR.csv', MonthlyIWR, fmt='%d', delimiter=',')
     if h == 1:
