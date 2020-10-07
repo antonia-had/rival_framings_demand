@@ -2,8 +2,8 @@
 #SBATCH --job-name="infofiles"
 #SBATCH --output="infofiles.out"
 #SBATCH --hint=nomultithread
-#SBATCH --nodes=2
-#SBATCH --ntasks-per-node=16
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
 #SBATCH --export=ALL
 #SBATCH -t 6:00:00            # set max wallclock time
 #SBATCH --mail-user=ah986@cornell.edu
