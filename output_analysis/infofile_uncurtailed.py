@@ -18,7 +18,6 @@ design = str(sys.argv[1])
 # Read in SOW parameters
 os.chdir('../' + design)
 directories = glob.glob('CMIP*_*')
-print(directories)
 os.chdir('../output_analysis')
 scenarios = len(directories)
 sow = 27
@@ -95,6 +94,8 @@ def getinfo(ID, scenario):
                         f.write("%s\t" % item)
                     f.write("\n")
             f.close()
+    else:
+        print(path)
 
 
 # Determine the chunk which each processor will need to do
