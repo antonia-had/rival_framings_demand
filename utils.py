@@ -74,8 +74,10 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
         row = all_data_DDM[i + firstline_ddm]
         row_data = [row[sum(lengths[:i]):sum(lengths[:i+1])] for i in range(len(lengths))]
         # If the structure is not in the ones we care about then do nothing
-        print(int(row_data[0]))
-        print(row_data[1])
+        if int(row_data[0]) in curtailment_years:
+            print('curtailment year')
+        if row_data[1] in users:
+            print('curtailment user')
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
             line_in_iwr = int(irrigation_encounters[index] * len(users) + index)
