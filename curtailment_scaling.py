@@ -10,7 +10,7 @@ import glob
 os.chdir('./CMIP_curtailment')
 directories = glob.glob('CMIP*_*')
 os.chdir('..')
-scenarios = len(directories)
+scenarios = 1#len(directories)
 
 hist_iwr = np.loadtxt('./hist_files/MonthlyIWR.csv', delimiter=',')
 hist_flows = np.loadtxt('./hist_files/MonthlyFlows.csv', delimiter=',')
@@ -120,8 +120,8 @@ for scenario in directories[start:stop]:
         low_flows = annual_flows_scenario <= trigger_flow
         curtailment_years = list(np.arange(1950, 2014)[low_flows])
 
-        # writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
-        #             curtailment_per_user, general_curtailment, curtailment_years)
+        writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
+                    curtailment_per_user, general_curtailment, curtailment_years)
 
         writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
                     curtailment_years)

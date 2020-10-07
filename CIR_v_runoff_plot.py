@@ -6,7 +6,6 @@ import glob
 
 numSites = 379
 
-
 def realization_mean_IWR(filename, firstline=463, h=0, sample=None):
     '''Get historical irrigation and runoff values'''
     with open(filename, 'r') as f:
@@ -108,7 +107,6 @@ else:
 anomalies = np.vstack([anomalies, [hist_IWR, hist_flow]])
 anomalies_norm = np.zeros_like(anomalies)
 # CMIP scenarios curtailed
-anomalies_curtailment = np.vstack([anomalies_curtailment])
 anomalies_curtailment_norm = np.zeros_like(anomalies_curtailment)
 for i in range(2):
     maxvalue = max(anomalies_curtailment[:, i].max(), anomalies[:, i].max())
@@ -116,7 +114,7 @@ for i in range(2):
     anomalies_curtailment_norm[:, i] = (anomalies_curtailment[:, i] - minvalue) / (maxvalue-minvalue)
     anomalies_norm[:, i] = (anomalies[:, i] - minvalue) / (maxvalue-minvalue)
 
-fig,axes = plt.subplots(2,1, dpi=300)
+fig, axes = plt.subplots(2, 1, dpi=300)
 # Plot original CMIP anomalies
 ax = axes[0]
 ax.scatter(anomalies_norm[:, 0], anomalies_norm[:, 1], s=10)
@@ -129,7 +127,7 @@ ax.set_ylim(0, 1.05)
 # Plot curtailed CMIP anomalies
 ax = axes[1]
 ax.scatter(anomalies_curtailment_norm[:, 0], anomalies_curtailment_norm[:, 1], s=10)
-ax.scatter(anomalies_curtailment_norm[-1, 0], anomalies_curtailment_norm[-1, 1], s=20, c='red')
+ax.scatter(anomalies_norm[-1, 0], anomalies_norm[-1, 1], s=20, c='red')
 ax.set_xlabel('Normalized irrigation demand', fontsize=12)
 ax.set_ylabel('Normalized runoff', fontsize=12)
 ax.set_title('CMIP scenarios with curtailment', fontsize=14)
