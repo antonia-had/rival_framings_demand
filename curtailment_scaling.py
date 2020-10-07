@@ -80,7 +80,6 @@ else:
     stop = start + count
 
 for scenario in directories[start:stop]:
-    print(scenario)
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
 
@@ -113,7 +112,6 @@ for scenario in directories[start:stop]:
 
     # Apply each sample to every CMIP scenario
     for i in range(len(sample[:, 0])):
-        print(i)
         trigger_flow = trigger_flows[sample[i, 0]]
         users = users_per_threshold[sample[i, 1]]
         curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
@@ -121,7 +119,6 @@ for scenario in directories[start:stop]:
 
         low_flows = annual_flows_scenario <= trigger_flow
         curtailment_years = list(np.arange(1950, 2014)[low_flows])
-        print(curtailment_years)
 
         writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                     curtailment_per_user, general_curtailment, curtailment_years)
