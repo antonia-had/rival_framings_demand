@@ -38,7 +38,7 @@ comm.Barrier()
 # =============================================================================
 def getinfo(ID, scenario):
     path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
-    print(path)
+    print('../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt')
     # Check if infofile doesn't already exist or if size is 0 (remove if wanting to overwrite old files)
     if not (os.path.exists(path) and os.path.getsize(path) > 0):
         lines = []
