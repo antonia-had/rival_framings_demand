@@ -81,7 +81,9 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
                 row_data[m + 2] = str(int(float(row_data[m + 2]) + change[m]))
-                # append row of adjusted data
+            print(row_data[0]+' '+row_data[1])
+            print(change)
+        # append row of adjusted data
         new_data.append(row_data)
         # write new data to file
     f = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(sow) + '.ddm', 'w')

@@ -10,7 +10,7 @@ import glob
 os.chdir('./CMIP_curtailment')
 directories = glob.glob('CMIP*_*')
 os.chdir('..')
-scenarios = len(directories)
+scenarios = 1#len(directories)
 
 hist_iwr = np.loadtxt('./hist_files/MonthlyIWR.csv', delimiter=',')
 hist_flows = np.loadtxt('./hist_files/MonthlyFlows.csv', delimiter=',')
@@ -80,6 +80,7 @@ else:
     stop = start + count
 
 for scenario in directories[start:stop]:
+    print(scenario)
     monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
 
@@ -112,6 +113,7 @@ for scenario in directories[start:stop]:
 
     # Apply each sample to every CMIP scenario
     for i in range(len(sample[:, 0])):
+        print(i)
         trigger_flow = trigger_flows[sample[i, 0]]
         users = users_per_threshold[sample[i, 1]]
         curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
@@ -119,18 +121,16 @@ for scenario in directories[start:stop]:
 
         low_flows = annual_flows_scenario <= trigger_flow
         curtailment_years = list(np.arange(1950, 2014)[low_flows])
-        print(scenario)
-        print(curtailment_years)
 
-        # writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
-        #             curtailment_per_user, general_curtailment, curtailment_years)
-        #
-        # writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
-        #             curtailment_years)
-        #
-        # d = {'IWR': 'cm2015B_S' + str(i) + '.iwr',
-        #      'DDM': 'cm2015B_S' + str(i) + '.ddm'}
-        # S1 = template_RSP.safe_substitute(d)
-        # f1 = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.rsp', 'w')
-        # f1.write(S1)
-        # f1.close()
+        writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
+                    curtailment_per_user, general_curtailment, curtailment_years)
+
+        writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
+                    curtailment_years)
+
+        d = {'IWR': 'cm2015B_S' + str(i) + '.iwr',
+             'DDM': 'cm2015B_S' + str(i) + '.ddm'}
+        S1 = template_RSP.safe_substitute(d)
+        f1 = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.rsp', 'w')
+        f1.write(S1)
+        f1.close()
