@@ -118,7 +118,7 @@ for scenario in directories[start:stop]:
         curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
         general_curtailment = curtailment_levels[sample[i, 2]]
 
-        low_flows = annual_flows <= trigger_flow
+        low_flows = annual_flows_scenario <= trigger_flow
         curtailment_years = list(np.arange(1950, 2014)[low_flows])
 
         writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
