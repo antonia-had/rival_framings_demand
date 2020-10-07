@@ -20,6 +20,7 @@ os.chdir('../' + design)
 directories = glob.glob('CMIP*_*')
 os.chdir('../output_analysis')
 scenarios = len(directories)
+print(scenarios)
 sow = 27
 
 # List IDs of structures of interest for output files
@@ -111,5 +112,4 @@ else:
 for k in range(start, stop):
     scenario = directories[k]
     for ID in IDs:
-        print(scenario+'_'+ID)
         getinfo(ID, scenario)
