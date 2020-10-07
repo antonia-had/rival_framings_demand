@@ -27,10 +27,6 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
         # split first 3 columns of row on space and find 1st month's flow
         row_data.extend(all_split_data[i + firstline_iwr][0].split())
         # check if year is a curtailment year and if user is to be curtailed
-        if int(row_data[0]) in curtailment_years:
-            print('IWR curtailment year')
-        if row_data[1] in users:
-            print('IWR curtailment user')
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
             remaining_demand = 1 - (curtailment_per_user[index] * (100 - general_curtailment) / 100)
@@ -78,10 +74,8 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
         row = all_data_DDM[i + firstline_ddm]
         row_data = [row[sum(lengths[:i]):sum(lengths[:i+1])] for i in range(len(lengths))]
         # If the structure is not in the ones we care about then do nothing
-        if int(row_data[0]) in curtailment_years:
-            print('curtailment year')
-            print(row_data[1])
-        if int(row_data[0]) in curtailment_years and row_data[1] in users:
+        if int(row_data[0]) in curtailment_years and row_data[1].strip() in users:
+            print('curtailed user')
             index = np.where(users == row_data[1])[0][0]
             line_in_iwr = int(irrigation_encounters[index] * len(users) + index)
             irrigation_encounters[index] = +1
