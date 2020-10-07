@@ -115,4 +115,5 @@ else:
 for k in range(start, stop):
     scenario = directories[k]
     for ID in IDs:
+        print(scenario+'_'+ID)
         getinfo(ID, scenario)
