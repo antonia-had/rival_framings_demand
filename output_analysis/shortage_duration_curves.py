@@ -139,6 +139,7 @@ for i in range(start, stop):
             synthetic[:, j * sow:j * sow + sow] = data[:, idx] * 1233.4818 / 1000000
         except ValueError:
             print(all_IDs[i] + '_info_' + directories[j])
+            print(len(synthetic[0,:]))
     plotSDC(synthetic, histData, all_IDs[i])
 
 
