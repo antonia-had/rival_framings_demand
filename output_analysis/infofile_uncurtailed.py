@@ -102,7 +102,7 @@ def getinfo(ID, scenario):
 
 # Determine the chunk which each processor will need to do
 count = int(math.floor(scenarios / nprocs))
-remainder = len(scenarios) % nprocs
+remainder = scenarios % nprocs
 
 # Use the processor rank to determine the chunk of work each processor will do
 if rank < remainder:
