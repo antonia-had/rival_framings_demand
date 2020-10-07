@@ -54,7 +54,7 @@ for i in range(len(rights_to_curtail)):
             curtailment_levels[j] = 0
     curtailment_per_threshold.append(curtailment_levels)
 
-listofyears = np.arange(1950, 2013)
+list_of_years = np.arange(1950, 2013)
 
 '''Read RSP template'''
 T = open('./cm2015B_template.rsp', 'r')

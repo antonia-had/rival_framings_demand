@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from utils import search_string_in_file
+import glob
 
 numSites = 379
 
@@ -63,7 +64,9 @@ hist_flow = realization_mean_flow('./hist_files/cm2015x.xbm', h=1)
 if os.path.exists("anomalies_CMIP.txt"):
     anomalies = np.loadtxt('anomalies_CMIP.txt')
 else:
-    directories = os.listdir('./CMIP_scenarios')
+    os.chdir('./CMIP_scenarios')
+    directories = glob.glob('CMIP*_*')
+    os.chdir('..')
     scenarios = len(directories)
 
     anomalies = np.zeros([scenarios, 2])
@@ -81,7 +84,9 @@ else:
 if os.path.exists("anomalies_CMIP_curtailment.txt"):
     anomalies_curtailment = np.loadtxt('anomalies_CMIP_curtailment.txt')
 else:
-    directories = os.listdir('./CMIP_curtailment')
+    os.chdir('./CMIP_curtailment')
+    directories = glob.glob('CMIP*_*')
+    os.chdir('..')
     scenarios = len(directories)
     sow = 27
 
