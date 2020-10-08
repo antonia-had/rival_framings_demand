@@ -2,7 +2,7 @@
 #SBATCH --job-name="infofiles"
 #SBATCH --output="infofiles.out"
 #SBATCH --hint=nomultithread
-#SBATCH --nodes=2
+#SBATCH --nodes=4
 #SBATCH --ntasks-per-node=16
 #SBATCH --export=ALL
 #SBATCH -t 10:00:00            # set max wallclock time
