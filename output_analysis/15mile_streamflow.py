@@ -28,22 +28,22 @@ ID = '7202003'
 # Define output extraction function
 # =============================================================================
 
-lines=[]
-with open ('../' + design + '/Infofiles/' + ID + '/' + ID + '_streamflow.txt','w') as f:
-    with open ('../structures_files/cm2015B_uncurtailed.xdd', 'rt') as xdd_file:
-        for line in xdd_file.readlines()[39:]:
-                data = line.split('.')
-                if len(data)>1:
-                    introdata = data[0].split()
-                    if introdata[0]==ID:
-                        if introdata[3]!='TOT':
-                            lines.append([introdata[2], data[24]])
-    xdd_file.close()
-    for line in lines:
-        for item in line:
-            f.write("%s\t" % item)
-        f.write("\n")
-f.close()
+# lines=[]
+# with open ('../' + design + '/Infofiles/' + ID + '/' + ID + '_streamflow.txt','w') as f:
+#     with open ('../structures_files/cm2015B_uncurtailed.xdd', 'rt') as xdd_file:
+#         for line in xdd_file.readlines()[39:]:
+#                 data = line.split('.')
+#                 if len(data)>1:
+#                     introdata = data[0].split()
+#                     if introdata[0]==ID:
+#                         if introdata[3]!='TOT':
+#                             lines.append([introdata[2], data[24]])
+#     xdd_file.close()
+#     for line in lines:
+#         for item in line:
+#             f.write("%s\t" % item)
+#         f.write("\n")
+# f.close()
 
 def getinfo(scenario):
     lines=[]
