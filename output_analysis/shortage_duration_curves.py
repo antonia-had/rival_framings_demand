@@ -96,6 +96,8 @@ def plotSDC(synthetic, histData,  structure_name):
         handles.append(handle)
         label = "{:.0f} %".format(100 - p[i])
         labels.append(label)
+    #Plot 50th percentile line separately
+    ax1.plot(P, np.percentile(F_syn[:, :], p[5], axis=1), linewidth=0.7, color=color, alpha=0.7, linestyle='dashed')
     ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
     ax1.set_ylim(0, ylimit)
     ax1.set_xlim(0, 100)
@@ -106,8 +108,8 @@ def plotSDC(synthetic, histData,  structure_name):
 
     fig.suptitle('Shortage magnitudes for ' + structure_name, fontsize=16)
     plt.subplots_adjust(bottom=0.2)
-    fig.savefig('../' + design + '/ShortagePercentileCurves/' + structure_name + '.svg')
-    fig.savefig('../' + design + '/ShortagePercentileCurves/' + structure_name + '.png')
+    fig.savefig('../' + design + '/ShortagePercentileCurves/' + structure_name + '_' + design + '.svg')
+    fig.savefig('../' + design + '/ShortagePercentileCurves/' + structure_name + '_' + design + '.png')
     fig.clf()
 
 # Begin parallel simulation
