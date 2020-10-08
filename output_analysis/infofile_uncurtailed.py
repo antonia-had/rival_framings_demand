@@ -23,7 +23,7 @@ scenarios = len(directories)
 sow = 27
 
 # List IDs of structures of interest for output files
-IDs = np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
+IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
 info_clmn = [2, 4, 17]  # Define columns of aspect of interest
 
 if rank == 0:
