@@ -30,7 +30,7 @@ ID = '7202003'
 
 lines=[]
 with open ('../' + design + '/Infofiles/' + ID + '/' + ID + '_streamflow.txt','w') as f:
-    with open ('../structures_files/cm2015B_uncurt.xdd', 'rt') as xdd_file:
+    with open ('../structures_files/cm2015B_uncurtailed.xdd', 'rt') as xdd_file:
         for line in xdd_file.readlines()[39:]:
                 data = line.split('.')
                 if len(data)>1:
