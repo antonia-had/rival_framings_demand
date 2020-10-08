@@ -23,7 +23,7 @@ scenarios = len(directories)
 sow = 27
 
 # List IDs of structures of interest for output files
-IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../Structures_files/metrics_structures.txt', dtype='str').tolist()
+IDs = np.genfromtxt('../Structures_files/metrics_structures.txt', dtype='str').tolist()
 info_clmn = [2, 4, 17]  # Define columns of aspect of interest
 
 if rank == 0:
@@ -39,9 +39,7 @@ comm.Barrier()
 def getinfo(ID, scenario):
     path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
     # Check if infofile doesn't already exist or if size is 0 (remove if wanting to overwrite old files)
-    print(path)
     if not (os.path.exists(path) and os.path.getsize(path) > 0):
-        print('doesnt exist')
         lines = []
         if design == 'CMIP_curtailment':
             with open(path, 'w') as f:
@@ -96,9 +94,6 @@ def getinfo(ID, scenario):
                         f.write("%s\t" % item)
                     f.write("\n")
             f.close()
-    else:
-        print('exists')
-
 
 # Determine the chunk which each processor will need to do
 count = int(math.floor(scenarios / nprocs))
