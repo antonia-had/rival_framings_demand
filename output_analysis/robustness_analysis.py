@@ -9,6 +9,7 @@ import os
 plt.ioff()
 import sys
 import glob
+import pandas as pd
 
 # =============================================================================
 # Experiment set up
@@ -29,8 +30,11 @@ else:
 idx_shortage = np.arange(2, sow*2+2, 2)
 idx_demand = np.arange(1,sow*2+1,2)
 
-all_IDs = np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
+all_IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
 nStructures = len(all_IDs)
+
+historical_shortages = pd.read_csv('../structures_files/shortages.csv', index_col=0)
+historical_demands = pd.read_csv('../structures_files/demands.csv', index_col=0)
 
 n=12 # Number of months in a year for reshaping data
 nMonths = 768
@@ -50,21 +54,21 @@ def highlight_cell(x,y, ax=None, **kwargs):
     return rect
 
 def plotfailureheatmap(ID):
-    if ID=='7202003':
+    if ID == '7202003':
         streamflow = np.zeros([nMonths,scenarios*sow])
         
         for j in range(scenarios):
-            data= np.loadtxt('../'+design+'/Infofiles/' +\
-                             ID + '/' + ID + '_streamflow_' + str(j+1) + '.txt')[:,1:]
-            streamflow[:,j*sow:j*sow+sow]=data
+            data = np.loadtxt('../'+design+'/Infofiles/' +\
+                             ID + '/' + ID + '_streamflow_' + str(j) + '.txt')[:,1:]
+            streamflow[:, j*sow:j*sow+sow] = data
         
-        streamflowhistoric = np.loadtxt('../'+design+'/Infofiles/' +\
-                                        ID + '/' + ID + '_streamflow_0.txt')[:,1]
-        
-        historic_percents = [100-scipy.stats.percentileofscore(streamflowhistoric, dem, kind='strict') for dem in streamdemand]
+        # streamflowhistoric = np.loadtxt('../'+design+'/Infofiles/' +\
+        #                                 ID + '/' + ID + '_streamflow_0.txt')[:,1]
+        #
+        # historic_percents = [100-scipy.stats.percentileofscore(streamflowhistoric, dem, kind='strict') for dem in streamdemand]
 
         percentSOWs = np.zeros([len(frequencies), len(streamdemand)])
-        allSOWs = np.zeros([len(frequencies), len(streamdemand), scenarios *sow])
+        allSOWs = np.zeros([len(frequencies), len(streamdemand), scenarios * sow])
         
         for j in range(len(frequencies)):
             for h in range(len(streamdemand)):
@@ -75,16 +79,15 @@ def plotfailureheatmap(ID):
                 allSOWs[j,h,:]=success
                 percentSOWs[j,h]=np.mean(success)
         gridcells = []
-        for x in historic_percents:
-            try:
-                gridcells.append(list(frequencies)[::-1].index(roundup(x)))
-            except:
-                gridcells.append(0)
+        # for x in historic_percents:
+        #     try:
+        #         gridcells.append(list(frequencies)[::-1].index(roundup(x)))
+        #     except:
+        #         gridcells.append(0)
         
     else:                     
-        data= np.loadtxt('../'+design+'/Infofiles/' + ID + '/' + ID + '_info_0.txt')
-        historic_demands = data[:,1]
-        historic_shortages = data[:,2]
+        historic_demands = historical_demands.loc[ID].values[-768:] * 1233.4818 / 1000000
+        historic_shortages = historical_shortages.loc[ID].values[-768:] * 1233.4818 / 1000000
         #reshape into water years
         historic_shortages_f= np.reshape(historic_shortages, (int(np.size(historic_shortages)/n), n))
         historic_demands_f= np.reshape(historic_demands, (int(np.size(historic_demands)/n), n))
@@ -100,17 +103,17 @@ def plotfailureheatmap(ID):
         shortages = np.zeros([nMonths,scenarios*sow])
         demands = np.zeros([nMonths,scenarios*sow])
         for j in range(scenarios):
-            data= np.loadtxt('../'+design+'/Infofiles/' +  ID + '/' + ID + '_info_' + str(j+1) + '.txt')
+            data= np.loadtxt('../'+design+'/Infofiles/' + ID + '/' + ID + '_info_' + directories[j] + '.txt')
             try:
-                demands[:,j*sow:j*sow+sow]=data[:,idx_demand]
-                shortages[:,j*sow:j*sow+sow]=data[:,idx_shortage]
+                demands[:, j*sow:j*sow+sow] = data[:, idx_demand]
+                shortages[:, j*sow:j*sow+sow] = data[:, idx_shortage]
             except:
                 print('problem with ' + ID + '_info_' + str(j+1))
                 
         #Reshape into water years
         #Create matrix of [no. years x no. months x no. experiments]
-        f_shortages = np.zeros([int(nMonths/n),n,scenarios*sow])
-        f_demands = np.zeros([int(nMonths/n),n,scenarios*sow])
+        f_shortages = np.zeros([int(nMonths/n), n ,scenarios*sow])
+        f_demands = np.zeros([int(nMonths/n), n ,scenarios*sow])
         for i in range(scenarios*sow):
             f_shortages[:,:,i]= np.reshape(shortages[:,i], (int(np.size(shortages[:,i])/n), n))
             f_demands[:,:,i]= np.reshape(demands[:,i], (int(np.size(demands[:,i])/n), n))
@@ -142,7 +145,7 @@ def plotfailureheatmap(ID):
 #            ax.text(h, j, int(percentSOWs[j,h]),
 #                           ha="center", va="center", color="w")
     
-    if ID=='7202003':
+    if ID =='7202003':
         ax.set_xticks(np.arange(len(streamdemand)))
         ax.set_xticklabels([str(int(x/60.3707)) for x in list(streamdemand)])
         ax.set_xlabel("Streamflow to meet (cfs)")
@@ -174,33 +177,12 @@ def plotfailureheatmap(ID):
             highlight_cell(i,gridcells[i], color="orange", linewidth=4)
     
     fig.tight_layout()
-    fig.savefig('../'+design+'/Factor_mapping/Heatmaps/'+ID+'.svg')
+    fig.savefig('../'+design+'/Robustness/Heatmaps/'+ID+'.svg')
     plt.close()
     
-    np.save('../'+design+'/Factor_mapping/'+ ID + '_heatmap.npy',allSOWs)
+    np.save('../'+design+'/Robustness/'+ ID + '_heatmap.npy',allSOWs)
     
     return(allSOWs, historic_percents)
-
-def plotContourMap(ax, result, dta, contour_cmap, dot_cmap, levels, xgrid, ygrid, \
-    xvar, yvar, base):
- 
-    # find probability of success for x=xgrid, y=ygrid
-    X, Y = np.meshgrid(xgrid, ygrid)
-    x = X.flatten()
-    y = Y.flatten()
-    grid = np.column_stack([np.ones(len(x)),x,y])
- 
-    z = result.predict(grid)
-    Z = np.reshape(z, np.shape(X))
-
-    contourset = ax.contourf(X, Y, Z, levels, cmap=contour_cmap)
-    ax.scatter(dta[xvar].values, dta[yvar].values, c=dta['Success'].values, edgecolor='none', cmap=dot_cmap)
-    ax.set_xlim(0.99*np.min(X),1.01*np.max(X))
-    ax.set_ylim(0.99*np.min(Y),1.01*np.max(Y))
-    ax.set_xlabel(xvar,fontsize=10)
-    ax.set_ylabel(yvar,fontsize=10)
-    ax.tick_params(axis='both',labelsize=6)
-    return contourset
 
 #def shortage_duration(sequence, value):
 #    cnt_shrt = [sequence[i]>value for i in range(len(sequence))] # Returns a list of True values when there's a shortage about the value
@@ -229,4 +211,4 @@ else:
     
 # Run simulation
 for i in range(start, stop):
-    plotfailureheatmap(ID)
+    plotfailureheatmap(all_IDs[i])
