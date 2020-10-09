@@ -139,7 +139,7 @@ def plotfailureheatmap(ID):
                 gridcells.append(0)
     
     fig, ax = plt.subplots()
-    print(max(percentSOWs))
+    print(np.amax(percentSOWs))
     im = ax.imshow(percentSOWs, norm = mpl.colors.Normalize(vmin=0.0,vmax=100.0), cmap='RdBu', interpolation='nearest')
 #    for j in range(len(frequencies)):
 #        for h in range(len(magnitudes)):
