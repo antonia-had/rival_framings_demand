@@ -10,4 +10,4 @@
 
 module load python/3.6.9
 source /home/fs02/pmr82_0001/ah986/envs/rival_framings/bin/activate
-mpirun python3 robustness_analysis CMIP_curtailment
+mpirun python3 robustness_analysis.py CMIP_curtailment
