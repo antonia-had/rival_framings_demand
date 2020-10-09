@@ -59,7 +59,7 @@ def plotfailureheatmap(ID):
         
         for j in range(scenarios):
             data = np.loadtxt('../'+design+'/Infofiles/' +\
-                             ID + '/' + ID + '_streamflow_' + str(j) + '.txt')[:,1:]
+                             ID + '/' + ID + '_streamflow_' + directories[j] + '.txt')[:,1:]
             streamflow[:, j*sow:j*sow+sow] = data
         
         # streamflowhistoric = np.loadtxt('../'+design+'/Infofiles/' +\
