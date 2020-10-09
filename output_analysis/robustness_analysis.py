@@ -59,7 +59,7 @@ def plotfailureheatmap(ID):
         
         for j in range(scenarios):
             data = np.loadtxt('../'+design+'/Infofiles/' +\
-                             ID + '/' + ID + '_streamflow_' + directories[j] + '.txt')[:,1:]
+                             ID + '/' + ID + '_streamflow_' + directories[j] + '.txt')[:, 1:]
             streamflow[:, j*sow:j*sow+sow] = data
         
         # streamflowhistoric = np.loadtxt('../'+design+'/Infofiles/' +\
@@ -139,6 +139,7 @@ def plotfailureheatmap(ID):
                 gridcells.append(0)
     
     fig, ax = plt.subplots()
+    print(max(percentSOWs))
     im = ax.imshow(percentSOWs, norm = mpl.colors.Normalize(vmin=0.0,vmax=100.0), cmap='RdBu', interpolation='nearest')
 #    for j in range(len(frequencies)):
 #        for h in range(len(magnitudes)):
@@ -180,7 +181,7 @@ def plotfailureheatmap(ID):
     fig.savefig('../'+design+'/Robustness/Heatmaps/'+ID+'.svg')
     plt.close()
     
-    np.save('../'+design+'/Robustness/'+ ID + '_heatmap.npy',allSOWs)
+    np.save('../'+design+'/Robustness/'+ ID + '_heatmap.npy', allSOWs)
     
     return(allSOWs, historic_percents)
 
