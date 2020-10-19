@@ -100,8 +100,8 @@ def plotfailureheatmap(ID):
         percentSOWs = np.zeros([len(frequencies), len(magnitudes)])
         allSOWs = np.zeros([len(frequencies), len(magnitudes), scenarios*sow])
         
-        shortages = np.zeros([nMonths,scenarios*sow])
-        demands = np.zeros([nMonths,scenarios*sow])
+        shortages = np.zeros([nMonths , scenarios*sow])
+        demands = np.zeros([nMonths , scenarios*sow])
         for j in range(scenarios):
             data= np.loadtxt('../'+design+'/Infofiles/' + ID + '/' + ID + '_info_' + directories[j] + '.txt')
             try:
