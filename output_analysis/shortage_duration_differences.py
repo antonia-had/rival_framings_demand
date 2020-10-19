@@ -98,8 +98,16 @@ def plotSDC(syntheticdata, histData,  structure_name):
     handles = []
     labels = []
     colors = ['#000292', '#BB4430']
-    for s in range(len(syntheticdata)):
-        for i in range(len(p)):
+    for i in range(len(p)):
+        ax1.fill_between(P, y1=np.percentile(F_syn[0][:, :], p[i], axis=1),
+                         y2=np.percentile(F_syn[1][:, :], p[i], axis=1),
+                         where=np.percentile(F_syn[0][:, :], p[i], axis=1) > np.percentile(F_syn[1][:, :], p[i], axis=1),
+                         interpolate=True, color=colors[0], alpha=0.5)
+        ax1.fill_between(P, y1=np.percentile(F_syn[1][:, :], p[i], axis=1),
+                         y2=np.percentile(F_syn[0][:, :], p[i], axis=1),
+                         where=np.percentile(F_syn[1][:, :], p[i], axis=1) > np.percentile(F_syn[0][:, :], p[i], axis=1),
+                         interpolate=True, color=colors[1], alpha=0.5)
+        for s in range(len(syntheticdata)):
             ax1.plot(P, np.percentile(F_syn[s][:, :], p[i], axis=1), linewidth=0.7, color=colors[s])
 
     ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
