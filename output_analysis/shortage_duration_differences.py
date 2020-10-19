@@ -16,7 +16,7 @@ plt.ioff()
 
 designs = [str(sys.argv[1]), str(sys.argv[2])]
 
-path = '../' + designs[0] + '_' + designs[1] + '_diff'
+figures_path = '../' + designs[0] + '_' + designs[1] + '_diff'
 
 all_IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
 nStructures = len(all_IDs)
@@ -112,8 +112,8 @@ def plotSDC(syntheticdata, histData,  structure_name):
 
     fig.suptitle('Shortage magnitudes for ' + structure_name, fontsize=16)
     plt.subplots_adjust(bottom=0.2)
-    fig.savefig(path + '/' + structure_name + '.svg')
-    fig.savefig(path + '/' + structure_name + '.png')
+    fig.savefig(figures_path + '/' + structure_name + '.svg')
+    fig.savefig(figures_path + '/' + structure_name + '.png')
     fig.clf()
 
 # Begin parallel simulation
