@@ -71,7 +71,7 @@ def plotSDC(syntheticdata, histData,  structure_name):
              np.empty([int(len(histData) / n), scenarios * sows[1]])]
 
     # Calculate synthetic shortage duration curves
-    for s in range(syntheticdata):
+    for s in range(len(syntheticdata)):
         F_syn[s][:] = np.NaN
         # Loop through every SOW and reshape to [no. years x no. months]
         for j in range(scenarios * sows[s]):
@@ -86,7 +86,7 @@ def plotSDC(syntheticdata, histData,  structure_name):
 
     # For each percentile of magnitude, calculate the percentile among the experiments ran
     perc_scores = [np.zeros_like(F_syn[0]), np.zeros_like(F_syn[1])]
-    for s in range(syntheticdata):
+    for s in range(len(syntheticdata)):
         for m in range(int(len(histData) / n)):
             perc_scores[s][m, :] = [stats.percentileofscore(F_syn[s][m, :], j, 'rank') for j in F_syn[s][m, :]]
 
@@ -98,7 +98,7 @@ def plotSDC(syntheticdata, histData,  structure_name):
     handles = []
     labels = []
     colors = ['#000292', '#BB4430']
-    for s in range(syntheticdata):
+    for s in range(len(syntheticdata)):
         for i in range(len(p)):
             ax1.plot(P, np.percentile(F_syn[s][:, :], p[i], axis=1), linewidth=0.7, color=colors[s])
 
