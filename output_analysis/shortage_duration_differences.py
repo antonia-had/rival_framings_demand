@@ -66,7 +66,7 @@ def plotSDC(syntheticdata, histData,  structure_name):
     # Create matrix of [no. years x no. months x no. samples]
     synthetic_global = [np.zeros([int(len(histData) / n), n, scenarios * sows[0]]),
                         np.zeros([int(len(histData) / n), n, scenarios * sows[1]])]
-    synthetic_global_totals= [0]*len(sows)
+    synthetic_global_totals = [0]*len(sows)
     F_syn = [np.empty([int(len(histData) / n), scenarios * sows[0]]),
              np.empty([int(len(histData) / n), scenarios * sows[1]])]
 
@@ -75,7 +75,7 @@ def plotSDC(syntheticdata, histData,  structure_name):
         F_syn[s][:] = np.NaN
         # Loop through every SOW and reshape to [no. years x no. months]
         for j in range(scenarios * sows[s]):
-            synthetic_global[s][:, :, j] = np.reshape(synthetic[:, j], (int(np.size(synthetic[:, j]) / n), n))
+            synthetic_global[s][:, :, j] = np.reshape(syntheticdata[s][:, j], (int(np.size(syntheticdata[s][:, j]) / n), n))
         # Reshape to annual totals
         synthetic_global_totals[s] = np.sum(synthetic_global[s], 1)
         for j in range(scenarios * sows[s]):
