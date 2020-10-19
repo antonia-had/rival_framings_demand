@@ -16,9 +16,6 @@ plt.ioff()
 
 designs = [str(sys.argv[1]), str(sys.argv[2])]
 
-if not os.path.exists('../' + designs[0] + '_' + designs[1] + '_diff'):
-    os.makedirs('../' + designs[0] + '_' + designs[1] + '_diff')
-
 path = '../' + designs[0] + '_' + designs[1] + '_diff'
 
 all_IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
