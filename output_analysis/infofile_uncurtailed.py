@@ -40,8 +40,7 @@ f.close()
 # =============================================================================
 # Define output extraction function
 # =============================================================================
-def getinfo(ID, scenario):
-    path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
+def getinfo(ID, scenario, path):
     # Check if infofile doesn't already exist or if size is 0 (remove if wanting to overwrite old files)
     if not (os.path.exists(path) and os.path.getsize(path) > 0):
         lines = []
@@ -100,8 +99,8 @@ def getinfo(ID, scenario):
             f.close()
 
 # Determine the chunk which each processor will need to do
-count = int(math.floor(scenarios / nprocs))
-remainder = scenarios % nprocs
+count = int(math.floor(len(IDs) / nprocs))
+remainder = len(IDs) % nprocs
 
 # Use the processor rank to determine the chunk of work each processor will do
 if rank < remainder:
@@ -112,8 +111,21 @@ else:
     stop = start + count
 
 for k in range(start, stop):
-    scenario = directories[k]
-    if scenario in missing_infofiles:
-        for ID in IDs:
+    wdid = IDs[k]
+    listoffiles = os.listdir('../' + design + '/Infofiles/' + ID)
+    files = [x[-13:-4] for x in listoffiles]
+    for scenario in directories:
+        path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
+        # If infofile for scenario was never created
+        if scenario not in files:
             print(scenario+'_'+ID)
-            getinfo(ID, scenario)
+            getinfo(ID, scenario, path)
+        else:
+            # If infofile was created but it was in the bugged out SOWs
+            if scenario in missing_infofiles:
+                # Check creation time and size
+                [mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime] = os.stat(path)
+                # If it was created before Oct 20 or never written into
+                if mtime < 1603188171 or size < 10:
+                    print(scenario+'_'+ID)
+                    getinfo(ID, scenario, path)
