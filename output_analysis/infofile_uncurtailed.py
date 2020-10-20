@@ -111,7 +111,7 @@ else:
     stop = start + count
 
 for k in range(start, stop):
-    wdid = IDs[k]
+    ID = IDs[k]
     listoffiles = os.listdir('../' + design + '/Infofiles/' + ID)
     files = [x[-13:-4] for x in listoffiles]
     for scenario in directories:
