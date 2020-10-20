@@ -32,7 +32,7 @@ if rank == 0:
             os.makedirs('../' + design + '/Infofiles/' + ID)
 
 comm.Barrier()
-with open("debugged_runs.txt") as f:
+with open("../debugged_runs.txt") as f:
     missing_infofiles = f.read().splitlines()
 f.close()
 
