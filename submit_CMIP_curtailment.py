@@ -36,6 +36,8 @@ for k in range(start, stop):
     # Change to scenario subdirectory
     os.chdir('/scratch/ah986/rival_framings_demand/CMIP_curtailment/'+directories[k]+'/cm2015/StateMod/')
     for i in range(27):
-        # Run simulation
-        os.system("./statemod cm2015B_S{} -simulate".format(i))
-        print ('simulating scenario {} sample {}'.format(directories[k], i))
+        outputsize = os.path.getsize('cm2015B_S' + str(i) + '.xdd')
+        if outputsize<300*1000000:
+            print ('scenario {} sample {}'.format(directories[k], i))
+            # Run simulation
+            os.system("./statemod cm2015B_S{} -simulate".format(i))
