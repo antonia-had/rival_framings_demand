@@ -114,7 +114,6 @@ else:
 for k in range(start, stop):
     scenario = directories[k]
     if scenario in missing_infofiles:
-        print(scenario)
         for ID in IDs:
             print(scenario+'_'+ID)
             getinfo(ID, scenario)
