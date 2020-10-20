@@ -10,7 +10,7 @@ import glob
 os.chdir('./CMIP_curtailment')
 directories = glob.glob('CMIP*_*')
 os.chdir('..')
-scenarios = 1#len(directories)
+scenarios = len(directories)
 
 hist_iwr = np.loadtxt('./hist_files/MonthlyIWR.csv', delimiter=',')
 hist_flows = np.loadtxt('./hist_files/MonthlyFlows.csv', delimiter=',')
