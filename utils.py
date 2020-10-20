@@ -31,13 +31,16 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
             index = np.where(users == row_data[1])[0][0]
             remaining_demand = 1 - (curtailment_per_user[index] * (100 - general_curtailment) / 100)
             # scale first month
-            row_data[2] = str(int(float(row_data[2]) * remaining_demand))
+            value = float(row_data[2]) * remaining_demand
+            row_data[2] = f'{value:.2f}'
             # scale other months
             for j in range(len(all_split_data[i + firstline_iwr]) - 2):
-                row_data.append(str(int(float(all_split_data[i + firstline_iwr][j + 1]) * remaining_demand)))
+                value = float(all_split_data[i + firstline_iwr][j + 1]) * remaining_demand
+                row_data.append(f'{value:.2f}')
         else:
             for j in range(len(all_split_data[i + firstline_iwr]) - 2):
-                row_data.append(str(int(float(all_split_data[i + firstline_iwr][j + 1]))))
+                value = float(all_split_data[i + firstline_iwr][j + 1])
+                row_data.append(f'{value:.2f}')
         # append row of adjusted data
         new_data.append(row_data)
 
@@ -81,7 +84,8 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
             irrigation_encounters[index] = +1
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
-                row_data[m + 2] = str(int(float(row_data[m + 2]) + change[m]))
+                value = float(row_data[m + 2]) + change[m]
+                row_data[m + 2] = f'{value:.2f}'
         # append row of adjusted data
         new_data.append(row_data)
         # write new data to file
