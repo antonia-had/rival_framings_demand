@@ -32,6 +32,10 @@ if rank == 0:
             os.makedirs('../' + design + '/Infofiles/' + ID)
 
 comm.Barrier()
+with open("debugged_runs.txt") as f:
+    missing_infofiles = f.read().splitlines()
+f.close()
+
 
 # =============================================================================
 # Define output extraction function
@@ -109,6 +113,8 @@ else:
 
 for k in range(start, stop):
     scenario = directories[k]
-    for ID in IDs:
-        print(scenario+'_'+ID)
-        getinfo(ID, scenario)
+    if scenario in missing_infofiles:
+        print(scenario)
+        for ID in IDs:
+            print(scenario+'_'+ID)
+            getinfo(ID, scenario)
