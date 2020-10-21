@@ -1,16 +1,12 @@
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm
-from statsmodels.stats.anova import anova_lm
-import scipy.stats
-import matplotlib.pyplot as plt
+from statsmodels.formula.api import ols
+from statsmodels.stats.api import anova_lm
 import math
 import pyDOE2
 import glob
 import os
 from mpi4py import MPI
-
-plt.ioff()
 
 design = 'CMIP_curtailment'
 directories = glob.glob('../' + design + '/CMIP*_*')
@@ -22,24 +18,20 @@ params_no = len(SOWsample[0, :])
 realizations = int(samples/len(directories))
 idx = np.arange(2, realizations*2+2, 2)
 
-param_names = ['Shortage trigger', 'Percent of rights', 'Curtailment level', 'CMIP scenario']
+param_names = ['Shortage_trigger', 'Percent_rights', 'Curtailment_level', 'CMIP_scenario']
 
 percentiles = np.arange(0, 100)
-all_IDs = np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
+all_IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
 nStructures = len(all_IDs)
 
 no_months = 768
 n = 12
 
-def fitOLS(dta, predictors):
-    # concatenate intercept column of 1s
-    dta['Intercept'] = np.ones(np.shape(dta)[0])
-    # get columns of predictors
-    cols = dta.columns.tolist()[-1:] + predictors
-    # fit OLS regression
-    ols = sm.OLS(dta['Shortage'], dta[cols])
-    result = ols.fit()
-    return result
+#Statsmodels OLS formula
+formula = 'Shortage ~ C(Shortage_trigger) + C(Percent_rights) + C(Curtailment_level) + C(CMIP_scenario) + \
+        C(Shortage_trigger):C(Percent_rights) + C(Shortage_trigger):C(Curtailment_level) + \
+        C(Percent_rights):C(Curtailment_level) + C(Shortage_trigger):C(CMIP_scenario) + \
+        C(Percent_rights):C(CMIP_scenario) + C(Curtailment_level):C(CMIP_scenario)'
 
 def collect_experiment_data(ID):
     summary_file_path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_all.txt'
@@ -68,43 +60,24 @@ def collect_experiment_data(ID):
         syn_magnitude[:, j] = [np.percentile(f_SYN_short_WY[:, j], i) for i in percentiles]
     return syn_magnitude
 
-def ANOVA_sensitivity_analysis(model_output):
+def ANOVA_sensitivity_analysis(ID, syn_magnitude):
     '''
     Perform analysis for shortage magnitude
     '''
-    SI = pd.DataFrame(np.zeros((params_no, len(percentiles))), columns=percentiles)
-    SI.index = param_names
-
-    # Delta Method analysis
+    SI = pd.DataFrame(np.zeros((11, len(percentiles))), columns = percentiles)
+    p_values = pd.DataFrame(np.zeros((11, len(percentiles))), columns = percentiles)
+    # ANOVA
+    dta = pd.DataFrame(data=SOWsample, columns=param_names)
     for i in range(len(percentiles)):
-        if syn_magnitude[i, :].any():
-            try:
-                output = np.mean(syn_magnitude[i, :].reshape(-1, 10), axis=1)
-                output = output[rows_to_keep]
-                result = delta.analyze(problem, LHsamples, output, print_to_console=False, num_resamples=10)
-                DELTA[percentiles[i]] = result['delta']
-                DELTA_conf[percentiles[i]] = result['delta_conf']
-                S1[percentiles[i]] = result['S1']
-                S1_conf[percentiles[i]] = result['S1_conf']
-            except:
-                pass
-
-    S1.to_csv('../' + design + '/Magnitude_Sensitivity_analysis/' + ID + '_S1.csv')
-    S1_conf.to_csv('../' + design + '/Magnitude_Sensitivity_analysis/' + ID + '_S1_conf.csv')
-    DELTA.to_csv('../' + design + '/Magnitude_Sensitivity_analysis/' + ID + '_DELTA.csv')
-    DELTA_conf.to_csv('../' + design + '/Magnitude_Sensitivity_analysis/' + ID + '_DELTA_conf.csv')
-
-    # OLS regression analysis
-    dta = pd.DataFrame(data=LHsamples, columns=param_names)
-    for i in range(len(percentiles)):
-        output = np.mean(syn_magnitude[i, :].reshape(-1, 10), axis=1)
-        dta['Shortage'] = output[rows_to_keep]
-        for m in range(params_no):
-            predictors = dta.columns.tolist()[m:(m + 1)]
-            result = fitOLS(dta, predictors)
-            R2_scores.at[param_names[m], percentiles[i]] = result.rsquared
-    R2_scores.to_csv('../' + design + '/Magnitude_Sensitivity_analysis/' + ID + '_R2.csv')
-
+        dta['Shortage'] = syn_magnitude[i, :]
+        shortage_lm = ols(formula, data=dta).fit()
+        table = anova_lm(shortage_lm)
+        ss_values = table['sum_sq'].values
+        SI[percentiles[i]] = ss_values/np.sum(ss_values)
+        p_values[percentiles[i]] = table['PR(>F)'].values
+    SI.index = p_values.index = table.index
+    SI.to_csv('../' + design + '/Magnitude_Sensitivity_analysis/' + ID + '_SI.csv')
+    p_values.to_csv('../' + design + '/Magnitude_Sensitivity_analysis/' + ID + '_p_values.csv')
 
 # =============================================================================
 # Start parallelization (running each structure in parallel)
@@ -117,7 +90,7 @@ comm = MPI.COMM_WORLD
 rank = comm.rank
 nprocs = comm.size
 
-# Determine the chunk which each processor will neeed to do
+# Determine the chunk which each processor will need to do
 count = int(math.floor(nStructures / nprocs))
 remainder = nStructures % nprocs
 
@@ -131,5 +104,5 @@ else:
 
 # Run simulation
 for k in range(start, stop):
-    model_output = collect_experiment_data(all_IDs[k])
-    ANOVA_sensitivity_analysis(model_output)
+    syn_magnitude = collect_experiment_data(all_IDs[k])
+    ANOVA_sensitivity_analysis(all_IDs[k], syn_magnitude)
