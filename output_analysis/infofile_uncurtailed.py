@@ -116,4 +116,5 @@ for k in range(start, stop):
     files = [x[-13:-4] for x in listoffiles]
     for scenario in missing_infofiles:
         path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
+        print(path)
         getinfo(ID, scenario, path)
