@@ -5,7 +5,7 @@
 #SBATCH --nodes=10
 #SBATCH --ntasks-per-node=16
 #SBATCH --export=ALL
-#SBATCH -t 20:00:00            # set max wallclock time
+#SBATCH -t 10:00:00            # set max wallclock time
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
