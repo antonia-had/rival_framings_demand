@@ -14,6 +14,7 @@ plt.ioff()
 
 design = 'CMIP_curtailment'
 directories = glob.glob('../' + design + '/CMIP*_*')
+directories = [x[-9:] for x in directories]
 
 SOWsample = pyDOE2.fullfact([3, 3, 3, len(directories)]).astype(int)
 samples = len(SOWsample[:, 0])
@@ -45,7 +46,7 @@ def collect_experiment_data(ID):
     if os.path.exists(summary_file_path):
         SYN_short = np.loadtxt(summary_file_path)
     else:
-        SYN_short = np.zeros([len(no_months), samples])
+        SYN_short = np.zeros([no_months, samples])
         for j in range(int(samples/realizations)):
             infofile_path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + directories[j] + '.txt'
             data = np.loadtxt(infofile_path)

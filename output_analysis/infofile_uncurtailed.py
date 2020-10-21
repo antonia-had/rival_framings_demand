@@ -32,9 +32,9 @@ if rank == 0:
             os.makedirs('../' + design + '/Infofiles/' + ID)
 
 comm.Barrier()
-# with open("../debugged_runs.txt") as f:
-#     missing_infofiles = f.read().splitlines()
-# f.close()
+with open("../debugged_runs.txt") as f:
+    missing_infofiles = f.read().splitlines()
+f.close()
 
 
 # =============================================================================
@@ -114,18 +114,6 @@ for k in range(start, stop):
     ID = IDs[k]
     listoffiles = os.listdir('../' + design + '/Infofiles/' + ID)
     files = [x[-13:-4] for x in listoffiles]
-    for scenario in directories:
+    for scenario in missing_infofiles:
         path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
-        # If infofile for scenario was never created
-        if scenario not in files:
-            print(scenario+'_'+ID)
-            getinfo(ID, scenario, path)
-        # else:
-        #     # If infofile was created but it was in the bugged out SOWs
-        #     if scenario in missing_infofiles:
-        #         # Check creation time and size
-        #         [mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime] = os.stat(path)
-        #         # If it was created before Oct 20 or never written into
-        #         if mtime < 1603188171 or size < 10:
-        #             print(scenario+'_'+ID)
-        #             getinfo(ID, scenario, path)
+        getinfo(ID, scenario, path)
