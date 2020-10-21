@@ -42,7 +42,7 @@ f.close()
 # =============================================================================
 def getinfo(ID, scenario, path):
     # Check if infofile doesn't already exist or if size is 0 (remove if wanting to overwrite old files)
-    if not (os.path.exists(path) and os.path.getsize(path) > 0):
+    if path: #not (os.path.exists(path) and os.path.getsize(path) > 0):
         lines = []
         if design == 'CMIP_curtailment':
             with open(path, 'w') as f:
@@ -116,5 +116,4 @@ for k in range(start, stop):
     files = [x[-13:-4] for x in listoffiles]
     for scenario in missing_infofiles:
         path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
-        print(path)
         getinfo(ID, scenario, path)
