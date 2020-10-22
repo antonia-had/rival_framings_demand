@@ -45,7 +45,7 @@ def collect_experiment_data(ID):
             try:
                 SYN_short[:, j * realizations:j * realizations + realizations] = data[:, idx]
             except IndexError:
-                print('IndexError ' + ID + '_info_' + str(j))
+                print('IndexError ' + ID + '_info_' + directories[j])
         np.savetxt(summary_file_path, SYN_short)
     # Reshape into water years
     # Create matrix of [no. years x no. months x no. experiments]
