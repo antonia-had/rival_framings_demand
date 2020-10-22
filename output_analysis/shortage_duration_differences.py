@@ -23,6 +23,7 @@ nStructures = len(all_IDs)
 
 percentiles = np.arange(0, 100)
 
+mycwd = os.getcwd()
 os.chdir('../' + designs[0])
 directories = glob.glob('CMIP*_*')
 os.chdir('../output_analysis')
