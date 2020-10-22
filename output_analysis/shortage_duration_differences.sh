@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name="shortage_curves"
-#SBATCH --output="shortage_curves.out"
+#SBATCH --output="shortage_diff_curves.out"
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=6
 #SBATCH --export=ALL
@@ -10,4 +10,4 @@
 
 module load python/3.6.9
 source /home/fs02/pmr82_0001/ah986/envs/rival_framings/bin/activate
-mpirun python3 shortage_duration_differences.py CMIP_scenarios CMIP_curtailment
+mpirun python3 shortage_duration_differences.py ../Colorado_global_uncurtailed CMIP_scenarios

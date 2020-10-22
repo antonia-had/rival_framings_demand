@@ -92,7 +92,7 @@ def plotSDC(syntheticdata, histData,  structure_name):
 
     P = np.arange(1., len(histData)/12 + 1) * 100 / (len(histData)/12)
 
-    ylimit = max(np.max(F_syn[0]) , np.max(F_syn[1]))
+    ylimit = max(np.max(F_syn[0]) , np.max(F_syn[1]), np.max(F_hist))
     fig, (ax1) = plt.subplots(1, 1, figsize=(14.5, 8))
     # ax1
     handles = []
@@ -145,14 +145,20 @@ else:
 
 for i in range(start, stop):
     histData = historical.loc[all_IDs[i]].values[-768:] * 1233.4818 / 1000000
-    synthetic = [np.zeros([len(histData), scenarios * sows[0]]),
-                 np.zeros([len(histData), scenarios * sows[1]])]
+    synthetic = [0] * 2
+    summary_file_paths = ['../' + designs[0] + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_all.txt',
+                          '../' + designs[1] + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_all.txt']
     for s in range(len(sows)):
-        idx = np.arange(2, sows[s] * 2 + 2, 2)
-        for j in range(scenarios):
-            path = '../' + designs[s] + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_' + directories[j] + '.txt'
-            data = np.loadtxt(path)
-            synthetic[s][:, j * sows[s]:j * sows[s] + sows[s]] = data[:, idx] * 1233.4818 / 1000000
-        plotSDC(synthetic, histData, all_IDs[i])
+        if os.path.exists(summary_file_paths[s]):
+            SYN_short = np.loadtxt(summary_file_paths[s])
+        else:
+            SYN_short = np.zeros([len(histData), scenarios * sows[s]])
+            idx = np.arange(2, sows[s] * 2 + 2, 2)
+            for j in range(scenarios):
+                path = '../' + designs[s] + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_' + directories[j] + '.txt'
+                data = np.loadtxt(path)
+            SYN_short[:, j * sows[s]:j * sows[s] + sows[s]] = data[:, idx] * 1233.4818 / 1000000
+        synthetic[s] = SYN_short
+    plotSDC(synthetic, histData, all_IDs[i])
 
 
