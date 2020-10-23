@@ -8,8 +8,6 @@ import pandas as pd
 import math
 from mpi4py import MPI
 import sys
-import itertools
-import glob
 import os
 
 plt.ioff()
@@ -19,6 +17,8 @@ scenarios = [int(sys.argv[3]), int(sys.argv[5])]
 realizations = [int(sys.argv[4]), int(sys.argv[6])]
 
 figures_path = '../' + designs[0] + '_' + designs[1] + '_diff'
+if not os.path.exists(figures_path):
+    os.mkdir(figures_path)
 
 all_IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
 nStructures = len(all_IDs)
