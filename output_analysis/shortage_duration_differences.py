@@ -15,6 +15,8 @@ import os
 plt.ioff()
 
 designs = [str(sys.argv[1]), str(sys.argv[2])]
+scenarios = [str(sys.argv[3]), str(sys.argv[5])]
+realizations = [str(sys.argv[4]), str(sys.argv[6])]
 
 figures_path = '../' + designs[0] + '_' + designs[1] + '_diff'
 
@@ -23,36 +25,7 @@ nStructures = len(all_IDs)
 
 percentiles = np.arange(0, 100)
 
-mycwd = os.getcwd()
-os.chdir('../' + designs[0])
-directories = glob.glob('CMIP*_*')
-os.chdir('../output_analysis')
-scenarios = len(directories)
-
-sows = [0, 0]
-
-for i in range(len(sows)):
-    if designs[i] == 'CMIP_curtailment':
-        sows[i] = 27
-
-    else:
-        sows[i] = 1
-
 historical = pd.read_csv('../structures_files/shortages.csv', index_col=0)
-
-def alpha(i, base=0.2):
-    l = lambda x: x + base - x * base
-    ar = [l(0)]
-    for j in range(i):
-        ar.append(l(ar[-1]))
-    return ar[-1]
-
-def shortage_duration(sequence, threshold):
-    cnt_shrt = [sequence[i] > threshold for i in
-                range(len(sequence))]  # Returns a list of True values when there's a shortage
-    shrt_dur = [sum(1 for _ in group) for key, group in itertools.groupby(cnt_shrt) if
-                key]  # Counts groups of True values
-    return shrt_dur
 
 def plotSDC(syntheticdata, histData,  structure_name):
     n = 12
@@ -65,21 +38,21 @@ def plotSDC(syntheticdata, histData,  structure_name):
 
     # Reshape synthetic data - repeat for each framing
     # Create matrix of [no. years x no. months x no. samples]
-    synthetic_global = [np.zeros([int(len(histData) / n), n, scenarios * sows[0]]),
-                        np.zeros([int(len(histData) / n), n, scenarios * sows[1]])]
-    synthetic_global_totals = [0]*len(sows)
-    F_syn = [np.empty([int(len(histData) / n), scenarios * sows[0]]),
-             np.empty([int(len(histData) / n), scenarios * sows[1]])]
+    synthetic_global = [np.zeros([int(len(histData) / n), n, scenarios[0] * realizations[0]]),
+                        np.zeros([int(len(histData) / n), n, scenarios[1] * realizations[1]])]
+    synthetic_global_totals = [0]*len(realizations)
+    F_syn = [np.empty([int(len(histData) / n), scenarios[0] * realizations[0]]),
+             np.empty([int(len(histData) / n), scenarios[1] * realizations[1]])]
 
     # Calculate synthetic shortage duration curves
     for s in range(len(syntheticdata)):
         F_syn[s][:] = np.NaN
         # Loop through every SOW and reshape to [no. years x no. months]
-        for j in range(scenarios * sows[s]):
+        for j in range(scenarios[s] * realizations[s]):
             synthetic_global[s][:, :, j] = np.reshape(syntheticdata[s][:, j], (int(np.size(syntheticdata[s][:, j]) / n), n))
         # Reshape to annual totals
         synthetic_global_totals[s] = np.sum(synthetic_global[s], 1)
-        for j in range(scenarios * sows[s]):
+        for j in range(scenarios[s] * realizations[s]):
             F_syn[s][:, j] = np.sort(synthetic_global_totals[s][:, j])
 
     p = np.arange(100, -10, -50)
@@ -149,16 +122,8 @@ for i in range(start, stop):
     synthetic = [0] * 2
     summary_file_paths = ['../' + designs[0] + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_all.txt',
                           '../' + designs[1] + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_all.txt']
-    for s in range(len(sows)):
-        if os.path.exists(summary_file_paths[s]):
-            SYN_short = np.loadtxt(summary_file_paths[s])
-        else:
-            SYN_short = np.zeros([len(histData), scenarios * sows[s]])
-            idx = np.arange(2, sows[s] * 2 + 2, 2)
-            for j in range(scenarios):
-                path = '../' + designs[s] + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_info_' + directories[j] + '.txt'
-                data = np.loadtxt(path)
-            SYN_short[:, j * sows[s]:j * sows[s] + sows[s]] = data[:, idx] * 1233.4818 / 1000000
+    for s in range(len(realizations)):
+        SYN_short = np.loadtxt(summary_file_paths[s])
         synthetic[s] = SYN_short
     plotSDC(synthetic, histData, all_IDs[i])
 
