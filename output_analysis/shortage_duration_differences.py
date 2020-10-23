@@ -15,8 +15,8 @@ import os
 plt.ioff()
 
 designs = [str(sys.argv[1]), str(sys.argv[2])]
-scenarios = [sys.argv[3], sys.argv[5]]
-realizations = [sys.argv[4], sys.argv[6]]
+scenarios = [int(sys.argv[3]), int(sys.argv[5])]
+realizations = [int(sys.argv[4]), int(sys.argv[6])]
 
 figures_path = '../' + designs[0] + '_' + designs[1] + '_diff'
 
