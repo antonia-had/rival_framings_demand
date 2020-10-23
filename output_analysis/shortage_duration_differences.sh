@@ -10,4 +10,4 @@
 
 module load python/3.6.9
 source /home/fs02/pmr82_0001/ah986/envs/rival_framings/bin/activate
-mpirun python3 shortage_duration_differences.py ../Colorado_global_uncurtailed CMIP_curtailment 1000 10 209 27
+mpirun python3 shortage_duration_differences.py ../LHsamples_original_1000 CMIP_curtailment 1000 10 209 27
