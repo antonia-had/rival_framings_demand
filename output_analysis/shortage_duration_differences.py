@@ -123,10 +123,8 @@ for i in range(start, stop):
                           '../' + alternative_design + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_all.txt']
     SYN_short = np.load(summary_file_paths[0])
     synthetic[0] = SYN_short[-768:, 1:, :].reshape(768,20000)
-    print(np.shape(synthetic[0]))
     SYN_short = np.loadtxt(summary_file_paths[1])
     synthetic[1] = SYN_short[-768:]
-    print(np.shape(synthetic[1]))
-    #plotSDC(synthetic, histData, all_IDs[i])
+    plotSDC(synthetic, histData, all_IDs[i])
 
 
