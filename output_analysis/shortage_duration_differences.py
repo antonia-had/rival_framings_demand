@@ -18,8 +18,6 @@ scenarios = [1000, 209]
 realizations = [20, 27]
 
 figures_path = '../' + original_design + '_' + alternative_design + '_diff'
-if not os.path.exists(figures_path):
-    os.mkdir(figures_path)
 
 all_IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
 nStructures = len(all_IDs)
