@@ -3,12 +3,12 @@ import os
 import glob
 import numpy as np
 
-design = 'CMIP_scenarios'#'../LHsamples_original_1000'
+design = 'CMIP_scenarios'
 directories = glob.glob('../' + design + '/CMIP*_*')
 directories = [x[-9:] for x in directories]
-scenarios = 209#1000
-realizations = 27#10
-no_months = 105*12
+scenarios = 209
+realizations = 1
+no_months = 64*12
 idx = np.arange(2, realizations*2+2, 2)
 all_IDs = ['3600687', '7000550', '7200799', '7200645', '3704614', '7202003']#np.genfromtxt('../structures_files/metrics_structures.txt', dtype='str').tolist()
 
