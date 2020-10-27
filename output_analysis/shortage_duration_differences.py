@@ -13,9 +13,9 @@ import os
 plt.ioff()
 
 original_design = 'LHsamples_wider_1000_AnnQonly'
-alternative_design = 'CMIP_curtailment'
+alternative_design = 'CMIP_scenarios'
 scenarios = [1000, 209]
-realizations = [20, 27]
+realizations = [20, 1]
 
 figures_path = '../' + original_design + '_' + alternative_design + '_diff'
 
