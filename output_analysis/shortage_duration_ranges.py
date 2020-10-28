@@ -61,12 +61,6 @@ def plotSDC(syntheticdata, histData,  structure_name):
 
     p = np.arange(100, -10, -50)
 
-    # For each percentile of magnitude, calculate the percentile among the experiments ran
-    perc_scores = [np.zeros_like(F_syn[0]), np.zeros_like(F_syn[1])]
-    for s in range(len(syntheticdata)):
-        for m in range(int(len(histData) / n)):
-            perc_scores[s][m, :] = [stats.percentileofscore(F_syn[s][m, :], j, 'rank') for j in F_syn[s][m, :]]
-
     P = np.arange(1., len(histData)/12 + 1) * 100 / (len(histData)/12)
 
     ylimit = max(np.max(F_syn[0]), np.max(F_syn[1]), np.max(F_syn[2]), np.max(F_hist))
