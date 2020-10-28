@@ -75,12 +75,12 @@ def plotSDC(syntheticdata, histData,  structure_name):
     handles = []
     labels = [original_design, alternative_design_1, alternative_design_2]
     for s in range(len(syntheticdata)):
-        range=ax1.fill_between(P, y1=np.percentile(F_syn[s][:, :], 0, axis=1),
+        area = ax1.fill_between(P, y1=np.percentile(F_syn[s][:, :], 0, axis=1),
                          y2=np.percentile(F_syn[s][:, :], 100, axis=1),
                          color=colors[s], alpha=0.8)
         ax1.plot(P, np.percentile(F_syn[s][:, :], 0, axis=1), linewidth=1, color=colors[s])
         ax1.plot(P, np.percentile(F_syn[s][:, :], 100, axis=1), linewidth=1, color=colors[s])
-        handles.append(range)
+        handles.append(area)
     ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
     ax1.set_ylim(0, ylimit)
     ax1.set_xlim(0, 100)
@@ -122,7 +122,7 @@ for i in range(start, stop):
                           '../' + alternative_design_2 + '/Infofiles/' + all_IDs[i] + '/' + all_IDs[i] + '_all.txt']
     SYN_short = np.load(summary_file_paths[0])
     synthetic[0] = SYN_short[-768:, 1:, :].reshape(768,20000) * 1233.4818 / 1000000
-    for j in range(1,3):
+    for j in range(1, 3):
         SYN_short = np.loadtxt(summary_file_paths[j])
         synthetic[j] = SYN_short[-768:] * 1233.4818 / 1000000
     plotSDC(synthetic, histData, all_IDs[i])
