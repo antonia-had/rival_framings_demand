@@ -40,9 +40,9 @@ def plotSDC(syntheticdata, histData,  structure_name):
 
     # Reshape synthetic data - repeat for each framing
     # Create matrix of [no. years x no. months x no. samples]
-    synthetic_global = [np.zeros([int(len(histData) / n), n, scenarios[0] * realizations[0]]),
-                        np.zeros([int(len(histData) / n), n, scenarios[1] * realizations[1]]),
-                        np.zeros([int(len(histData) / n), n, scenarios[2] * realizations[2]])]
+    synthetic_global = [np.zeros([int(len(syntheticdata[0]) / n), n, scenarios[0] * realizations[0]]),
+                        np.zeros([int(len(syntheticdata[1]) / n), n, scenarios[1] * realizations[1]]),
+                        np.zeros([int(len(syntheticdata[2]) / n), n, scenarios[2] * realizations[2]])]
     synthetic_global_totals = [0]*len(realizations)
     F_syn = [np.empty([int(len(histData) / n), scenarios[0] * realizations[0]]),
              np.empty([int(len(histData) / n), scenarios[1] * realizations[1]]),
@@ -125,8 +125,6 @@ for i in range(start, stop):
     for j in range(1, 3):
         SYN_short = np.loadtxt(summary_file_paths[j])
         synthetic[j] = SYN_short[-768:] * 1233.4818 / 1000000
-    for j in range(len(synthetic)):
-        print(np.shape(synthetic[j]))
-    #plotSDC(synthetic, histData, all_IDs[i])
+    plotSDC(synthetic, histData, all_IDs[i])
 
 
