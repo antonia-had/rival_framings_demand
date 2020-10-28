@@ -72,10 +72,11 @@ def plotSDC(syntheticdata, histData,  structure_name):
         area = ax1.fill_between(P, y1=np.percentile(F_syn[s][:, :], 0, axis=1),
                          y2=np.percentile(F_syn[s][:, :], 100, axis=1),
                          color=colors[s], alpha=0.8)
-        ax1.plot(P, np.percentile(F_syn[s][:, :], 0, axis=1), linewidth=1, color=colors[s])
-        ax1.plot(P, np.percentile(F_syn[s][:, :], 100, axis=1), linewidth=1, color=colors[s])
+        ax1.plot(P, np.percentile(F_syn[s][:, :], 0, axis=1), linewidth=2, color=colors[s])
+        ax1.plot(P, np.percentile(F_syn[s][:, :], 100, axis=1), linewidth=2, color=colors[s])
+        ax1.plot(P, np.percentile(F_syn[s][:, :], 50, axis=1), linewidth=2, color=colors[s])
         handles.append(area)
-    ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
+    ax1.plot(P, F_hist, c='black', linewidth=4, label='Historical record')
     ax1.set_ylim(0, ylimit)
     ax1.set_xlim(0, 100)
     ax1.legend(handles=handles, labels=labels, framealpha=1, fontsize=12, loc='upper left',
