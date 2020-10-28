@@ -125,6 +125,8 @@ for i in range(start, stop):
     for j in range(1, 3):
         SYN_short = np.loadtxt(summary_file_paths[j])
         synthetic[j] = SYN_short[-768:] * 1233.4818 / 1000000
-    plotSDC(synthetic, histData, all_IDs[i])
+    for j in range(len(synthetic)):
+        print(np.shape(synthetic[j]))
+    #plotSDC(synthetic, histData, all_IDs[i])
 
 
