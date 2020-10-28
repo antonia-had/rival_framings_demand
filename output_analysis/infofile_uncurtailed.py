@@ -33,9 +33,6 @@ if rank == 0:
             os.makedirs('../' + design + '/Infofiles/' + ID)
 
 comm.Barrier()
-with open("../debugged_runs.txt") as f:
-    missing_infofiles = f.read().splitlines()
-f.close()
 
 # Determine the chunk which each processor will need to do
 count = int(math.floor(len(IDs) / nprocs))
@@ -53,6 +50,6 @@ for k in range(start, stop):
     ID = IDs[k]
     listoffiles = os.listdir('../' + design + '/Infofiles/' + ID)
     files = [x[-13:-4] for x in listoffiles]
-    for scenario in missing_infofiles:
+    for scenario in directories:
         path = '../' + design + '/Infofiles/' + ID + '/' + ID + '_info_' + scenario + '.txt'
         getinfo(ID, scenario, path, design, sow)
