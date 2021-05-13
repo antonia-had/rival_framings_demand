@@ -7,6 +7,7 @@ from string import Template
 import math
 import matplotlib.pyplot as plt
 import glob
+from realization_flows import realization_monthly_flow
 
 hist_flows = pd.read_csv('./hist_files/AnnualQ.csv',delimiter=',', header=0, index_col=0)
 basin_hist_flows = hist_flows['Site208'].values
@@ -18,11 +19,17 @@ groupbyadmin = rights.groupby('WDID')
 rights_per_wdid = groupbyadmin.apply(lambda x: x['Admin'].values)
 decrees_per_wdid = groupbyadmin.apply(lambda x: x['Decree'].values)
 
-shortage_percentile = list(np.arange(75, 105, 5))
-no_rights = list(np.arange(5, 105, 5))
-curtailment_levels = list(np.arange(5, 105, 5))
+shortage_percentile = list(np.arange(80, 110, 10))
+no_rights = list(np.arange(30, 120, 30))
+curtailment_levels = list(np.arange(30, 120, 30))
 
-sample = pyDOE2.fullfact([6, 20, 20]).astype(int)
+sample = pyDOE2.fullfact([3, 3, 3]).astype(int)
+
+# shortage_percentile = list(np.arange(75, 105, 5))
+# no_rights = list(np.arange(5, 105, 5))
+# curtailment_levels = list(np.arange(5, 105, 5))
+#
+# sample = pyDOE2.fullfact([6, 20, 20]).astype(int)
 
 numSites = 379
 
@@ -59,7 +66,8 @@ for i in range(len(rights_to_curtail)):
             curtailment_levels[j] = 0
     curtailment_per_threshold.append(curtailment_levels)
 
-sows = np.arange(1, 101, 1)
+# sows = np.arange(1, 101, 1)
+sows = np.arange(1, 11, 1)
 realizations = np.arange(1,11,1)
 all_scenarios = ['S'+str(i)+'_'+str(j) for i in sows for j in realizations]
 
@@ -87,59 +95,59 @@ else:
     stop = start + count
 
 for scenario in all_scenarios[start:stop]:
-    monthly_flows = np.loadtxt('./CMIP_scenarios/' + scenario + '/MonthlyFlows.csv', delimiter=',')
-    annual_flows_scenario = np.sum(monthly_flows, axis=1)
-
-    '''Get data from original scenario IWR'''
-    firstline_iwr = int(
-        search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', '#>EndHeader')[0]) + 4
-
-    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
-        CMIP_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
-    f.close()
-
-    # get unsplit data to rewrite firstLine # of rows
-    # get split data on periods
-    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
-        all_data = [x for x in f.readlines()]
-    f.close()
-
-    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
-        all_split_data = [x.split('.') for x in f.readlines()]
-    f.close()
-
-    '''Get data from original scenario DDM'''
-    firstline_ddm = int(
-        search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
-                              '#>EndHeader')[0]) + 4
-
-    with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
-        all_data_DDM = [x for x in f.readlines()]
-    f.close()
-
-    # Apply each sample to every CMIP scenario
-    for i in range(len(sample[:, 0])):
-        # Check if output run successfully first
-        outputsize = os.path.getsize('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.xdd')
-        if outputsize<300*1000000:
-            print('generating '+ scenario + '/cm2015/StateMod/cm2015B_S' + str(i))
-            trigger_flow = trigger_flows[sample[i, 0]]
-            users = users_per_threshold[sample[i, 1]]
-            curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
-            general_curtailment = curtailment_levels[sample[i, 2]]
-
-            low_flows = annual_flows_scenario <= trigger_flow
-            curtailment_years = list(np.arange(1950, 2014)[low_flows])
-
-            # writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
-            #             curtailment_per_user, general_curtailment, curtailment_years)
-
-            writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
-                        curtailment_years)
-
-            # d = {'IWR': 'cm2015B_S' + str(i) + '.iwr',
-            #      'DDM': 'cm2015B_S' + str(i) + '.ddm'}
-            # S1 = template_RSP.safe_substitute(d)
-            # f1 = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.rsp', 'w')
-            # f1.write(S1)
-            # f1.close()
+    monthly_flows = realization_monthly_flow(scenario)
+    # annual_flows_scenario = np.sum(monthly_flows, axis=1)
+    #
+    # '''Get data from original scenario IWR'''
+    # firstline_iwr = int(
+    #     search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', '#>EndHeader')[0]) + 4
+    #
+    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
+    #     CMIP_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
+    # f.close()
+    #
+    # # get unsplit data to rewrite firstLine # of rows
+    # # get split data on periods
+    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
+    #     all_data = [x for x in f.readlines()]
+    # f.close()
+    #
+    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
+    #     all_split_data = [x.split('.') for x in f.readlines()]
+    # f.close()
+    #
+    # '''Get data from original scenario DDM'''
+    # firstline_ddm = int(
+    #     search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
+    #                           '#>EndHeader')[0]) + 4
+    #
+    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
+    #     all_data_DDM = [x for x in f.readlines()]
+    # f.close()
+    #
+    # # Apply each sample to every CMIP scenario
+    # for i in range(len(sample[:, 0])):
+    #     # Check if output run successfully first
+    #     outputsize = os.path.getsize('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.xdd')
+    #     if outputsize<300*1000000:
+    #         print('generating '+ scenario + '/cm2015/StateMod/cm2015B_S' + str(i))
+    #         trigger_flow = trigger_flows[sample[i, 0]]
+    #         users = users_per_threshold[sample[i, 1]]
+    #         curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
+    #         general_curtailment = curtailment_levels[sample[i, 2]]
+    #
+    #         low_flows = annual_flows_scenario <= trigger_flow
+    #         curtailment_years = list(np.arange(1950, 2014)[low_flows])
+    #
+    #         # writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
+    #         #             curtailment_per_user, general_curtailment, curtailment_years)
+    #
+    #         writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
+    #                     curtailment_years)
+    #
+    #         # d = {'IWR': 'cm2015B_S' + str(i) + '.iwr',
+    #         #      'DDM': 'cm2015B_S' + str(i) + '.ddm'}
+    #         # S1 = template_RSP.safe_substitute(d)
+    #         # f1 = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.rsp', 'w')
+    #         # f1.write(S1)
+    #         # f1.close()

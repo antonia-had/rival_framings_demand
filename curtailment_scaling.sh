@@ -1,13 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name="curtailment_scaling"
-#SBATCH --output="curtailment_scaling.out"
-#SBATCH --hint=nomultithread
-#SBATCH --nodes=2
-#SBATCH --ntasks-per-node=16
-#SBATCH --export=ALL
-#SBATCH -t 4:00:00            # set max wallclock time
+#SBATCH -N 1
+#SBATCH -p RM
+#SBATCH -t 1:00:00
+#SBATCH --ntasks-per-node=10
 
-module load python/3.6.9
-source /home/fs02/pmr82_0001/ah986/envs/rival_framings/bin/activate
+module load python/3.8.6
 mpirun python3 curtailment_scaling.py
 
