@@ -5,6 +5,6 @@
 #SBATCH --ntasks-per-node=10
 
 module load python/3.8.6
-source activate /ocean/projects/ees200007p/ah986/.conda/envs/adaptive_demands
+source /ocean/projects/ees200007p/ah986/.conda/envs/adaptive_demands/bin/activate
 mpirun python3 curtailment_scaling.py
 
