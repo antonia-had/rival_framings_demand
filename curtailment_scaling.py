@@ -3,7 +3,7 @@ import pyDOE2
 import pandas as pd
 from utils import *
 from string import Template
-#from mpi4py import MPI
+from mpi4py import MPI
 import math
 #import matplotlib.pyplot as plt
 #import glob
