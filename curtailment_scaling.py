@@ -5,8 +5,8 @@ from utils import *
 from string import Template
 #from mpi4py import MPI
 import math
-import matplotlib.pyplot as plt
-import glob
+#import matplotlib.pyplot as plt
+#import glob
 from realization_flows import realization_monthly_flow
 
 hist_flows = pd.read_csv('./hist_files/AnnualQ.csv',delimiter=',', header=0, index_col=0)
