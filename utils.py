@@ -16,6 +16,7 @@ def search_string_in_file(file_name, string_to_search):
                 # If yes, then add the line number & line as a tuple in the list
                 list_of_results.append(line_number)
     # Return list of tuples containing line numbers and lines where string is found
+    read_obj.close()
     return list_of_results
 
 def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
@@ -44,7 +45,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
         # append row of adjusted data
         new_data.append(row_data)
 
-    f = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(sow) + '.iwr', 'w')
+    f = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.iwr', 'w')
     # write firstLine # of rows as in initial file
     for i in range(firstline_iwr):
         f.write(all_data[i])
@@ -62,7 +63,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
 
 def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
                 firstline_iwr, sow, users, curtailment_years):
-    with open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(sow) + '.iwr') as f:
+    with open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.iwr') as f:
         sample_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
     f.close()
 
@@ -88,7 +89,7 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
         # append row of adjusted data
         new_data.append(row_data)
         # write new data to file
-    f = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(sow) + '.ddm', 'w')
+    f = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.ddm', 'w')
     # write firstLine # of rows as in initial file
     for i in range(firstline_ddm):
         f.write(all_data_DDM[i])

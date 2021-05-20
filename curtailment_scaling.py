@@ -96,58 +96,45 @@ else:
 
 for scenario in all_scenarios[start:stop]:
     monthly_flows = realization_monthly_flow(scenario)
-    # annual_flows_scenario = np.sum(monthly_flows, axis=1)
-    #
-    # '''Get data from original scenario IWR'''
-    # firstline_iwr = int(
-    #     search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', '#>EndHeader')[0]) + 4
-    #
-    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
-    #     CMIP_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
-    # f.close()
-    #
-    # # get unsplit data to rewrite firstLine # of rows
-    # # get split data on periods
-    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
-    #     all_data = [x for x in f.readlines()]
-    # f.close()
-    #
-    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.iwr', 'r') as f:
-    #     all_split_data = [x.split('.') for x in f.readlines()]
-    # f.close()
-    #
-    # '''Get data from original scenario DDM'''
-    # firstline_ddm = int(
-    #     search_string_in_file('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm',
-    #                           '#>EndHeader')[0]) + 4
-    #
-    # with open('./CMIP_scenarios/' + scenario + '/cm2015/StateMod/cm2015B.ddm', 'r') as f:
-    #     all_data_DDM = [x for x in f.readlines()]
-    # f.close()
-    #
-    # # Apply each sample to every CMIP scenario
-    # for i in range(len(sample[:, 0])):
-    #     # Check if output run successfully first
-    #     outputsize = os.path.getsize('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.xdd')
-    #     if outputsize<300*1000000:
-    #         print('generating '+ scenario + '/cm2015/StateMod/cm2015B_S' + str(i))
-    #         trigger_flow = trigger_flows[sample[i, 0]]
-    #         users = users_per_threshold[sample[i, 1]]
-    #         curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
-    #         general_curtailment = curtailment_levels[sample[i, 2]]
-    #
-    #         low_flows = annual_flows_scenario <= trigger_flow
-    #         curtailment_years = list(np.arange(1950, 2014)[low_flows])
-    #
-    #         # writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
-    #         #             curtailment_per_user, general_curtailment, curtailment_years)
-    #
-    #         writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
-    #                     curtailment_years)
-    #
-    #         # d = {'IWR': 'cm2015B_S' + str(i) + '.iwr',
-    #         #      'DDM': 'cm2015B_S' + str(i) + '.ddm'}
-    #         # S1 = template_RSP.safe_substitute(d)
-    #         # f1 = open('./CMIP_curtailment/' + scenario + '/cm2015/StateMod/cm2015B_S' + str(i) + '.rsp', 'w')
-    #         # f1.write(S1)
-    #         # f1.close()
+    annual_flows_scenario = np.sum(monthly_flows, axis=1)
+    '''Get data from scenario IWR'''
+    firstline_iwr = 463#int(search_string_in_file('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.iwr', '#>EndHeader')[0]) + 4
+    with open('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.iwr', 'r') as f:
+        CMIP_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
+        all_data = [x for x in f.readlines()] # get unsplit data to rewrite firstLine # of rows
+        all_split_data = [x.split('.') for x in f.readlines()] # get split data on periods
+    f.close()
+
+    '''Get data from scenario DDM'''
+    firstline_ddm = 779#int(search_string_in_file('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.ddm','#>EndHeader')[0]) + 4
+
+    with open('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.ddm', 'r') as f:
+        all_data_DDM = [x for x in f.readlines()]
+    f.close()
+
+    # Apply each demand sample to every generator scenario
+    for i in range(len(sample[:, 0])):
+        # Check if realization run successfully first
+        outputsize = os.path.getsize('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.xdd')
+        if outputsize < 300*1000000:
+            print('generating ' + scenario + '_' + str(i))
+            trigger_flow = trigger_flows[sample[i, 0]]
+            users = users_per_threshold[sample[i, 1]]
+            curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
+            general_curtailment = curtailment_levels[sample[i, 2]]
+
+            low_flows = annual_flows_scenario <= trigger_flow
+            curtailment_years = list(np.arange(1909, 2014)[low_flows])
+
+            writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
+                        curtailment_per_user, general_curtailment, curtailment_years)
+
+            writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
+                        curtailment_years)
+
+            d = {'IWR': 'cm2015B_' + scenario + '_' + str(i) + '.iwr',
+                 'DDM': 'cm2015B_' + scenario + '_' + str(i) + '.ddm'}
+            S1 = template_RSP.safe_substitute(d)
+            f1 = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.rsp', 'w')
+            f1.write(S1)
+            f1.close()
