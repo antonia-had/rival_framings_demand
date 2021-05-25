@@ -99,11 +99,15 @@ for scenario in all_scenarios[start:stop]:
     annual_flows_scenario = np.sum(monthly_flows, axis=1)
     '''Get data from scenario IWR'''
     firstline_iwr = 463#int(search_string_in_file('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.iwr', '#>EndHeader')[0]) + 4
+    CMIP_IWR = []
+    all_data = []
+    all_split_data = []
     with open('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.iwr', 'r') as f:
-        CMIP_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
-        all_data = [x for x in f.readlines()] # get unsplit data to rewrite firstLine # of rows
-        all_split_data = [x.split('.') for x in f.readlines()] # get split data on periods
-    f.close()
+        for x in f.readlines():
+            CMIP_IWR.append(x.split())
+            all_data.append(x)
+            all_split_data.append(x.split('.'))
+    CMIP_IWR=CMIP_IWR[firstline_iwr:]
 
     '''Get data from scenario DDM'''
     firstline_ddm = 779#int(search_string_in_file('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.ddm','#>EndHeader')[0]) + 4

@@ -16,7 +16,6 @@ def search_string_in_file(file_name, string_to_search):
                 # If yes, then add the line number & line as a tuple in the list
                 list_of_results.append(line_number)
     # Return list of tuples containing line numbers and lines where string is found
-    read_obj.close()
     return list_of_results
 
 def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
@@ -65,7 +64,6 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
                 firstline_iwr, i, users, curtailment_years):
     with open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.iwr') as f:
         sample_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
-    f.close()
 
     new_data = []
     irrigation_encounters = np.zeros(len(users))
