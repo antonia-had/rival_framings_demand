@@ -116,7 +116,7 @@ for scenario in all_scenarios[start:stop]:
     for i in range(len(sample[:, 0])):
         # Check if realization run successfully first
         outputfilename = './scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.xdd'
-        if not os.path.isfile(outputfilename) and os.path.getsize(outputfilename)< 300*1000000:
+        if not os.path.isfile(outputfilename):
             print('generating ' + scenario + '_' + str(i))
             trigger_flow = trigger_flows[sample[i, 0]]
             users = users_per_threshold[sample[i, 1]]
