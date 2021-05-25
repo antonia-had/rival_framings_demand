@@ -63,7 +63,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
 def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
                 firstline_iwr, i, users, curtailment_years):
     with open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.iwr') as f:
-        sample_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
+        sample_IWR = [row[sum(lengths[:k]):sum(lengths[:k+1])] for row in f.readlines()[firstline_iwr:] for k in range(len(lengths))]
 
     new_data = []
     irrigation_encounters = np.zeros(len(users))
