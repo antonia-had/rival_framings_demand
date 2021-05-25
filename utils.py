@@ -19,7 +19,7 @@ def search_string_in_file(file_name, string_to_search):
     read_obj.close()
     return list_of_results
 
-def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
+def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                 curtailment_per_user, general_curtailment, curtailment_years):
     # replace former iwr demands with new
     new_data = []
@@ -62,7 +62,7 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, sow, users,
     return None
 
 def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
-                firstline_iwr, sow, users, curtailment_years):
+                firstline_iwr, i, users, curtailment_years):
     with open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.iwr') as f:
         sample_IWR = [x.split() for x in f.readlines()[firstline_iwr:]]
     f.close()
