@@ -11,7 +11,7 @@ def realization_monthly_flow(realization):
     all_split_data = [x.split('.') for x in file.readlines()]
     file.close()
     yearcount = 0
-    flows = np.zeros([64, 12])
+    flows = np.zeros([105, 12])
     for i in range(16, len(all_split_data)):
         row_data = []
         row_data.extend(all_split_data[i][0].split())
