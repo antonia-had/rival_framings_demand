@@ -115,8 +115,8 @@ for scenario in all_scenarios[start:stop]:
     # Apply each demand sample to every generator scenario
     for i in range(len(sample[:, 0])):
         # Check if realization run successfully first
-        outputsize = os.path.getsize('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.xdd')
-        if outputsize < 300*1000000:
+        outputfilename = './scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.xdd'
+        if not os.path.isfile(outputfilename) and os.path.getsize(outputfilename)< 300*1000000:
             print('generating ' + scenario + '_' + str(i))
             trigger_flow = trigger_flows[sample[i, 0]]
             users = users_per_threshold[sample[i, 1]]
