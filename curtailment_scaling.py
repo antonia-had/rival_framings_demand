@@ -135,7 +135,8 @@ for scenario in all_scenarios[start:stop]:
             writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,curtailment_years)
 
             d = {'IWR': 'cm2015B_' + scenario + '_' + str(i) + '.iwr',
-                 'DDM': 'cm2015B_' + scenario + '_' + str(i) + '.ddm'}
+                 'DDM': 'cm2015B_' + scenario + '_' + str(i) + '.ddm',
+                 'XBM': 'cm2015B_' + scenario + '.xbm'}
             S1 = template_RSP.safe_substitute(d)
             f1 = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.rsp', 'w')
             f1.write(S1)

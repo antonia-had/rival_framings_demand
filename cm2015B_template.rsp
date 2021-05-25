@@ -25,7 +25,7 @@ IrrigationPractice_Yearly               = cm2015B.ipy
 StreamEstimate_Coefficients             = cm2015.rib                                                                                                                                                                                                                                                
 StreamGage_Historic_Monthly             = cm2015.rih                                                                                                                                                                                                                                       
 StreamGage_Station                      = cm2015.ris    
-Stream_Base_Monthly                     = cm2015x.xbm
+Stream_Base_Monthly                     = $XBM
 # DIVERSION DATA
 Diversion_Station                       = cm2015.dds    
 Diversion_Right                         = cm2015B.ddr
