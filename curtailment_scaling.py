@@ -114,7 +114,6 @@ for scenario in all_scenarios[start:stop]:
 
     with open('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.ddm', 'r') as f:
         all_data_DDM = [x for x in f.readlines()]
-    f.close()
 
     # Apply each demand sample to every generator scenario
     for i in range(len(sample[:, 0])):
@@ -133,8 +132,7 @@ for scenario in all_scenarios[start:stop]:
             writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                         curtailment_per_user, general_curtailment, curtailment_years)
 
-            writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,
-                        curtailment_years)
+            writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, i, users,curtailment_years)
 
             d = {'IWR': 'cm2015B_' + scenario + '_' + str(i) + '.iwr',
                  'DDM': 'cm2015B_' + scenario + '_' + str(i) + '.ddm'}
