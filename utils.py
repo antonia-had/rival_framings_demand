@@ -23,10 +23,10 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
                 curtailment_per_user, general_curtailment, curtailment_years):
     # replace former iwr demands with new
     new_data = []
-    for i in range(len(all_split_data) - firstline_iwr):
+    for j in range(len(all_split_data) - firstline_iwr):
         row_data = []
         # split first 3 columns of row on space and find 1st month's flow
-        row_data.extend(all_split_data[i + firstline_iwr][0].split())
+        row_data.extend(all_split_data[j + firstline_iwr][0].split())
         # check if year is a curtailment year and if user is to be curtailed
         if int(row_data[0]) in curtailment_years and row_data[1] in users:
             index = np.where(users == row_data[1])[0][0]
@@ -35,27 +35,27 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
             value = float(row_data[2]) * remaining_demand
             row_data[2] = f'{value:.2f}'
             # scale other months
-            for j in range(len(all_split_data[i + firstline_iwr]) - 2):
-                value = float(all_split_data[i + firstline_iwr][j + 1]) * remaining_demand
+            for k in range(len(all_split_data[j + firstline_iwr]) - 2):
+                value = float(all_split_data[j + firstline_iwr][k + 1]) * remaining_demand
                 row_data.append(f'{value:.2f}')
         else:
-            for j in range(len(all_split_data[i + firstline_iwr]) - 2):
-                value = float(all_split_data[i + firstline_iwr][j + 1])
+            for k in range(len(all_split_data[j + firstline_iwr]) - 2):
+                value = float(all_split_data[j + firstline_iwr][k + 1])
                 row_data.append(f'{value:.2f}')
         # append row of adjusted data
         new_data.append(row_data)
 
     f = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.iwr', 'w')
     # write firstLine # of rows as in initial file
-    for i in range(firstline_iwr):
-        f.write(all_data[i])
-    for i in range(len(new_data)):
+    for j in range(firstline_iwr):
+        f.write(all_data[j])
+    for k in range(len(new_data)):
         # write year and ID (spaces after the entry)
         for j in range(2):
-            f.write(new_data[i][j] + (lengths[j] - len(new_data[i][j])) * ' ')
+            f.write(new_data[k][j] + (lengths[j] - len(new_data[k][j])) * ' ')
         # write all the rest (spaces before the entry)
-        for j in range(2, len(new_data[i])):
-            f.write((lengths[j] - len(new_data[i][j])) * ' ' + new_data[i][j])
+        for j in range(2, len(new_data[k])):
+            f.write((lengths[j] - len(new_data[k][j])) * ' ' + new_data[k][j])
         # write line break
         f.write('\n')
     f.close()
@@ -70,13 +70,13 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
     new_data = []
     irrigation_encounters = np.zeros(len(users))
 
-    for i in range(len(all_data_DDM) - firstline_ddm):
+    for j in range(len(all_data_DDM) - firstline_ddm):
         # To store the change between historical and sample irrigation demand (12 months + Total)
         change = np.zeros(13)
         # Split first 3 columns of row on space
         # This is because the first month is lumped together with the year and the ID when spliting on periods
-        row = all_data_DDM[i + firstline_ddm]
-        row_data = [row[sum(lengths[:i]):sum(lengths[:i+1])] for i in range(len(lengths))]
+        row = all_data_DDM[j + firstline_ddm]
+        row_data = [row[sum(lengths[:k]):sum(lengths[:k+1])] for k in range(len(lengths))]
         # If the structure is not in the ones we care about then do nothing
         if int(row_data[0]) in curtailment_years and row_data[1].strip() in users:
             index = np.where(users == row_data[1].strip())[0][0]
@@ -91,15 +91,15 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
         # write new data to file
     f = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.ddm', 'w')
     # write firstLine # of rows as in initial file
-    for i in range(firstline_ddm):
-        f.write(all_data_DDM[i])
-    for i in range(len(new_data)):
+    for j in range(firstline_ddm):
+        f.write(all_data_DDM[j])
+    for k in range(len(new_data)):
         # write year and ID (spaces after the entry)
         for j in range(2):
-            f.write(new_data[i][j] + (lengths[j] - len(new_data[i][j])) * ' ')
+            f.write(new_data[k][j] + (lengths[j] - len(new_data[k][j])) * ' ')
         # write all the rest (spaces before the entry)
-        for j in range(2, len(new_data[i])):
-            f.write((lengths[j] - len(new_data[i][j])) * ' ' + new_data[i][j])
+        for j in range(2, len(new_data[k])):
+            f.write((lengths[j] - len(new_data[k][j])) * ' ' + new_data[k][j])
         # write line break
         f.write('\n')
     f.close()
