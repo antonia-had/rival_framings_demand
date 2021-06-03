@@ -1,8 +1,10 @@
 #!/bin/bash
-#SBATCH -N 1
+#SBATCH -N 10
 #SBATCH -p RM
 #SBATCH -t 1:00:00
 #SBATCH --ntasks-per-node=10
+#SBATCH --mail-user=ah986@cornell.edu
+#SBATCH --mail-type=ALL
 
 module load python/3.8.6
 module load anaconda3
