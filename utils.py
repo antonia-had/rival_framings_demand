@@ -32,15 +32,16 @@ def writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
             remaining_demand = 1 - (curtailment_per_user[index] * (100 - general_curtailment) / 100)
             # scale first month
             value = float(row_data[2]) * remaining_demand
-            row_data[2] = f'{value:.2f}'
+            row_data[2] = str(int(value))+'.'
             # scale other months
             for k in range(len(all_split_data[j + firstline_iwr]) - 2):
                 value = float(all_split_data[j + firstline_iwr][k + 1]) * remaining_demand
-                row_data.append(f'{value:.2f}')
+                row_data.append(str(int(value))+'.')
         else:
+            row_data[2] = str(int(row_data[2])) + '.'
             for k in range(len(all_split_data[j + firstline_iwr]) - 2):
                 value = float(all_split_data[j + firstline_iwr][k + 1])
-                row_data.append(f'{value:.2f}')
+                row_data.append(str(int(value))+'.')
         # append row of adjusted data
         new_data.append(row_data)
 
@@ -85,7 +86,7 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
                 value = float(row_data[m + 2]) + change[m]
-                row_data[m + 2] = f'{value:.2f}'
+                row_data[m + 2] = str(int(value))+'.'
         # append row of adjusted data
         new_data.append(row_data)
         # write new data to file
