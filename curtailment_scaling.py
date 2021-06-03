@@ -5,8 +5,6 @@ from utils import *
 from string import Template
 from mpi4py import MPI
 import math
-#import matplotlib.pyplot as plt
-#import glob
 from realization_flows import realization_monthly_flow
 
 hist_flows = pd.read_csv('./hist_files/AnnualQ.csv',delimiter=',', header=0, index_col=0)
@@ -141,3 +139,6 @@ for scenario in all_scenarios[start:stop]:
             f1 = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.rsp', 'w')
             f1.write(S1)
             f1.close()
+            print('running ' + scenario + '_' + str(i))
+            # Run simulation
+            os.system("./scenarios/{}/statemod cm2015B_{}_{} -simulate".format(scenario, scenario, i))
