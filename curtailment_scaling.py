@@ -66,7 +66,7 @@ for i in range(len(rights_to_curtail)):
 
 # sows = np.arange(1, 101, 1)
 sows = np.arange(1, 11, 1)
-realizations = np.arange(1,11,1)
+realizations = np.arange(1,2,1)
 all_scenarios = ['S'+str(i)+'_'+str(j) for i in sows for j in realizations]
 
 '''Read RSP template'''
