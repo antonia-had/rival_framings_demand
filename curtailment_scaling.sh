@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH -N 10
+#SBATCH -N 1
 #SBATCH -p RM
 #SBATCH -t 1:00:00
-#SBATCH --ntasks-per-node=10
+#SBATCH --ntasks-per-node=1
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
