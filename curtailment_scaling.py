@@ -141,7 +141,7 @@ for scenario in all_scenarios[start:stop]:
             f1.close()
             print('running ' + scenario + '_' + str(i))
             # Run simulation
-            os.system("cd ./scenarios/{}".format(scenario))
+            os.chdir("/ocean/projects/ees200007p/ah986/rival_framings_demand/scenarios/{}".format(scenario))
             print(os.getcwd())
             os.system("./statemod cm2015B_{}_{} -simulate".format(scenario, i))
-            os.system("cd ../../")
+            os.chdir("/ocean/projects/ees200007p/ah986/rival_framings_demand")
