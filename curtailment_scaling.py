@@ -142,5 +142,5 @@ for scenario in all_scenarios[start:stop]:
             print('running ' + scenario + '_' + str(i))
             # Run simulation
             os.system("./scenarios/{}".format(scenario))
-            os.system(".statemod cm2015B_{}_{} -simulate".format(scenario, i))
+            os.system("./statemod cm2015B_{}_{} -simulate".format(scenario, i))
             os.system("cd ../../")
