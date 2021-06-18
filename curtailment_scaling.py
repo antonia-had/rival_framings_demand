@@ -5,7 +5,7 @@ from utils import *
 from string import Template
 from mpi4py import MPI
 import math
-from realization_flows import realization_monthly_flow
+#from realization_flows import realization_monthly_flow
 
 hist_flows = pd.read_csv('./hist_files/AnnualQ.csv',delimiter=',', header=0, index_col=0)
 basin_hist_flows = hist_flows['Site208'].values
