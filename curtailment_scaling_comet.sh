@@ -14,5 +14,5 @@ module load scipy/3.6
 export MODULEPATH=/share/apps/compute/modulefiles/applications:$MODULEPATH
 module load mpi4py
 export MV2_ENABLE_AFFINITY=0
-source /home/ah986/rival_framings_demand/bin/activate
+source activate /home/ah986/miniconda3/envs/adaptive_demands
 ibrun python3 curtailment_scaling.py
