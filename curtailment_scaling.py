@@ -1,68 +1,9 @@
 import os
-import pyDOE2
-import pandas as pd
+import pickle
 from utils import *
 from string import Template
-from mpi4py import MPI
 import math
-#from realization_flows import realization_monthly_flow
-
-hist_flows = pd.read_csv('./hist_files/AnnualQ.csv',delimiter=',', header=0, index_col=0)
-basin_hist_flows = hist_flows['Site208'].values
-hist_shortages = np.loadtxt('./hist_files/AnnualShortages.csv', delimiter=',')
-
-'''Get all rights and decrees of each WDID'''
-rights = pd.read_csv('./hist_files/iwr_admin.csv')
-groupbyadmin = rights.groupby('WDID')
-rights_per_wdid = groupbyadmin.apply(lambda x: x['Admin'].values)
-decrees_per_wdid = groupbyadmin.apply(lambda x: x['Decree'].values)
-
-shortage_percentile = list(np.arange(80, 110, 10))
-no_rights = list(np.arange(30, 120, 30))
-curtailment_levels = list(np.arange(30, 120, 30))
-
-sample = pyDOE2.fullfact([3, 3, 3]).astype(int)
-
-# shortage_percentile = list(np.arange(75, 105, 5))
-# no_rights = list(np.arange(5, 105, 5))
-# curtailment_levels = list(np.arange(5, 105, 5))
-#
-# sample = pyDOE2.fullfact([6, 20, 20]).astype(int)
-
-numSites = 379
-
-# Use historical shortages and flows to determine trigger flows for curtailment
-# trigger_years = [abs(hist_shortages - np.percentile(hist_shortages, p, interpolation='nearest')).argmin() for p in
-#                  shortage_percentile]
-# trigger_flows = [basin_hist_flows[t] for t in trigger_years]
-
-trigger_flows = [np.percentile(basin_hist_flows, 100 - p, interpolation='nearest') for p in
-                  shortage_percentile]
-
-# alphas = np.arange(0.15, 1, 0.15)
-# plt.scatter(hist_shortages, basin_hist_flows, c='blue')
-# for i in range(len(trigger_flows)):
-#     plt.hlines(trigger_flows[i], hist_shortages.min(), hist_shortages.max(),
-#                colors='red', alpha = alphas[i])
-# plt.show()
-
-# Use rights to determine users and portion to curtail
-threshold_admins = [np.percentile(rights['Admin'].values, 100 - p, interpolation='nearest') for p in no_rights]
-rights_to_curtail = [rights.loc[rights['Admin'] > t] for t in threshold_admins]
-users_per_threshold = [np.unique(rights_to_curtail[x]['WDID'].values) for x in range(len(no_rights))]
-curtailment_per_threshold = []
-for i in range(len(rights_to_curtail)):
-    user_set = rights_to_curtail[i]
-    groupbyadmin_curtail = user_set.groupby('WDID')
-    decrees_per_wdid_curtail = groupbyadmin_curtail.apply(lambda x: x['Decree'].values)
-    curtailment_levels = np.zeros(len(users_per_threshold[i]))
-    for j in range(len(users_per_threshold[i])):
-        wdid = decrees_per_wdid_curtail.index[j]
-        if np.sum(decrees_per_wdid[wdid])!=0:
-            curtailment_levels[j] = np.sum(decrees_per_wdid_curtail[wdid]) / np.sum(decrees_per_wdid[wdid])
-        else:
-            curtailment_levels[j] = 0
-    curtailment_per_threshold.append(curtailment_levels)
+from realization_flows import realization_monthly_flow
 
 # sows = np.arange(1, 101, 1)
 sows = np.arange(1, 2, 1)
@@ -93,8 +34,6 @@ else:
     stop = start + count
 
 for scenario in all_scenarios[start:stop]:
-    monthly_flows = realization_monthly_flow(scenario)
-    annual_flows_scenario = np.sum(monthly_flows, axis=1)
     '''Get data from scenario IWR'''
     firstline_iwr = 463#int(search_string_in_file('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.iwr', '#>EndHeader')[0]) + 4
     CMIP_IWR = []
@@ -105,7 +44,7 @@ for scenario in all_scenarios[start:stop]:
             CMIP_IWR.append(x.split())
             all_data.append(x)
             all_split_data.append(x.split('.'))
-    CMIP_IWR=CMIP_IWR[firstline_iwr:]
+    CMIP_IWR = CMIP_IWR[firstline_iwr:]
 
     '''Get data from scenario DDM'''
     firstline_ddm = 779#int(search_string_in_file('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.ddm','#>EndHeader')[0]) + 4
@@ -114,6 +53,13 @@ for scenario in all_scenarios[start:stop]:
         all_data_DDM = [x for x in f.readlines()]
 
     # Apply each demand sample to every generator scenario
+    sample = np.loadtxt('factorial_sample.txt')
+    curtailment_levels = np.loadtxt('curtailment_levels.txt')
+    trigger_flows = np.loadtxt('trigger_flows.txt', dtype=int)
+    with open("users_per_threshold.txt", "rb") as fp:
+        users_per_threshold = pickle.load(fp)
+    with open("curtailment_per_threshold.txt", "rb") as fp:
+        curtailment_per_threshold = pickle.load(fp)
     for i in range(len(sample[:, 0])):
         # Check if realization run successfully first
         outputfilename = './scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(i) + '.xdd'
@@ -124,7 +70,8 @@ for scenario in all_scenarios[start:stop]:
             curtailment_per_user = list(curtailment_per_threshold[sample[i, 1]])
             general_curtailment = curtailment_levels[sample[i, 2]]
 
-            low_flows = annual_flows_scenario <= trigger_flow
+            annual_flows = np.loadtxt('./scenarios/' + scenario + '/' + scenario + '_AnnualFlows.csv')
+            low_flows = annual_flows <= trigger_flow
             curtailment_years = list(np.arange(1909, 2014)[low_flows])
 
             writenewIWR(scenario, all_split_data, all_data, firstline_iwr, i, users,
