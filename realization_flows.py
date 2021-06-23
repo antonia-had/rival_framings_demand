@@ -5,6 +5,7 @@ numSites = 379
 
 def realization_monthly_flow(i, j):
     realization = 'S' + str(i) + '_' + str(j)
+    print('generating flows for ' + realization)
     file = open('../LHsamples_wider_100_AnnQonly/cm2015x_'+realization+'.xbm', 'r')
     all_split_data = [x.split('.') for x in file.readlines()]
     file.close()
