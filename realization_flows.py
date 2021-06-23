@@ -31,4 +31,5 @@ if __name__ == '__main__':
     parser.add_argument('j', type=int,
                         help='realization number')
     args = parser.parse_args()
+    print('executing realization '+str(args.i)+'_'+str(args.j))
     realization_monthly_flow(args.i, args.j)
