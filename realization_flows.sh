@@ -4,6 +4,7 @@
 #SBATCH --time=1:45:00
 #SBATCH --job-name="realization_flows"
 #SBATCH --output="./outputs/realization_flows.out"
+#SBATCH --error="./errors/realization_flows.err"
 
 module load parallel
 module load python
