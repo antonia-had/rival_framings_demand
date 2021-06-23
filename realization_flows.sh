@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=compute
-#SBATCH --ntasks=24
+#SBATCH --ntasks=6
 #SBATCH --time=00:30:00
 #SBATCH --job-name="realization_flows"
 #SBATCH --output="./outputs/realization_flows.out"
@@ -22,6 +22,6 @@ srun="srun --export=all --exclusive -N1 -n1"
 #   The combination of --joblog and --resume create a task log that
 #   can be used to monitor progress.
 #
-parallel="parallel --delay 0.2 --max-procs 24 -j $SLURM_NTASKS --joblog runtask.log"
+parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog runtask.log"
 
 $parallel "$srun python3 realization_flows.py" ::: {1..3} ::: {1..10}
