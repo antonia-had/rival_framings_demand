@@ -4,7 +4,7 @@ import numpy as np
 numSites = 379
 
 def realization_monthly_flow(i, j):
-    realization = 'S' + str(i) + '_' + str(j)
+    realization = 'S' + i + '_' + j
     file = open('../LHsamples_wider_100_AnnQonly/cm2015x_'+realization+'.xbm', 'r')
     all_split_data = [x.split('.') for x in file.readlines()]
     file.close()
@@ -25,9 +25,9 @@ def realization_monthly_flow(i, j):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Extract monthly and annual flows per realization.')
-    parser.add_argument('i', type=int, nargs='1',
+    parser.add_argument('i', type=str, nargs='1',
                         help='scenario number')
-    parser.add_argument('j', type=int, nargs='1',
+    parser.add_argument('j', type=str, nargs='1',
                         help='realization number')
     args = parser.parse_args()
     realization_monthly_flow(args.i, args.j)

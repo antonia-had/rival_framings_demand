@@ -3,13 +3,12 @@
 #SBATCH --ntasks=20
 #SBATCH --time=1:45:00
 #SBATCH --job-name="realization_flows"
-#SBATCH --mail-user=ah986@cornell.edu
-#SBATCH --mail-type=ALL
 #SBATCH --array=1-5
 
 module load parallel
 module load python
 module load scipy/3.6
+export MODULEPATH=/share/apps/compute/modulefiles/applications:$MODULEPATH
 # This specifies the options used to run srun. The "-N1 -n1" options are
 # used to allocates a single core to each task.
 srun="srun --exclusive -N1 -n1"
@@ -24,4 +23,4 @@ srun="srun --exclusive -N1 -n1"
 #
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog runtask.log --resume"
 
-$parallel "$srun echo task $1 seq:$PARALLEL_SEQ python3 realization_flows.py" ::: {1..2} ::: {1..10}
+$parallel "$srun python3 realization_flows.py" ::: {1..2} ::: {1..10}
