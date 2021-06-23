@@ -3,7 +3,7 @@
 #SBATCH --ntasks=20
 #SBATCH --time=1:45:00
 #SBATCH --job-name="realization_flows"
-#SBATCH --array=1-5
+#SBATCH --output="./outputs/realization_flows.out"
 
 module load parallel
 module load python
