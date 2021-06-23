@@ -2,7 +2,7 @@ import os
 import pickle
 from utils import *
 from string import Template
-import math
+import argparse
 
 realizations = np.arange(1,11,1)
 
@@ -10,7 +10,7 @@ realizations = np.arange(1,11,1)
 T = open('./cm2015B_template.rsp', 'r')
 template_RSP = Template(T.read())
 
-def curtailment_scaling(i, j)
+def curtailment_scaling(i, j):
     scenario = 'S' + str(i) + '_' + str(j)
     '''Get data from scenario IWR'''
     firstline_iwr = 463#int(search_string_in_file('../LHsamples_wider_100_AnnQonly/cm2015B_'+scenario+'.iwr', '#>EndHeader')[0]) + 4
@@ -71,3 +71,12 @@ def curtailment_scaling(i, j)
             print(os.getcwd())
             os.system("./statemod cm2015B_{}_{} -simulate".format(scenario, k))
             os.chdir("/ocean/projects/ees200007p/ah986/rival_framings_demand")
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Extract monthly and annual flows per realization.')
+    parser.add_argument('i', type=int,
+                        help='scenario number')
+    parser.add_argument('j', type=int,
+                        help='realization number')
+    args = parser.parse_args()
+    curtailment_scaling(args.i, args.j)
