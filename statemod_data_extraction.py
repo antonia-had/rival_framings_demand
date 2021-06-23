@@ -15,7 +15,7 @@ import dask.dataframe as dd
 from glob import glob
 from importlib.util import find_spec, module_from_spec
 import io
-from joblib import Parallel, delayed
+#from joblib import Parallel, delayed
 import logging
 import numpy as np
 import pandas as pd
@@ -308,39 +308,39 @@ class StateModDataExtractor:
             ]
         )
 
-        context = Parallel
-        logging.info("Running with joblib.")
+        # context = Parallel
+        # logging.info("Running with joblib.")
+        #
+        # with context(**(dict() if self.use_mpi else dict(n_jobs=-1, temp_folder=self.temporary_path))) as executor:
 
-        with context(**(dict() if self.use_mpi else dict(n_jobs=-1, temp_folder=self.temporary_path))) as executor:
+        # create the temporary files per xdd file
+        logging.info('Creating temporary parquet files per xdd.')
+        successful_xdd = client.map(self.parse_xdd_file, files)
+        # check how many failed
+        failed_xdd = [files[i] for i, status in enumerate(successful_xdd) if status is False]
+        if len(failed_xdd) > 0:
+            logging.error("Failed to parse the following files:\n" + "\n".join(failed_xdd))
 
-            # create the temporary files per xdd file
-            logging.info('Creating temporary parquet files per xdd.')
-            successful_xdd = client.map(self.parse_xdd_file, files)
-            # check how many failed
-            failed_xdd = [files[i] for i, status in enumerate(successful_xdd) if status is False]
-            if len(failed_xdd) > 0:
-                logging.error("Failed to parse the following files:\n" + "\n".join(failed_xdd))
-
-            # # aggregate the temporary files per structure_id to create the final output files
-            # logging.info('Aggregating structure_id data to parquet files.')
-            # if self.use_mpi:
-            #     successful_structure_id = executor.map(
-            #         self.create_file_per_structure_id,
-            #         self.ids_of_interest,
-            #         unordered=True
-            #     )
-            # else:
-            #     successful_structure_id = executor(
-            #         delayed(self.create_file_per_structure_id)(structure_id) for structure_id in self.ids_of_interest
-            #     )
-            # # check how many failed
-            # failed_parquet = [
-            #     self.ids_of_interest[i] for i, status in enumerate(successful_structure_id) if status is False
-            # ]
-            # if len(failed_parquet) > 0:
-            #     logging.error(
-            #         "Failed to create parquet files for the following structure_ids:\n" + "\n".join(failed_parquet)
-            #     )
+        # # aggregate the temporary files per structure_id to create the final output files
+        # logging.info('Aggregating structure_id data to parquet files.')
+        # if self.use_mpi:
+        #     successful_structure_id = executor.map(
+        #         self.create_file_per_structure_id,
+        #         self.ids_of_interest,
+        #         unordered=True
+        #     )
+        # else:
+        #     successful_structure_id = executor(
+        #         delayed(self.create_file_per_structure_id)(structure_id) for structure_id in self.ids_of_interest
+        #     )
+        # # check how many failed
+        # failed_parquet = [
+        #     self.ids_of_interest[i] for i, status in enumerate(successful_structure_id) if status is False
+        # ]
+        # if len(failed_parquet) > 0:
+        #     logging.error(
+        #         "Failed to create parquet files for the following structure_ids:\n" + "\n".join(failed_parquet)
+        #     )
 
         # # remove temporary files
         # shutil.rmtree(Path(self.temporary_path))
