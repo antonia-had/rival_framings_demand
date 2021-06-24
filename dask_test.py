@@ -15,6 +15,7 @@ import logging
 import re
 import io
 import numpy as np
+import pandas as pd
 
 sample_number_regex = re.compile(r'_S(\d+)_')
 realization_number_regex = re.compile(r'_(\d+)(?:\.xdd)?$')
@@ -29,6 +30,16 @@ id_column = 0
 year_column = 2
 demand_column = 4
 shortage_column = 17
+id_column_name = 'structure_id'
+year_column_name = 'year'
+month_column_name = 'month'
+demand_column_name = 'demand'
+shortage_column_name = 'shortage'
+id_column_type = object
+year_column_type = np.uint16
+month_column_type = object
+demand_column_type = np.uint32
+shortage_column_type = np.uint32
 
 def file_manipulator(file_path):
     path = Path(file_path)
@@ -82,6 +93,27 @@ def file_manipulator(file_path):
                     )
                     stream.write('\n')
     stream.seek(0)
+
+    df = pd.read_csv(
+        stream,
+        header=None,
+        names=[
+            id_column_name,
+            year_column_name,
+            month_column_name,
+            demand_column_name,
+            shortage_column_name
+        ],
+        dtype={
+            id_column_name: id_column_type,
+            year_column_name: year_column_type,
+            month_column_name: month_column_type,
+            demand_column_name: demand_column_type,
+            shortage_column_name: shortage_column_type
+        }
+    )
+
+    stream.close()
     return
 
 L=client.map(file_manipulator, './scenarios/S1_1/*.xdd')
