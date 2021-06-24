@@ -10,11 +10,10 @@ cluster.scale(2)
 print(cluster.job_script())
 client = Client(cluster)
 
-import time
+import numpy as np
 
-def increment(x):
-    time.sleep(0.5)
-    print(x*2)
+def multiplier(x):
+    np.savetxt(str(x)+'.txt', x*2)
     return
 
-client.map(increment, range(100))
+client.map(multiplier, range(100))
