@@ -1,12 +1,18 @@
 from dask_jobqueue import SLURMCluster
 from distributed import Client
 
+extra_args = [
+    "--error=/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/logs/dask-worker-%j.err",
+    "--output=/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/logs/dask-worker-%j.out"
+]
+
 cluster = SLURMCluster(cores=24,
                        processes=1,
                        memory="16GB",
                        walltime="0:30:00",
                        queue="compute",
-                       job_extra=["--output=%x_%j.out, --error=%x_%j.err"])
+                       local_directory="/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/logs/",
+                       job_extra=extra_args)
 cluster.scale(2)
 print(cluster.job_script())
 client = Client(cluster)
