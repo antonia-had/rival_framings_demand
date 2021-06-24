@@ -119,7 +119,7 @@ class StateModDataExtractor:
         """
 
         path = Path(file_path)
-        print(path)
+        logging.info('Parsing file ' + path)
         try:
             sample_number = int(self.sample_number_regex.search(path.stem).group(1))
             realization_number = int(self.realization_number_regex.search(path.stem).group(1))
