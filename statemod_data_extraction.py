@@ -7,6 +7,7 @@ cluster = SLURMCluster(cores=24,
                        walltime="0:30:00",
                        queue="compute")
 cluster.scale(2)
+print(cluster.job_script())
 client = Client(cluster)
 
 import concurrent.futures.thread
@@ -25,6 +26,8 @@ import shutil
 import sys
 from timeit import default_timer as timer
 from typing import Iterable
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 class StateModDataExtractor:
     """Class to handle extracting structure, sample, and realization data from StateMod xdd files."""
@@ -314,7 +317,7 @@ class StateModDataExtractor:
         # with context(**(dict() if self.use_mpi else dict(n_jobs=-1, temp_folder=self.temporary_path))) as executor:
 
         # create the temporary files per xdd file
-        logging.info('Creating temporary parquet files per xdd.')
+        logging.info('Creating parquet files per xdd.')
         successful_xdd = client.map(self.parse_xdd_file, files)
         # check how many failed
         failed_xdd = [files[i] for i, status in enumerate(successful_xdd) if status is False]
