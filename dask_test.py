@@ -26,6 +26,7 @@ def file_manipulator(file_path):
     except (IndexError, AttributeError):
         logging.error(f"Unable to parse sample or realization number from file name: {path.stem}.")
         return False
-    return
+    return sample_number, realization_number
 
 L=client.map(file_manipulator, './scenarios/S1_1/*.xdd')
+print(L)
