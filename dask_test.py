@@ -10,11 +10,22 @@ cluster.scale(2)
 print(cluster.job_script())
 client = Client(cluster)
 
-import numpy as np
+from pathlib import Path
+import logging
+import re
 
-def multiplier(x):
-    array = np.arange(x*2)
-    np.savetxt(str(x)+'.txt', array)
+sample_number_regex = re.compile(r'_S(\d+)_')
+realization_number_regex = re.compile(r'_(\d+)(?:\.xdd)?$')
+
+def file_manipulator(file_path):
+    path = Path(file_path)
+    logging.info('Parsing file ' + path)
+    try:
+        sample_number = int(sample_number_regex.search(path.stem).group(1))
+        realization_number = int(realization_number_regex.search(path.stem).group(1))
+    except (IndexError, AttributeError):
+        logging.error(f"Unable to parse sample or realization number from file name: {path.stem}.")
+        return False
     return
 
-L=client.map(multiplier, range(100))
+L=client.map(file_manipulator, './scenarios/S1_1/*.xdd')
