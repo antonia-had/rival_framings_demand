@@ -137,6 +137,7 @@ def file_manipulator(temporary_path, file_path):
         engine='pyarrow',
         compression='gzip'
     )
+    np.savetxt('S'+str(sample_number)+'_'+str(realization_number)+'.txt', np.arange(100))
     return
 
 L=client.map(file_manipulator, './output_test', './scenarios/S1_1/*.xdd')
