@@ -6,7 +6,7 @@ cluster = SLURMCluster(cores=24,
                        memory="16GB",
                        walltime="0:30:00",
                        queue="compute",
-                       log_directory="./output_test")
+                       extra=["--output=%x_%j.out"])
 cluster.scale(2)
 print(cluster.job_script())
 client = Client(cluster)
