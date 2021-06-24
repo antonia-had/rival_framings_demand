@@ -40,8 +40,12 @@ year_column_type = np.uint16
 month_column_type = object
 demand_column_type = np.uint32
 shortage_column_type = np.uint32
+sample_column_name = 'sample'
+sample_column_type = np.uint16
+realization_column_name = 'realization'
+realization_column_type = np.uint8
 
-def file_manipulator(file_path):
+def file_manipulator(temporary_path, file_path):
     path = Path(file_path)
     logging.info('Parsing file ' + path)
     try:
@@ -114,6 +118,15 @@ def file_manipulator(file_path):
     )
 
     stream.close()
+
+    df[sample_column_name] = sample_column_type(sample_number)
+    df[realization_column_name] = realization_column_type(realization_number)
+
+    df.to_parquet(
+        Path(f'{temporary_path}/S{sample_number}_{realization_number}.parquet'),
+        engine='pyarrow',
+        compression='gzip'
+    )
     return
 
-L=client.map(file_manipulator, './scenarios/S1_1/*.xdd')
+L=client.map(file_manipulator, './output_test', './scenarios/S1_1/*.xdd')
