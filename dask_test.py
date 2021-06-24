@@ -17,6 +17,8 @@ import io
 import numpy as np
 import pandas as pd
 
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+
 sample_number_regex = re.compile(r'_S(\d+)_')
 realization_number_regex = re.compile(r'_(\d+)(?:\.xdd)?$')
 expected_column_sizes = np.asarray([
