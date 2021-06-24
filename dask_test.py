@@ -17,7 +17,10 @@ import io
 import numpy as np
 import pandas as pd
 import sys
+import os
+
 sys.stdout.flush()
+os.fsync(sys.stdout.fileno())
 
 sample_number_regex = re.compile(r'_S(\d+)_')
 realization_number_regex = re.compile(r'_(\d+)(?:\.xdd)?$')
