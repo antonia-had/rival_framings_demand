@@ -64,6 +64,7 @@ def file_manipulator(temporary_path, file_path):
     except (IndexError, AttributeError):
         logging.error(f"Unable to parse sample or realization number from file name: {path.stem}.")
         return False
+    np.savetxt('S' + str(sample_number) + '_' + str(realization_number) + '.txt', np.arange(5))
     # stream will hold CSV of interesting data
     stream = io.StringIO()
     # read the file line by line
