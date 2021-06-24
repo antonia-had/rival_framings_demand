@@ -4,9 +4,9 @@ from distributed import Client
 cluster = SLURMCluster(cores=24,
                        processes=1,
                        memory="16GB",
-                       project="woodshole",
-                       walltime="01:00:00",
-                       queue="normal")
+                       walltime="0:30:00",
+                       queue="compute")
+cluster.scale(2)
 client = Client(cluster)
 
 import concurrent.futures.thread
