@@ -320,6 +320,7 @@ class StateModDataExtractor:
         # create the temporary files per xdd file
         logging.info('Creating parquet files per xdd.')
         successful_xdd = client.map(self.parse_xdd_file, files)
+
         # check how many failed
         failed_xdd = [files[i] for i, status in enumerate(successful_xdd) if status is False]
         if len(failed_xdd) > 0:

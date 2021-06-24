@@ -13,7 +13,8 @@ client = Client(cluster)
 import numpy as np
 
 def multiplier(x):
-    np.savetxt(str(x)+'.txt', x*2)
+    array = np.arange(x*2)
+    np.savetxt(str(x)+'.txt', array)
     return
 
-client.map(multiplier, range(100))
+L=client.map(multiplier, range(100))
