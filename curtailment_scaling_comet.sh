@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=compute
 #SBATCH --ntasks=432
-#SBATCH --time=00:30:00
+#SBATCH --time=1:30:00
 #SBATCH --job-name="curtailment_scaling"
 #SBATCH --output="./outputs/curtailment_scaling.out"
 #SBATCH --error="./errors/curtailment_scaling.err"
