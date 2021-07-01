@@ -34,8 +34,9 @@ sample_column_name = 'sample'
 sample_column_type = np.uint16
 realization_column_name = 'realization'
 realization_column_type = np.uint8
+outputs_path = '/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/xdd_parquet'
 
-def file_manipulator(outputs_path, file_path):
+def file_manipulator(file_path):
     path = Path(file_path)
     logging.info('Parsing file ' + path)
     try:

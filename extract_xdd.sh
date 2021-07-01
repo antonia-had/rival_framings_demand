@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=compute
-#SBATCH --ntasks=48
+#SBATCH --ntasks=24
 #SBATCH --time=00:30:00
 #SBATCH --job-name="extract_xdds"
 #SBATCH --output="./outputs/extract_xdds.out"
@@ -24,4 +24,4 @@ srun="srun --export=all --exclusive -N1 -n1"
 #
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog extract_xdds.log"
 
-$parallel "$srun python3 extract_xdd.py" ./xdd_parquet :::: ./scenarios/*/*.xdd
+$parallel "$srun python3 extract_xdd.py" :::: ./scenarios/*/*.xdd
