@@ -4,3 +4,7 @@ statemodruns.out
 /ppt_figures/
 /structures_files/Shapefiles/
 /scenarios/
+/errors/
+/dask-worker-space/
+/outputs/
+/xdd_parquet/
