@@ -22,6 +22,6 @@ srun="srun --export=all --exclusive -N1 -n1"
 #   The combination of --joblog and --resume create a task log that
 #   can be used to monitor progress.
 #
-parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog runtask.log"
+parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog extract_xdds.log"
 
 $parallel "$srun python3 extract_xdd.py" ./xdd_parquet :::: ./scenarios/*/*.xdd
