@@ -7,9 +7,8 @@
 #SBATCH --error="./errors/realization_flows.err"
 
 module load parallel
-module load python
-module load scipy/3.6
-export MODULEPATH=/share/apps/compute/modulefiles/applications:$MODULEPATH
+module load miniconda
+source activate /home/ah986/miniconda3/envs/adaptive_demands
 # This specifies the options used to run srun. The "-N1 -n1" options are
 # used to allocates a single core to each task.
 srun="srun --export=all --exclusive -N1 -n1"
