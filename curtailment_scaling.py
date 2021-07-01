@@ -11,7 +11,7 @@ realizations = np.arange(1,11,1)
 T = open('./cm2015B_template.rsp', 'r')
 template_RSP = Template(T.read())
 
-projectdirectory = '/ocean/projects/ees200007p/ah986/rival_framings_demand/'
+projectdirectory = '/oasis/scratch/comet/ah986/temp_project/rival_framings_demand'
 
 def curtailment_scaling(i, j, k):
     scenario = 'S' + str(i) + '_' + str(j)

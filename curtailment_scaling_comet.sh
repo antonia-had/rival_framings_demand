@@ -5,6 +5,8 @@
 #SBATCH --job-name="curtailment_scaling"
 #SBATCH --output="./outputs/curtailment_scaling.out"
 #SBATCH --error="./errors/curtailment_scaling.err"
+#SBATCH --mail-user=ah986@cornell.edu
+#SBATCH --mail-type=ALL
 
 module load parallel
 module load miniconda
