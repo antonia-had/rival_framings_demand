@@ -40,7 +40,7 @@ realization_column_type = np.uint8
 rule_column_type = np.uint16
 outputs_path = '/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/xdd_parquet'
 
-def file_manipulator(file_path):
+def xxd_to_parquet(file_path):
     path = Path(file_path)
     try:
         sample_number = int(sample_number_regex.search(path.stem).group(1))
@@ -118,7 +118,7 @@ def file_manipulator(file_path):
     df[realization_column_name] = realization_column_type(realization_number)
     df[rule_column_name] = rule_column_type(rule_number)
     df.to_parquet(
-        Path(f'{outputs_path}/S{sample_number}_{realization_number}_{rule_number}.parquet'),
+        Path(f'{outputs_path}/S{sample_number}_{realization_number}/S{sample_number}_{realization_number}_{rule_number}.parquet'),
         engine='pyarrow',
         compression='gzip'
     )
@@ -129,4 +129,4 @@ if __name__ == '__main__':
     parser.add_argument('file_path', type=str,
                         help='path to .xdd file')
     args = parser.parse_args()
-    file_manipulator(args.file_path)
+    xxd_to_parquet(args.file_path)

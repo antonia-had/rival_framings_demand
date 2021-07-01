@@ -31,7 +31,7 @@ np.savetxt('trigger_flows.txt', trigger_flows)
 threshold_admins = [np.percentile(rights['Admin'].values, 100 - p, interpolation='nearest') for p in no_rights]
 rights_to_curtail = [rights.loc[rights['Admin'] > t] for t in threshold_admins]
 users_per_threshold = [np.unique(rights_to_curtail[x]['WDID'].values) for x in range(len(no_rights))]
-with open("users_per_threshold.txt", "wb") as fp:
+with open("users_per_threshold.pkl", "wb") as fp:
     pickle.dump(users_per_threshold, fp)
 curtailment_per_threshold = []
 for i in range(len(rights_to_curtail)):
@@ -46,5 +46,5 @@ for i in range(len(rights_to_curtail)):
         else:
             curtailment_levels_users[j] = 0
     curtailment_per_threshold.append(curtailment_levels_users)
-with open("curtailment_per_threshold.txt", "wb") as fp:
+with open("curtailment_per_threshold.pkl", "wb") as fp:
     pickle.dump(curtailment_per_threshold, fp)
