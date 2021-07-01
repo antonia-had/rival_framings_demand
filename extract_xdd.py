@@ -113,7 +113,7 @@ def file_manipulator(file_path):
 
     df[sample_column_name] = sample_column_type(sample_number)
     df[realization_column_name] = realization_column_type(realization_number)
-
+    print('saving to parquet')
     df.to_parquet(
         Path(f'{outputs_path}/S{sample_number}_{realization_number}_{rule_number}.parquet'),
         engine='pyarrow',
