@@ -35,7 +35,9 @@ shortage_column_type = np.uint32
 sample_column_name = 'sample'
 sample_column_type = np.uint16
 realization_column_name = 'realization'
+rule_column_name = 'demand rule'
 realization_column_type = np.uint8
+rule_column_type = np.uint16
 outputs_path = '/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/xdd_parquet'
 
 def file_manipulator(file_path):
@@ -114,6 +116,7 @@ def file_manipulator(file_path):
 
     df[sample_column_name] = sample_column_type(sample_number)
     df[realization_column_name] = realization_column_type(realization_number)
+    df[rule_column_name] = rule_column_type(rule_number)
     df.to_parquet(
         Path(f'{outputs_path}/S{sample_number}_{realization_number}_{rule_number}.parquet'),
         engine='pyarrow',
