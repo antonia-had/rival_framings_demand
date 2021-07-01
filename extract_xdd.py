@@ -123,7 +123,7 @@ def file_manipulator(file_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert .xdd to .parquet')
-    parser.add_argument('file_path', type=PosixPath,
+    parser.add_argument('file_path', type=str,
                         help='path to .xdd file')
     args = parser.parse_args()
     file_manipulator(args.file_path)
