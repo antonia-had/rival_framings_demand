@@ -24,4 +24,4 @@ srun="srun --export=all --exclusive -N1 -n1"
 #
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog extract_xdds.log"
 
-$parallel "$srun python3 extract_xdd.py" :::: ./scenarios/*/*.xdd
+$parallel "$srun python3 extract_xdd.py" ::: ./scenarios/*/*.xdd
