@@ -4,6 +4,8 @@ import re
 import io
 import numpy as np
 import pandas as pd
+import argparse
+
 
 sample_number_regex = re.compile(r'_S(\d+)_')
 realization_number_regex = re.compile(r'_(\d+)_')
@@ -113,10 +115,16 @@ def file_manipulator(file_path):
 
     df[sample_column_name] = sample_column_type(sample_number)
     df[realization_column_name] = realization_column_type(realization_number)
-    print('saving to parquet')
     df.to_parquet(
         Path(f'{outputs_path}/S{sample_number}_{realization_number}_{rule_number}.parquet'),
         engine='pyarrow',
         compression='gzip'
     )
     return
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Convert .xdd to .parquet')
+    parser.add_argument('file_path', type=int,
+                        help='path to .xdd file')
+    args = parser.parse_args()
+    file_manipulator(args.file_path)
