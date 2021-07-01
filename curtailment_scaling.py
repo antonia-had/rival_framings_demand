@@ -34,7 +34,7 @@ def curtailment_scaling(i, j, k):
         all_data_DDM = [x for x in f.readlines()]
 
     # Apply each demand sample to every generator scenario
-    sample = np.loadtxt('factorial_sample.txt')
+    sample = np.loadtxt('factorial_sample.txt', dtype=int)
     curtailment_levels = np.loadtxt('curtailment_levels.txt')
     trigger_flows = np.loadtxt('trigger_flows.txt')
     with open("users_per_threshold.pkl", "rb") as fp:
