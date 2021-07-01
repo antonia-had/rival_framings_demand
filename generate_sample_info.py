@@ -19,7 +19,7 @@ curtailment_levels = list(np.arange(30, 120, 30))
 np.savetxt('curtailment_levels.txt', curtailment_levels)
 
 sample = pyDOE2.fullfact([3, 3, 3]).astype(int)
-np.savetxt('factorial_sample.txt', sample)
+np.savetxt('factorial_sample.txt', sample, fmt='%i')
 
 numSites = 379
 
