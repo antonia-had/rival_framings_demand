@@ -40,7 +40,6 @@ outputs_path = '/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/xd
 
 def file_manipulator(file_path):
     path = Path(file_path)
-    logging.info('Parsing file ' + path)
     try:
         sample_number = int(sample_number_regex.search(path.stem).group(1))
         realization_number = int(realization_number_regex.search(path.stem).group(1))
@@ -124,7 +123,7 @@ def file_manipulator(file_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert .xdd to .parquet')
-    parser.add_argument('file_path', type=str,
+    parser.add_argument('file_path', type=PosixPath,
                         help='path to .xdd file')
     args = parser.parse_args()
     file_manipulator(args.file_path)
