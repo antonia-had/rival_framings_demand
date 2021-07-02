@@ -1,10 +1,12 @@
 #!/bin/bash
 #SBATCH --partition=compute
-#SBATCH --ntasks=48
+#SBATCH --ntasks=1000
 #SBATCH --time=00:30:00
 #SBATCH --job-name="realization_flows"
 #SBATCH --output="./outputs/realization_flows.out"
 #SBATCH --error="./errors/realization_flows.err"
+#SBATCH --mail-user=ah986@cornell.edu
+#SBATCH --mail-type=ALL
 
 module load parallel
 module load miniconda
