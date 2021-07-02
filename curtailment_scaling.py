@@ -13,6 +13,8 @@ T = open('./cm2015B_template.rsp', 'r')
 template_RSP = Template(T.read())
 
 projectdirectory = '/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/'
+output_to_remove = ['xdd', 'b43', 'b44', 'b45', 'b47', 'b67', 'b68', 'chk', 'log', 'tmp',
+                    'xca', 'xir', 'xop', 'xpl', 'xre', 'xrp', 'xss']
 
 def curtailment_scaling(i, j, k):
     scenario = 'S' + str(i) + '_' + str(j)
@@ -78,7 +80,9 @@ def curtailment_scaling(i, j, k):
     xxd_to_parquet(projectdirectory + 'scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.xdd')
 
     logging.info('remove xdd for ' + scenario + '_' + str(k))
-    os.remove(projectdirectory + 'scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.xdd')
+
+    for ext in output_to_remove:
+        os.remove(projectdirectory + 'scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.' + ext)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Extract monthly and annual flows per realization.')

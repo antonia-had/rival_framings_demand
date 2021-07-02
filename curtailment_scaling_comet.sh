@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=compute
-#SBATCH --ntasks=48
+#SBATCH --ntasks=36
 #SBATCH --time=1:30:00
 #SBATCH --job-name="curtailment_scaling"
 #SBATCH --output="./outputs/curtailment_scaling.out"
@@ -25,4 +25,4 @@ srun="srun --export=all --exclusive -N1 -n1"
 #
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling.log"
 
-$parallel "$srun python3 curtailment_scaling.py" ::: {1..4} ::: {1..4} ::: {1..27}
+$parallel "$srun python3 curtailment_scaling.py" ::: {1..3} ::: {1..3} ::: {1..4}
