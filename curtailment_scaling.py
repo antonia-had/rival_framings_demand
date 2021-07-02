@@ -4,6 +4,7 @@ from utils import *
 from string import Template
 import argparse
 from extract_xdd import xxd_to_parquet
+import logging
 
 realizations = np.arange(1,11,1)
 
@@ -42,7 +43,7 @@ def curtailment_scaling(i, j, k):
     with open("curtailment_per_threshold.pkl", "rb") as fp:
         curtailment_per_threshold = pickle.load(fp)
 
-    print('generating ' + scenario + '_' + str(k))
+    logging.info('generating ' + scenario + '_' + str(k))
 
     trigger_flow = trigger_flows[sample[k, 0]]
     users = users_per_threshold[sample[k, 1]]
@@ -67,18 +68,17 @@ def curtailment_scaling(i, j, k):
     f1.write(new_rsp)
     f1.close()
 
-    print('running ' + scenario + '_' + str(k))
+    logging.info('running ' + scenario + '_' + str(k))
     # Run simulation
     os.chdir(projectdirectory + 'scenarios/' + scenario)
-    print(os.getcwd())
     os.system('./statemod cm2015B_{}_{} -simulate'.format(scenario, k))
     os.chdir(projectdirectory)
 
-    print('creating parquet for ' + scenario + '_' + str(k))
-    xxd_to_parquet(projectdirectory + 'scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.xdd')
+    logging.info('creating parquet for ' + scenario + '_' + str(k))
+    xxd_to_parquet(projectdirectory + 'scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.xdd')
 
-    print('remove xdd for ' + scenario + '_' + str(k))
-    os.remove(projectdirectory + 'scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.xdd')
+    logging.info('remove xdd for ' + scenario + '_' + str(k))
+    os.remove(projectdirectory + 'scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.xdd')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Extract monthly and annual flows per realization.')
