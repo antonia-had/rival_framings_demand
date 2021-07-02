@@ -2,9 +2,9 @@
 #SBATCH --partition=compute
 #SBATCH --ntasks=24
 #SBATCH --time=1:30:00
-#SBATCH --job-name="curtailment_scaling_$1"
-#SBATCH --output="./outputs/curtailment_scaling_$1.out"
-#SBATCH --error="./errors/curtailment_scaling_$1.err"
+#SBATCH --job-name="%J"
+#SBATCH --output="./outputs/%J.out"
+#SBATCH --error="./errors/%J.err"
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
@@ -24,5 +24,7 @@ srun="srun --export=all --exclusive -N1 -n1"
 #   can be used to monitor progress.
 #
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling.log"
-echo "Submitting job # $1 for samples $2 to $3"
-$parallel "$srun python3 curtailment_scaling.py" ::: {1..2} ::: {1..2} ::: {$2..$3}
+echo "Submitting %J for samples $1 to $2"
+start=$1
+end=$2
+$parallel "$srun python3 curtailment_scaling.py" ::: {1..2} ::: {1..2} ::: {${start}..${end}}
