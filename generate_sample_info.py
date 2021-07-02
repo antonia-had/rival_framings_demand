@@ -13,12 +13,12 @@ groupbyadmin = rights.groupby('WDID')
 rights_per_wdid = groupbyadmin.apply(lambda x: x['Admin'].values)
 decrees_per_wdid = groupbyadmin.apply(lambda x: x['Decree'].values)
 
-shortage_percentile = list(np.arange(80, 110, 10))
-no_rights = list(np.arange(30, 120, 30))
-curtailment_levels = list(np.arange(30, 120, 30))
+shortage_percentile = list(np.arange(75, 105, 5))
+no_rights = list(np.arange(10, 110, 10))
+curtailment_levels = list(np.arange(10, 110, 10))
 np.savetxt('curtailment_levels.txt', curtailment_levels)
 
-sample = pyDOE2.fullfact([3, 3, 3]).astype(int)
+sample = pyDOE2.fullfact([6, 10, 10]).astype(int)
 np.savetxt('factorial_sample.txt', sample, fmt='%i')
 
 numSites = 379

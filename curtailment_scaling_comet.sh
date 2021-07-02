@@ -1,9 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=compute
-#SBATCH --ntasks=24
-#SBATCH --time=1:30:00
-#SBATCH --mail-user=ah986@cornell.edu
-#SBATCH --mail-type=ALL
+#SBATCH --ntasks=1440
+#SBATCH --time=48:00:00
 
 module load parallel
 module load miniconda
@@ -20,7 +18,7 @@ srun="srun --export=all --exclusive -N1 -n1"
 #   The combination of --joblog and --resume create a task log that
 #   can be used to monitor progress.
 #
-parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling.log"
+parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.log"
 echo "Submitting samples $1 to $2"
 vals=($(seq $1 $2))
-$parallel "$srun python3 curtailment_scaling.py" ::: {1..2} ::: {1..2} ::: "${vals[@]}"
+$parallel "$srun python3 curtailment_scaling.py" ::: {1..100} ::: {1..10} ::: "${vals[@]}"
