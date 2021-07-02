@@ -2,9 +2,6 @@
 #SBATCH --partition=compute
 #SBATCH --ntasks=24
 #SBATCH --time=1:30:00
-#SBATCH --job-name="%J"
-#SBATCH --output="./outputs/%J.out"
-#SBATCH --error="./errors/%J.err"
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
