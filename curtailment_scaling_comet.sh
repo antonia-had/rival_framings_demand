@@ -24,7 +24,5 @@ srun="srun --export=all --exclusive -N1 -n1"
 #   can be used to monitor progress.
 #
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling.log"
-echo "Submitting %J for samples $1 to $2"
-start=$1
-end=$2
-$parallel "$srun python3 curtailment_scaling.py" ::: {1..2} ::: {1..2} ::: {${start}..${end}}
+echo "Submitting samples $1 to $2"
+$parallel "$srun python3 curtailment_scaling.py" ::: seq 1 2 ::: seq 1 2 ::: seq $1 $2
