@@ -2,6 +2,8 @@
 #SBATCH --partition=compute
 #SBATCH --ntasks=1440
 #SBATCH --time=48:00:00
+#SBATCH --mail-user=ah986@cornell.edu
+#SBATCH --mail-type=ALL
 
 module load parallel
 module load miniconda
