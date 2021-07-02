@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=RM
-#SBATCH --ntasks=100
+#SBATCH --ntasks=1000
 #SBATCH --time=00:30:00
 #SBATCH --job-name="realization_flows"
 #SBATCH --output="./outputs/realization_flows.out"
