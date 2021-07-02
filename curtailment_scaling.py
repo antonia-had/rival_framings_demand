@@ -12,7 +12,7 @@ realizations = np.arange(1,11,1)
 T = open('./cm2015B_template.rsp', 'r')
 template_RSP = Template(T.read())
 
-projectdirectory = '/ocean/projects/ees200007p/ah986/rival_framings_demand' #'/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/'
+projectdirectory = '/ocean/projects/ees200007p/ah986/rival_framings_demand/' #'/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/'
 
 output_to_remove = ['xdd', 'b43', 'b44', 'b45', 'b47', 'b67', 'b68', 'chk', 'log', 'tmp',
                     'xca', 'xir', 'xop', 'xpl', 'xre', 'xrp', 'xss']
