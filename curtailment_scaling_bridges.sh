@@ -1,14 +1,30 @@
 #!/bin/bash
-#SBATCH -N 1
 #SBATCH -p RM
-#SBATCH -t 1:00:00
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1440
+#SBATCH --time=48:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
-module load python/3.8.6
+module load parallel
 module load anaconda3
 eval "$(conda shell.bash hook)"
 conda activate /ocean/projects/ees200007p/ah986/.conda/envs/adaptive_demands
-mpirun python3 curtailment_scaling.py
+
+# This specifies the options used to run srun. The "-N1 -n1" options are
+# used to allocates a single core to each task.
+srun="srun --export=all --exclusive -N1 -n1"
+# This specifies the options used to run GNU parallel:
+#
+#   --delay of 0.2 prevents overloading the controlling node.
+#
+#   -j is the number of tasks run simultaneously.
+#
+#   The combination of --joblog and --resume create a task log that
+#   can be used to monitor progress.
+#
+parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.log"
+echo "Submitting samples $1 to $2"
+vals=($(seq $1 $2))
+
+$parallel "$srun python3 curtailment_scaling.py" ::: {1..100} ::: {1..10} ::: "${vals[@]}"
 
