@@ -5,5 +5,5 @@ end_vals=($(seq 50 50 600))
 batches=($(seq 1 12))
 
 for i in "${!batches[@]}"; do
-  echo "Submitting samples ${start_vals[$i]} to ${end_vals[$i]}"
+  sbatch --job-name=batch_${batches[$i]} --output=/outputs/batch_${batches[$i]}.out --error=/errors/batch_${batches[$i]}.err curtailment_scaling_comet.sh ${start_vals[$i]} ${end_vals[$i]}
 done
