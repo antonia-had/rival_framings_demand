@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p RM
-#SBATCH --ntasks=3840
+#SBATCH --ntasks=1750
 #SBATCH --time=48:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
