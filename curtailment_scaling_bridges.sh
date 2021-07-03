@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p RM
-#SBATCH --ntasks=1440
+#SBATCH --ntasks=3840
 #SBATCH --time=48:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
@@ -21,7 +21,7 @@ srun="srun --export=all --exclusive -N1 -n1"
 #   The combination of --joblog and --resume create a task log that
 #   can be used to monitor progress.
 #
-parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.log"
+parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.log --resume"
 echo "Submitting samples $1 to $2"
 vals=($(seq $1 $2))
 
