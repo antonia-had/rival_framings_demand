@@ -7,8 +7,8 @@
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
-module load cpu/0.15.4
-module load parallel
+#module load cpu/0.15.4
+#module load parallel
 #module load anaconda3
 #source activate /home/ah986/.conda/envs/adaptive_demands
 
