@@ -29,4 +29,4 @@ srun="srun --export=all --exclusive -N1 -n1"
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.log --resume"
 echo "Submitting samples $1 to $2"
 vals=($(seq $1 $2))
-$srun $parallel bash_tesh.sh ::: {1..10} ::: {1..10} ::: "${vals[@]}"
+$srun $parallel "python3 python_test.py" ::: {1..10} ::: {1..10} ::: "${vals[@]}"
