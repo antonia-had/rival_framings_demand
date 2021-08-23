@@ -8,8 +8,9 @@
 #SBATCH --mail-type=ALL
 
 module load parallel
-module load anaconda3
-source activate /home/ah986/.conda/envs/adaptive_demands
+#module load anaconda3
+#source activate /home/ah986/.conda/envs/adaptive_demands
+
 # This specifies the options used to run srun. The "-N1 -n1" options are
 # used to allocates a single core to each task.
 srun="srun --export=all --exclusive -N1 -n1"
