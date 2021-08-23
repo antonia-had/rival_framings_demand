@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p RM
-#SBATCH --ntasks=1750
-#SBATCH --time=48:00:00
+#SBATCH --ntasks=50
+#SBATCH --time=00:30:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
@@ -25,5 +25,5 @@ parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.
 echo "Submitting samples $1 to $2"
 vals=($(seq $1 $2))
 
-$parallel "$srun python3 curtailment_scaling.py" ::: {1..100} ::: {1..10} ::: "${vals[@]}"
+$srun $parallel "python3 python_test.py" ::: {1..100} ::: {1..10} ::: "${vals[@]}"
 
