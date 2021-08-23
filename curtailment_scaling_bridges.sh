@@ -25,5 +25,5 @@ parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.
 echo "Submitting samples $1 to $2"
 vals=($(seq $1 $2))
 
-$srun $parallel "python3 python_test.py" ::: {1..100} ::: {1..10} ::: "${vals[@]}"
+$srun $parallel "echo "$SLURM_PROCID" python3 python_test.py" ::: {1..100} ::: {1..10} ::: "${vals[@]}"
 
