@@ -7,9 +7,10 @@
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
-#module load cpu/0.15.4
-#module load parallel
-#module load anaconda3
+module load anaconda3
+
+module load cpu/0.15.4
+module load parallel
 #source activate /home/ah986/.conda/envs/adaptive_demands
 
 # This specifies the options used to run srun. The "-N1 -n1" options are
