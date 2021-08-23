@@ -6,6 +6,7 @@
 #SBATCH --time=00:30:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
+#SBATCH --export=ALL
 
 module load anaconda3
 
