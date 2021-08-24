@@ -8,7 +8,7 @@ for dir in scenarios/*; do
     rm $dir/$val
     ln -s /expanse/lustre/scratch/ah986/temp_project/cm2015_StateMod/StateMod/$val $dir
   done
-  rm $dir/cm2015_$subdir.xbm
-  ln -s /expanse/lustre/scratch/ah986/temp_project/LHsamples_wider_100_AnnQonly/cm2015_$subdir.xbm $dir
-  #ln -s ln -s /home/ah986/statemod $dir
+  ln -s /expanse/lustre/scratch/ah986/temp_project/LHsamples_wider_100_AnnQonly/cm2015x_$subdir.xbm $dir
+  ln -s /home/ah986/statemod $dir
+  mkdir xdd_parquet/$subdir
 done

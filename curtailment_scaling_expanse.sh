@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --partition=debug
 #SBATCH --account=TG-MCA08X018
-#SBATCH --nodes=2
-#SBATCH --ntasks-per-node=64
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=50
 #SBATCH --time=00:30:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
@@ -29,4 +29,4 @@ srun="srun --export=all --exclusive -N1 -n1"
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.log --resume"
 echo "Submitting samples $1 to $2"
 vals=($(seq $1 $2))
-$srun $parallel "python3 curtailment_scaling.py" ::: {1..10} ::: {1..10} ::: "${vals[@]}"
+$srun $parallel "python3 curtailment_scaling.py" ::: {1..5} ::: {1..5} ::: "${vals[@]}"
