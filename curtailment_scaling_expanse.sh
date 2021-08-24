@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=debug
 #SBATCH --account=TG-MCA08X018
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --ntasks-per-node=64
 #SBATCH --time=00:30:00
 #SBATCH --mail-user=ah986@cornell.edu
