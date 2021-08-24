@@ -12,7 +12,7 @@ realizations = np.arange(1,11,1)
 T = open('./cm2015B_template.rsp', 'r')
 template_RSP = Template(T.read())
 
-projectdirectory = '/expanse/lustre/scratch/ah986/temp_project/rival_framings_demand'
+projectdirectory = '/expanse/lustre/scratch/ah986/temp_project/rival_framings_demand/'
 #'/ocean/projects/ees200007p/ah986/rival_framings_demand/'
 #'/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/'
 
