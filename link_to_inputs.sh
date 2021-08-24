@@ -4,12 +4,13 @@ declare -a InputsArray=("cm2015.ctl" "cm2015.rin" "cm2015.str" "cm2015B.ipy" "cm
 
 declare -a StreamflowArray=("xbm" "iwr" "ddm" "rsp")
 
-for dir in scenarios/; do
+for dir in scenarios/*; do
+  subdir=$(echo $dir | cut -d'/' -f 2)
   for val in ${InputsArray[@]}; do
-    ln -s ../cm2015_StateMod/StateMod/$val scenarios/$dir
+    ln -s ../cm2015_StateMod/StateMod/$val $dir
   done
   for val in ${StreamflowArray}; do
-    ln -s ../LHsamples_wider_100_AnnQonly/cm2015_$dir.$val scenarios/$dir
+    ln -s ../LHsamples_wider_100_AnnQonly/cm2015_$subdir.$val $dir
   done
-  ln -s ln -s /home/ah986/statemod scenarios/$dir
+  ln -s ln -s /home/ah986/statemod $dir
 done
