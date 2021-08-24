@@ -10,5 +10,6 @@ for dir in scenarios/; do
   done
   for val in ${StreamflowArray}; do
     ln -s ../LHsamples_wider_100_AnnQonly/cm2015_$dir.$val scenarios/$dir
+  done
   ln -s ln -s /home/ah986/statemod scenarios/$dir
 done
