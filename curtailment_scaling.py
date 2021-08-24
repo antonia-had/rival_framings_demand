@@ -69,23 +69,23 @@ def curtailment_scaling(i, j, k):
          'DDM': 'cm2015B_' + scenario + '_' + str(k) + '.ddm',
          'XBM': 'cm2015x_' + scenario + '.xbm'}
     new_rsp = template_RSP.safe_substitute(d)
-    f1 = open('./scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.rsp', 'w')
+    f1 = open('./scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.rsp', 'w')
     f1.write(new_rsp)
     f1.close()
 
     logging.info('running ' + scenario + '_' + str(k))
     # Run simulation
     os.chdir(projectdirectory + 'scenarios/' + scenario)
-    os.system('./statemod cm2015B_{}_{} -simulate'.format(scenario, k))
+    os.system('./statemod {}_{} -simulate'.format(scenario, k))
     os.chdir(projectdirectory)
 
     logging.info('creating parquet for ' + scenario + '_' + str(k))
-    xxd_to_parquet(projectdirectory + 'scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.xdd')
+    xxd_to_parquet(projectdirectory + 'scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.xdd')
 
     logging.info('remove xdd for ' + scenario + '_' + str(k))
 
     for ext in output_to_remove:
-        os.remove(projectdirectory + 'scenarios/' + scenario + '/cm2015B_' + scenario + '_' + str(k) + '.' + ext)
+        os.remove(projectdirectory + 'scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.' + ext)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Extract monthly and annual flows per realization.')
