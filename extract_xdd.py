@@ -38,7 +38,10 @@ realization_column_name = 'realization'
 rule_column_name = 'demand rule'
 realization_column_type = np.uint8
 rule_column_type = np.uint16
-outputs_path = '/ocean/projects/ees200007p/ah986/rival_framings_demand/xdd_parquet'#'/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/xdd_parquet'
+outputs_path = '/expanse/lustre/scratch/ah986/temp_project/rival_framings_demand/xdd_parquet'
+#'/ocean/projects/ees200007p/ah986/rival_framings_demand/xdd_parquet'
+# #'/oasis/scratch/comet/ah986/temp_project/rival_framings_demand/xdd_parquet'
+
 
 def xxd_to_parquet(file_path):
     path = Path(file_path)
