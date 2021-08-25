@@ -3,7 +3,7 @@
 #SBATCH --account=TG-MCA08X018
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=100
-#SBATCH --mem=248G
+#SBATCH --mem=200G
 #SBATCH --time=2:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
