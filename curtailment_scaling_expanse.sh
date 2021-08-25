@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --partition=debug
+#SBATCH --partition=shared
 #SBATCH --account=TG-MCA08X018
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=50
-#SBATCH --time=00:30:00
+#SBATCH --time=01:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 #SBATCH --export=ALL
