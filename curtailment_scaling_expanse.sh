@@ -1,15 +1,13 @@
 #!/bin/bash
 #SBATCH --partition=compute
 #SBATCH --account=TG-MCA08X018
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=50
+#SBATCH --nodes=6
+#SBATCH --ntasks-per-node=128
 #SBATCH --mem=2G
-#SBATCH --time=01:00:00
+#SBATCH --time=18:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 #SBATCH --export=ALL
-#SBATCH --output=./outputs/batch_$3.out \
-#SBATCH --error=./errors/batch_$3.err
 
 module load anaconda3
 
@@ -32,4 +30,4 @@ srun="srun --export=all --exclusive -N1 -n1"
 parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog curtailment_scaling_$3.log --resume"
 echo "Submitting samples $1 to $2"
 vals=($(seq $1 $2))
-$srun $parallel "python3 curtailment_scaling.py" ::: {1..5} ::: {1..5} ::: "${vals[@]}"
+$srun $parallel "python3 curtailment_scaling.py" ::: {1..100} ::: {1..10} ::: "${vals[@]}"
