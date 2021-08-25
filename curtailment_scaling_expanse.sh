@@ -1,12 +1,15 @@
 #!/bin/bash
-#SBATCH --partition=shared
+#SBATCH --partition=compute
 #SBATCH --account=TG-MCA08X018
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=50
+#SBATCH --mem=2G
 #SBATCH --time=01:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 #SBATCH --export=ALL
+#SBATCH --output=./outputs/batch_$3.out \
+#SBATCH --error=./errors/batch_$3.err
 
 module load anaconda3
 
