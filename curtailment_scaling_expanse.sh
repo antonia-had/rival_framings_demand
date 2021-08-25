@@ -4,7 +4,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=100
 #SBATCH --mem=248G
-#SBATCH --time=5:00:00
+#SBATCH --time=2:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 #SBATCH --export=ALL
