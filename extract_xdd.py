@@ -7,7 +7,7 @@ import pandas as pd
 import argparse
 
 
-sample_number_regex = re.compile(r'_S(\d+)_')
+sample_number_regex = re.compile('S(\d+)_')
 realization_number_regex = re.compile(r'_(\d+)_')
 rule_number_regex = re.compile(r'_(\d+)(?:\.xdd)?$')
 

@@ -48,7 +48,7 @@ def curtailment_scaling(i, j, k):
     with open("curtailment_per_threshold.pkl", "rb") as fp:
         curtailment_per_threshold = pickle.load(fp)
 
-    logging.info('generating ' + scenario + '_' + str(k))
+    #print('generating ' + scenario + '_' + str(k))
 
     trigger_flow = trigger_flows[sample[k, 0]]
     users = users_per_threshold[sample[k, 1]]
@@ -59,6 +59,7 @@ def curtailment_scaling(i, j, k):
     low_flows = annual_flows <= trigger_flow
     curtailment_years = list(np.arange(1909, 2014)[low_flows])
 
+    #print("write new IWR and DDM")
     writenewIWR(scenario, all_split_data, all_data, firstline_iwr, k, users,
                 curtailment_per_user, general_curtailment, curtailment_years)
 
@@ -73,13 +74,13 @@ def curtailment_scaling(i, j, k):
     f1.write(new_rsp)
     f1.close()
 
-    logging.info('running ' + scenario + '_' + str(k))
+    print('running ' + scenario + '_' + str(k))
     # Run simulation
     os.chdir(projectdirectory + 'scenarios/' + scenario)
     os.system('./statemod {}_{} -simulate'.format(scenario, k))
     os.chdir(projectdirectory)
 
-    logging.info('creating parquet for ' + scenario + '_' + str(k))
+    print('creating parquet for ' + scenario + '_' + str(k))
     xxd_to_parquet(projectdirectory + 'scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.xdd')
 
     logging.info('remove xdd for ' + scenario + '_' + str(k))
