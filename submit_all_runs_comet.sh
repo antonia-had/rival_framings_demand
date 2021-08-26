@@ -8,6 +8,6 @@ for i in $(seq 0 11); do
   sbatch --job-name=batch_$i \
   --output=./outputs/batch_$i.out \
   --error=./errors/batch_$i.err \
-  curtailment_scaling_comet.sh ${start_vals[$i]} ${end_vals[$i]} $i
+  curtailment_scaling_expanse.sh ${start_vals[$i]} ${end_vals[$i]} $i
   sleep 0.5
 done
