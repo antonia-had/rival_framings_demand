@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # SBATCH --nodes=1
-# SBATCH --ntasks-per-node=20
+# SBATCH --ntasks=20
+# SBATCH --cpus-per-task=1
 # SBATCH -p normal
 # SBATCH -t 03:00:00
 # SBATCH --exclusive
