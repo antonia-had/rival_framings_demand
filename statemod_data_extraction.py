@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-
-# SBATCH --nodes=4
-# SBATCH --ntasks-per-node=16
-# SBATCH --cpus-per-task=1
-# SBATCH -p normal
-# SBATCH -t 03:00:00
-# SBATCH --exclusive
-# SBATCH --job-name xdd_to_parquet
-
 import concurrent.futures.thread
 import argparse
 import dask.dataframe as dd
