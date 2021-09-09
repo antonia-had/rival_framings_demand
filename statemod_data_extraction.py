@@ -167,15 +167,6 @@ class StateModDataExtractor:
                         'Parquet files exist in the output directory; ' +
                         'please move them or set `allow_overwrite` to True.'
                     )
-        # create a temporary directory in output path to store intermediate files
-        if not Path(self.temporary_path).is_dir():
-            Path(self.temporary_path).mkdir(parents=True, exist_ok=True)
-        elif len(list(Path(self.temporary_path).glob('*'))) > 0:
-            # if the temporary path already has files, abort if overwrite not allowed
-            raise FileExistsError(
-                f'The temporary file path {self.temporary_path} ' +
-                'already contains files; please move them or set `allow_overwrite` to True.'
-            )
 
         # setup logging
         logging.basicConfig(
@@ -276,7 +267,7 @@ if __name__ == '__main__':
             '--temporary',
             metavar='/path/to/temporary/parquet/directory',
             action='store',
-            default=Path('./xdd_parquet'),
+            default=Path('./test_parquet'),
             dest='temporary',
             help="path to a directory to the temporary parquet files (default: './xdd_parquet')"
         )
