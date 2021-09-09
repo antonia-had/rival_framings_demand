@@ -277,7 +277,7 @@ if __name__ == '__main__':
             metavar='/path/to/temporary/parquet/directory',
             action='store',
             default=Path('./xdd_parquet'),
-            dest='xdd_parquet',
+            dest='temporary',
             help="path to a directory to the temporary parquet files (default: './xdd_parquet')"
         )
 
@@ -287,6 +287,7 @@ if __name__ == '__main__':
             allow_overwrite=args.force,
             output_path=args.output,
             structure_ids_file_path=args.ids,
-            has_mpi=use_mpi
+            has_mpi=use_mpi,
+            temporary_path=args.temporary
         )
         extractor.extract()
