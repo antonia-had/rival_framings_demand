@@ -4,7 +4,6 @@ import dask.dataframe as dd
 from glob import glob
 from importlib.util import find_spec, module_from_spec
 import io
-from joblib import Parallel, delayed
 import logging
 import numpy as np
 import pandas as pd
@@ -50,30 +49,6 @@ class StateModDataExtractor:
 
         # is mpi in use and loaded
         self.use_mpi = has_mpi
-
-        # expected data format
-        self.metadata_rows = np.arange(1, 12)
-        self.id_column = 0
-        self.id_column_name = 'structure_id'
-        self.id_column_type = object
-        self.year_column = 2
-        self.year_column_name = 'year'
-        self.year_column_type = np.uint16
-        self.month_column = 3
-        self.month_column_name = 'month'
-        self.demand_column = 4
-        self.month_column_type = object
-        self.demand_column_name = 'demand'
-        self.demand_column_type = np.uint32
-        self.shortage_column = 17
-        self.shortage_column_name = 'shortage'
-        self.shortage_column_type = np.uint32
-
-        # these columns will be added to all rows
-        self.sample_column_name = 'sample'
-        self.sample_column_type = np.uint16
-        self.realization_column_name = 'realization'
-        self.realization_column_type = np.uint8
 
     def create_file_per_structure_id(self, structure_id: str) -> bool:
         """Reads a collection of parquet files and aggregates values for a structure_id into a single parquet file.
@@ -175,11 +150,8 @@ class StateModDataExtractor:
         if self.use_mpi:
             context = futures.MPIPoolExecutor
             logging.info(f"Running with mpi4py; world size =  {mpi.COMM_WORLD.Get_size()}.")
-        else:
-            context = Parallel
-            logging.info("Running with joblib.")
 
-        with context(**(dict() if self.use_mpi else dict(n_jobs=-1, temp_folder=self.temporary_path))) as executor:
+        with context as executor:
 
             # aggregate the temporary files per structure_id to create the final output files
             logging.info('Aggregating structure_id data to parquet files.')
@@ -188,10 +160,6 @@ class StateModDataExtractor:
                     self.create_file_per_structure_id,
                     self.ids_of_interest,
                     unordered=True
-                )
-            else:
-                successful_structure_id = executor(
-                    delayed(self.create_file_per_structure_id)(structure_id) for structure_id in self.ids_of_interest
                 )
             # check how many failed
             failed_parquet = [
