@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=shared
-#SBATCH --account=TG-MCA08X018
+#SBATCH --account=TG-EAR090013
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=100
