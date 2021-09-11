@@ -151,7 +151,7 @@ class StateModDataExtractor:
             context = futures.MPIPoolExecutor
             logging.info(f"Running with mpi4py; world size =  {mpi.COMM_WORLD.Get_size()}.")
 
-        with context as executor:
+        with context() as executor:
 
             # aggregate the temporary files per structure_id to create the final output files
             logging.info('Aggregating structure_id data to parquet files.')
