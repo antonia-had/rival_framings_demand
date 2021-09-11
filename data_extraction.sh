@@ -9,4 +9,4 @@
 
 
 source /home/fs02/pmr82_0001/ah986/rival_framings/bin/activate
-mpirun python3 statemod_data_extraction.py -i ./ids.txt
+mpiexec -n 1 -usize 20 python3 statemod_data_extraction.py -i ./ids.txt
