@@ -232,6 +232,7 @@ if __name__ == '__main__':
 
         args = parser.parse_args()
 
+        logging.info('Running extractor')
         extractor = StateModDataExtractor(
             allow_overwrite=args.force,
             output_path=args.output,
