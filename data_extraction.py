@@ -32,7 +32,7 @@ def create_file_per_structure_id(self, structure_id: str) -> bool:
 	)
 	return True
 
-structures = np.loadtxt('ids.txt')
+structures = np.genfromtxt('ids.txt', dtype='str').tolist()
 total_number = len(structures)
 
 # Begin parallel simulation
