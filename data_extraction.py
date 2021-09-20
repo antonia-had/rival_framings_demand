@@ -8,7 +8,7 @@ import logging
 temporary_path = './xdd_parquet'
 output_path = './parquet_outputs'
 
-def create_file_per_structure_id(self, structure_id: str) -> bool:
+def create_file_per_structure_id(structure_id: str) -> bool:
 	"""Reads a collection of parquet files and aggregates values for a structure_id into a single parquet file.
 
     Args:
