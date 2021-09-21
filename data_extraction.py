@@ -82,6 +82,7 @@ else:
 	start = remainder*(count+1) + (rank-remainder)*count
 	stop = start + count
 
+print("Process " + str(rank) + "working on SOWs from " + str(start) + "to " + str(stop))
 for k in range(start, stop):
     temporary_sow_id = create_temporary_files_per_sow(states_of_the_world[k])
     if not temporary_sow_id:
@@ -102,6 +103,8 @@ if rank < remainder:
 else:
 	start = remainder*(count+1) + (rank-remainder)*count
 	stop = start + count
+
+print("Process " + str(rank) + "working on structures from " + str(start) + "to " + str(stop))
 
 for s in range(start, stop):
     structure_output = create_file_per_structure_id(structures[s])
