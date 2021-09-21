@@ -17,7 +17,7 @@ def create_file_per_structure_id(structure_id: str) -> bool:
     Returns:
         bool: a boolean indicating whether aggregation was successful (True means success)
     """
-
+	print("collecting all files for " + structure_id)
 	df = dd.read_parquet(
 		Path(f'{temporary_path}/**/S*_*_*.parquet'),
 		engine='pyarrow-dataset', filters=[['structure_id', '=', structure_id]]
