@@ -25,6 +25,7 @@ def create_file_per_structure_id(structure_id: str) -> bool:
 	if len(df.index) == 0:
 		logging.warning(f'No data for for structure_id: {structure_id}.')
 		return False
+	print("creating file for " + structure_id)
 	df.to_parquet(
 		Path(f'{output_path}/{structure_id}.parquet'),
 		engine='pyarrow',
