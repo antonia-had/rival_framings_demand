@@ -29,7 +29,7 @@ def create_temporary_files_per_sow(sow: str) -> bool:
 			return False
 		print(f'Creating file {temporary_path}/{sow}_{structure_id}.parquet')
 		new_df.to_parquet(
-			Path(f'{temporary_path}/{sow}_{structure_id}.parquet'),
+			Path(f'{temporary_path}/{sow}/{sow}_{structure_id}.parquet'),
 			engine='pyarrow',
 			compression='gzip'
 		)

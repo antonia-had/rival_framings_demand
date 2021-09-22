@@ -1,10 +1,11 @@
 #!/bin/bash
 
-#SBATCH --nodes=5
-#SBATCH --ntasks-per-node=66
+#SBATCH --nodes=12
+#SBATCH --ntasks-per-node=7
 #SBATCH -p normal
-#SBATCH -t 3:00:00
+#SBATCH -t 30:00:00
 #SBATCH --export=ALL
+#SBATCH --exclusive
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 
