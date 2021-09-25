@@ -67,13 +67,13 @@ def curtailment_scaling(i, k):
         # writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR, firstline_iwr, k,
         #             users, curtailment_years)
         #
-        # d = {'IWR': 'cm2015B_' + scenario + '_' + str(k) + '.iwr',
-        #      'DDM': 'cm2015B_' + scenario + '_' + str(k) + '.ddm',
-        #      'XBM': 'cm2015x_' + scenario + '.xbm'}
-        # new_rsp = template_RSP.safe_substitute(d)
-        # f1 = open('./scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.rsp', 'w')
-        # f1.write(new_rsp)
-        # f1.close()
+        d = {'IWR': 'cm2015B_' + scenario + '_' + str(k) + '.iwr',
+             'DDM': 'cm2015B_' + scenario + '_' + str(k) + '.ddm',
+             'XBM': 'cm2015x_' + scenario + '.xbm'}
+        new_rsp = template_RSP.safe_substitute(d)
+        f1 = open('./scenarios/' + scenario + '/' + scenario + '_' + str(k) + '.rsp', 'w')
+        f1.write(new_rsp)
+        f1.close()
 
         print('running ' + scenario + '_' + str(k))
         # Run simulation
