@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --nodes=12
-#SBATCH --ntasks-per-node=7
+#SBATCH --nodes=9
+#SBATCH --ntasks-per-node=40
 #SBATCH -p normal
 #SBATCH -t 30:00:00
 #SBATCH --export=ALL
