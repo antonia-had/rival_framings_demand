@@ -18,7 +18,7 @@ END_NUM=99
 # Run the loop of runs for this task.
 for (( run=$START_NUM; run<=END_NUM; run++ )); do
   echo This is SLURM task $SLURM_ARRAY_TASK_ID, run number $run
-  srun python3 extract_xdd_flow_only.py ../LHsamples_wider_100_AnnQonly/cm2015B_S$run_$SLURM_ARRAY_TASK_ID.xdd
+  srun python3 extract_xdd_flow_only.py ../LHsamples_wider_100_AnnQonly/cm2015B_S${run}_${SLURM_ARRAY_TASK_ID}.xdd
 done
 
 

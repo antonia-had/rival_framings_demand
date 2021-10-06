@@ -8,7 +8,7 @@ import argparse
 
 
 sample_number_regex = re.compile('S(\d+)_')
-realization_number_regex = re.compile(r'_(\d+).xdd')
+realization_number_regex = re.compile(r'_(\d+)(?:\.xdd)?$')
 
 expected_column_sizes = np.asarray([
             11, 12, 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 12, 11
