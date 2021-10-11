@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1                   # Use one node
 #SBATCH --ntasks=1                  # Run a single task
-#SBATCH --time 2:30:00
+#SBATCH --time 5:00:00
 #SBATCH --exclusive
 #SBATCH --export=ALL
 #SBATCH --mail-user=ah986@cornell.edu
@@ -23,7 +23,12 @@ END_NUM=$(( $SLURM_ARRAY_TASK_ID * $PER_TASK ))
 for (( run=$START_NUM; run<=END_NUM; run++ )); do
   ID=$(sed -n "$run"p ids.txt)
   echo This is SLURM task $SLURM_ARRAY_TASK_ID, run number $run, structure $ID
-  srun python3 structure_data_extraction_flow.py ./parquet_outputs_flow ./xdd_parquet_flow/ $ID
+  FILE=./parquet_outputs_flow/$ID
+  if test -f "$FILE.parquet"; then
+      echo "$ID exists."
+  else
+    srun python3 structure_data_extraction_flow.py ./parquet_outputs_flow ./xdd_parquet_flow/ $ID
+  fi
 done
 
 
