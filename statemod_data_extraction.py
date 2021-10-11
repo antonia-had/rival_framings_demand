@@ -13,7 +13,7 @@ import shutil
 import sys
 from timeit import default_timer as timer
 from typing import Iterable
-from mpi4py.futures import MPIPoolExecutor
+from mpi4py import MPI
 
 class StateModDataExtractor:
     """Class to handle extracting structure, sample, and realization data from StateMod xdd files."""

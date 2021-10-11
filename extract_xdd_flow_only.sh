@@ -7,9 +7,6 @@
 #SBATCH --mail-type=ALL
 #SBATCH --array=1-10                # Array range
 
-#Set the number of runs that each SLURM task should do
-PER_TASK=100
-
 source /home/fs02/pmr82_0001/ah986/envs/rival_framings/bin/activate
 
 START_NUM=0

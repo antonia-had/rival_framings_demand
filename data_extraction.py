@@ -35,7 +35,7 @@ def create_temporary_files_per_sow(sow: str) -> bool:
 		)
 	return True
 
-def create_file_per_structure_id(structure_id: str) -> bool:
+def create_file_per_structure_id(output_path, temporary_path, structure_id: str) -> bool:
 	"""Reads a collection of parquet files and aggregates values for a structure_id into a single parquet file.
 
     Args:
@@ -108,7 +108,7 @@ else:
 print("Process " + str(rank) + " working on structures from " + str(start) + " to " + str(stop))
 
 for s in range(start, stop):
-    structure_output = create_file_per_structure_id(structures[s])
+    structure_output = create_file_per_structure_id(output_path, temporary_path, structures[s])
     if not structure_output:
         print('Failed to create file for ' + structures[s])
 
