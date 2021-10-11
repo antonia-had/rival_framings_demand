@@ -2,10 +2,11 @@
 #SBATCH --nodes=1                   # Use one node
 #SBATCH --ntasks=1                  # Run a single task
 #SBATCH --time 2:30:00
+#SBATCH --exclusive
 #SBATCH --export=ALL
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
-#SBATCH --array=1-7                # Array range
+#SBATCH --array=1-4                # Array range
 
 source /home/fs02/pmr82_0001/ah986/rival_framings/bin/activate
 
