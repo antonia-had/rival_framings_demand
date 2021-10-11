@@ -20,9 +20,9 @@ END_NUM=$(( $SLURM_ARRAY_TASK_ID * $PER_TASK ))
 
 # Run the loop of runs for this task.
 for (( run=$START_NUM; run<=END_NUM; run++ )); do
-  structure=$(sed -n "run"p ids.txt)
-  echo This is SLURM task $SLURM_ARRAY_TASK_ID, run number $run, structure $structure
-#  srun python3 structure_data_extraction_flow.py ./structure_outputs ./xdd_parquet_flow/
+  ID=$(sed -n "$run"p ids.txt)
+  echo This is SLURM task $SLURM_ARRAY_TASK_ID, run number $run, structure $ID
+  srun python3 structure_data_extraction_flow.py ./structure_outputs ./xdd_parquet_flow/ $ID
 done
 
 
