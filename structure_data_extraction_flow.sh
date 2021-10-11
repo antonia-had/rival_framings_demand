@@ -6,7 +6,7 @@
 #SBATCH --export=ALL
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
-#SBATCH --array=1-4                # Array range
+#SBATCH --array=1-7                # Array range
 
 source /home/fs02/pmr82_0001/ah986/rival_framings/bin/activate
 
