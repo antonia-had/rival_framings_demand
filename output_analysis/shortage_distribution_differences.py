@@ -1,7 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 plt.switch_backend('agg')
-from scipy import stats
 import pandas as pd
 import argparse
 
