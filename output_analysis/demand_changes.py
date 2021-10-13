@@ -67,9 +67,12 @@ def plot_demand_changes(sample, realization, structure_id):
     annual_totals = np.sum(f_shortage_adaptive, axis=1)
 
     #print list of rules where totals are higher
+    sample_total = np.sum(f_shortage_sow_totals)
+    print(f'sample total is {sample_total}')
     for k in range(total_number_rules):
-        if np.sum(annual_totals[:,k])>np.sum(f_shortage_sow_totals):
-            print(f'rule {k} is over')
+        rule_total=np.sum(annual_totals[:,k])
+        if rule_total>sample_total:
+            print(f'rule {k} is over with total {rule_total}')
 
     # Calculate synthetic shortage duration curves
     # Loop through every SOW and sort
