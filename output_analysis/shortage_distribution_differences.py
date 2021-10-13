@@ -83,9 +83,11 @@ def plotSDC(sample, realization, structure_id):
     labels = []
     colors = ['#000292', '#BB4430']
     ax1.fill_between(P, y1=np.amin(F_syn, axis=1),
-                     y2=np.amax(F_syn, axis=1), color=colors[0], alpha=0.5)
-    ax1.plot(P, F_sow_shortages, c=colors[0], linewidth=2, label='SOW without adaptive demands')
-    ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
+                     y2=np.amax(F_syn, axis=1), color=colors[0], alpha=0.4)
+    for j in range(total_number_rules):
+        ax1.plot(P, F_syn[:, j] , c=colors[0], linewidth=1, alpha=0.7)
+    ax1.plot(P, F_sow_shortages, c=colors[0], linewidth=3, label='SOW without adaptive demands')
+    ax1.plot(P, F_hist, c='black', linewidth=3, label='Historical record')
     ax1.set_ylim(0, ylimit)
     ax1.set_xlim(0, 100)
     ax1.legend(handles=handles, labels=labels, framealpha=1, fontsize=8, loc='upper left',
