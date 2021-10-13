@@ -74,6 +74,7 @@ def plot_demand_changes(sample, realization, structure_id):
         if rule_total>sample_total:
             print(f'rule {k} is over')
             print(annual_totals[:,k])
+            print(f_shortage_sow_totals)
             break
 
     # Calculate synthetic shortage duration curves
