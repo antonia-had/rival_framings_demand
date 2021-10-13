@@ -95,8 +95,7 @@ def plotSDC(sample, realization, structure_id):
 
     fig.suptitle('Shortage magnitudes for ' + structure_id, fontsize=16)
     plt.subplots_adjust(bottom=0.2)
-    #fig.savefig(fig_output_path + '/' + structure_id + '.svg')
-    fig.savefig(fig_output_path + '/' + structure_id + '.png')
+    fig.savefig(f'{fig_output_path}/S{sample}_{realization}_{structure_id}.png')
     fig.clf()
 
 if __name__ == '__main__':
