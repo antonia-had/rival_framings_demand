@@ -84,6 +84,8 @@ def plot_demand_changes(sample, realization, structure_id):
     colors = ['#000292', '#BB4430']
     ax1.fill_between(P, y1=np.amin(F_syn, axis=1),
                      y2=np.amax(F_syn, axis=1), color=colors[1], alpha=0.5)
+    for j in range(total_number_rules):
+        ax1.plot(P, F_syn[:, j], c=colors[1], linewidth=1, alpha=0.7)
     ax1.plot(P, F_sow_shortages, c=colors[1], linewidth=2, label='SOW without adaptive demands')
     ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
     ax1.set_ylim(0, ylimit)
