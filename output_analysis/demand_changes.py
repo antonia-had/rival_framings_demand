@@ -21,8 +21,8 @@ def plot_demand_changes(sample, realization, structure_id):
     f_hist = np.reshape(histData, (int(np.size(histData) / n), n))
     # Reshape to annual totals
     f_hist_totals = np.sum(f_hist, 1)
-    # Calculate historical shortage duration curves
-    F_hist = np.sort(f_hist_totals)  # for inverse sorting add this at the end [::-1]
+    # # Calculate historical shortage duration curves
+    # F_hist = np.sort(f_hist_totals)  # for inverse sorting add this at the end [::-1]
 
     '''
     Read and reshape flow experiment data
@@ -37,7 +37,7 @@ def plot_demand_changes(sample, realization, structure_id):
     # Reshape to annual totals
     f_shortage_sow_totals = np.sum(f_shortage_sow, 1)
     # Calculate shortage duration curves
-    F_sow_shortages = np.sort(f_shortage_sow_totals)  # for inverse sorting add this at the end [::-1]
+    # F_sow_shortages = np.sort(f_shortage_sow_totals)  # for inverse sorting add this at the end [::-1]
 
     '''
     Read and reshape adaptive demand experiment data
@@ -68,36 +68,35 @@ def plot_demand_changes(sample, realization, structure_id):
 
     # Calculate synthetic shortage duration curves
     # Loop through every SOW and sort
-    for j in range(total_number_rules):
-        F_syn[:, j] = np.sort(annual_totals[:, j])
+    # for j in range(total_number_rules):
+    #     F_syn[:, j] = np.sort(annual_totals[:, j])
 
-    p = np.arange(100, -10, -50)
+    #P = np.arange(1., len(histData)/12 + 1) * 100 / (len(histData)/12)
+    P = np.arange(1, len(histData)/12 + 1)
 
-    P = np.arange(1., len(histData)/12 + 1) * 100 / (len(histData)/12)
-
-    ylimit = max(np.max(F_syn), np.max(F_hist), np.max(F_sow_shortages))
+    ylimit = max(np.max(annual_totals), np.max(f_hist_totals), np.max(f_shortage_sow_totals))
 
     fig, (ax1) = plt.subplots(1, 1, figsize=(14.5, 8))
     # ax1
     handles = []
     labels = []
     colors = ['#000292', '#BB4430']
-    ax1.fill_between(P, y1=np.amin(F_syn, axis=1),
-                     y2=np.amax(F_syn, axis=1), color=colors[1], alpha=0.5)
+    ax1.fill_between(P, y1=np.amin(annual_totals, axis=1),
+                     y2=np.amax(annual_totals, axis=1), color=colors[1], alpha=0.5)
     for j in range(total_number_rules):
-        ax1.plot(P, F_syn[:, j], c=colors[1], linewidth=1, alpha=0.7)
-    ax1.plot(P, F_sow_shortages, c=colors[1], linewidth=2, label='SOW without adaptive demands')
-    ax1.plot(P, F_hist, c='black', linewidth=2, label='Historical record')
+        ax1.plot(P, annual_totals[:, j], c=colors[1], linewidth=1, alpha=0.7)
+    ax1.plot(P, f_shortage_sow_totals, c=colors[1], linewidth=2, label='SOW without adaptive demands')
+    ax1.plot(P, f_hist_totals, c='black', linewidth=2, label='Historical record')
     ax1.set_ylim(0, ylimit)
     ax1.set_xlim(0, 100)
     ax1.legend(handles=handles, labels=labels, framealpha=1, fontsize=8, loc='upper left',
-               title='Frequency in experiment', ncol=2)
-    ax1.set_xlabel('Shortage magnitude percentile', fontsize=20)
-    ax1.set_ylabel('Annual shortage (Million $m^3$)', fontsize=20)
+                ncol=2)
+    ax1.set_xlabel('Year', fontsize=20)
+    ax1.set_ylabel('Annual demand (Million $m^3$)', fontsize=20)
 
     fig.suptitle('Shortage magnitudes for ' + structure_id, fontsize=16)
     plt.subplots_adjust(bottom=0.2)
-    fig.savefig(f'{fig_output_path}/S{sample}_{realization}_{structure_id}.png')
+    fig.savefig(f'{fig_output_path}/S{sample}_{realization}_{structure_id}_demands.png')
     fig.clf()
 
 if __name__ == '__main__':
