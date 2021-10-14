@@ -1,6 +1,7 @@
 import numpy as np
 
 lengths = [5, 12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10]  # lengths of intervals to split rows in
+irrigation = np.genfromtxt('./structures_files/irrigation.txt',dtype='str')
 
 def search_string_in_file(file_name, string_to_search):
     """Search for the given string in file and return the line numbers containing that string"""
@@ -69,20 +70,22 @@ def writenewDDM(scenario, all_data_DDM, firstline_ddm, CMIP_IWR,
         sample_IWR[m] = [sample_IWR[m][sum(lengths[:k]):sum(lengths[:k+1])] for k in range(len(lengths))]
 
     new_data = []
-    irrigation_encounters = np.zeros(len(users))
+    irrigation_sets = -1
 
     for j in range(len(all_data_DDM) - firstline_ddm):
         # To store the change between historical and sample irrigation demand (12 months + Total)
         change = np.zeros(13)
         # Split first 3 columns of row on space
-        # This is because the first month is lumped together with the year and the ID when spliting on periods
+        # This is because the first month is lumped together with the year and the ID when splitting on periods
         row = all_data_DDM[j + firstline_ddm]
         row_data = [row[sum(lengths[:k]):sum(lengths[:k+1])] for k in range(len(lengths))]
+        # Count number of full sets
+        if row_data[1].strip() == '3600507':
+            irrigation_sets += 1
         # If the structure is not in the ones we care about then do nothing
         if int(row_data[0]) in curtailment_years and row_data[1].strip() in users:
-            index = np.where(users == row_data[1].strip())[0][0]
-            line_in_iwr = int(irrigation_encounters[index] * len(users) + index)
-            irrigation_encounters[index] = +1
+            index = np.where(irrigation == row_data[1].strip())[0][0]
+            line_in_iwr = int(irrigation_sets * len(irrigation) + index)
             for m in range(len(change)):
                 change[m] = float(sample_IWR[line_in_iwr][2 + m]) - float(CMIP_IWR[line_in_iwr][2 + m])
                 value = float(row_data[m + 2]) + change[m]
