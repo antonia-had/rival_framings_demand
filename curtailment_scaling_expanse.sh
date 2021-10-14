@@ -9,6 +9,7 @@
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 #SBATCH --export=ALL
+#SBATCH --output=/dev/null
 
 module load anaconda3
 

@@ -94,6 +94,6 @@ if __name__ == '__main__':
     parser.add_argument('i', type=int,
                         help='scenario number')
     parser.add_argument('k', type=int,
-                        help='realization number')
+                        help='rule number')
     args = parser.parse_args()
     curtailment_scaling(args.i, args.k)
