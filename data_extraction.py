@@ -69,33 +69,11 @@ comm = MPI.COMM_WORLD
 rank = comm.rank
 nprocs = comm.size
 
-# # Divide all SOWs to available cores
-#
-# # Determine the chunk which each processor will need to do
-# count = int(math.floor(total_number_sows/nprocs))
-# remainder = total_number_sows % nprocs
-#
-# # Use the processor rank to determine the chunk of work each processor will do
-# if rank < remainder:
-# 	start = rank*(count+1)
-# 	stop = start + count + 1
-# else:
-# 	start = remainder*(count+1) + (rank-remainder)*count
-# 	stop = start + count
-#
-# print("Process " + str(rank) + " working on SOWs from " + str(start) + " to " + str(stop))
-# for k in range(start, stop):
-#     temporary_sow_id = create_temporary_files_per_sow(states_of_the_world[k])
-#     if not temporary_sow_id:
-#         print('Failed to create files for ' + states_of_the_world[k])
-
-# comm.barrier()
-
-# Divide all structure IDs to available cores
+# Divide all SOWs to available cores
 
 # Determine the chunk which each processor will need to do
-count = int(math.floor(total_number_structures/nprocs))
-remainder = total_number_structures % nprocs
+count = int(math.floor(total_number_sows/nprocs))
+remainder = total_number_sows % nprocs
 
 # Use the processor rank to determine the chunk of work each processor will do
 if rank < remainder:
@@ -105,10 +83,32 @@ else:
 	start = remainder*(count+1) + (rank-remainder)*count
 	stop = start + count
 
-print("Process " + str(rank) + " working on structures from " + str(start) + " to " + str(stop))
+print("Process " + str(rank) + " working on SOWs from " + str(start) + " to " + str(stop))
+for k in range(start, stop):
+    temporary_sow_id = create_temporary_files_per_sow(states_of_the_world[k])
+    if not temporary_sow_id:
+        print('Failed to create files for ' + states_of_the_world[k])
 
-for s in range(start, stop):
-    structure_output = create_file_per_structure_id(output_path, temporary_path, structures[s])
-    if not structure_output:
-        print('Failed to create file for ' + structures[s])
+# comm.barrier()
+
+# Divide all structure IDs to available cores
+
+# # Determine the chunk which each processor will need to do
+# count = int(math.floor(total_number_structures/nprocs))
+# remainder = total_number_structures % nprocs
+#
+# # Use the processor rank to determine the chunk of work each processor will do
+# if rank < remainder:
+# 	start = rank*(count+1)
+# 	stop = start + count + 1
+# else:
+# 	start = remainder*(count+1) + (rank-remainder)*count
+# 	stop = start + count
+#
+# print("Process " + str(rank) + " working on structures from " + str(start) + " to " + str(stop))
+#
+# for s in range(start, stop):
+#     structure_output = create_file_per_structure_id(output_path, temporary_path, structures[s])
+#     if not structure_output:
+#         print('Failed to create file for ' + structures[s])
 

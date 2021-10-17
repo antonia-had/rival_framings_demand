@@ -6,13 +6,12 @@ import pickle
 hist_flows = pd.read_csv('./hist_files/AnnualQ.csv',delimiter=',', header=0, index_col=0)
 basin_hist_flows = hist_flows['Site208'].values
 hist_shortages = np.loadtxt('./hist_files/AnnualShortages.csv', delimiter=',')
-irrigation = np.genfromtxt('./structures_files/irrigation.txt',dtype='str')
-
+irrigation = np.genfromtxt('./structures_files/irrigation.txt',dtype='str').tolist()
 
 '''Get all rights and decrees of each WDID'''
 rights = pd.read_csv('./hist_files/iwr_admin.csv')
 irrigation_rights = rights[rights.WDID.isin(irrigation)]
-groupbyadmin = irrigation_rights.groupby('WDID')
+groupbyadmin = rights.groupby('WDID')
 rights_per_wdid = groupbyadmin.apply(lambda x: x['Admin'].values)
 decrees_per_wdid = groupbyadmin.apply(lambda x: x['Decree'].values)
 
@@ -31,8 +30,8 @@ trigger_flows = [np.percentile(basin_hist_flows, 100 - p, interpolation='nearest
 np.savetxt('trigger_flows.txt', trigger_flows)
 
 # Use rights to determine users and portion to curtail
-threshold_admins = [np.percentile(irrigation_rights['Admin'].values, 100 - p, interpolation='nearest') for p in no_rights]
-rights_to_curtail = [irrigation_rights.loc[irrigation_rights['Admin'] > t] for t in threshold_admins]
+threshold_admins = [np.percentile(rights['Admin'].values, 100 - p, interpolation='nearest') for p in no_rights]
+rights_to_curtail = [rights.loc[rights['Admin'] > t] for t in threshold_admins]
 users_per_threshold = [np.unique(rights_to_curtail[x]['WDID'].values) for x in range(len(no_rights))]
 with open("users_per_threshold.pkl", "wb") as fp:
     pickle.dump(users_per_threshold, fp)
