@@ -59,7 +59,7 @@ def create_file_per_structure_id(output_path, temporary_path, structure_id: str)
 structures = np.genfromtxt('ids.txt', dtype='str').tolist()
 total_number_structures = len(structures)
 
-states_of_the_world = ['S'+str(i)+'_'+str(j) for i in range(1,101) for j in range (1,11)]
+states_of_the_world = ['S'+str(i)+'_'+str(j) for i in range(1, 101) for j in range(1, 11)]
 total_number_sows = len(states_of_the_world)
 
 # Begin parallel simulation
