@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1                   # Use one node
 #SBATCH --ntasks-per-node=5                  # Run a single task
+#SBATCH --exclusive=user
 #SBATCH --time 2:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
