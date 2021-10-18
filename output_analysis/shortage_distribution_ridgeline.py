@@ -40,7 +40,9 @@ def ridgeline(data, name, overlap=0, fill=True, labels=None, n_points=105):
         plt.yticks(ys, labels)
     plt.savefig(f'{fig_output_path}/{name}.pdf')
 
+
 def read_data(sample, realization, structure_id):
+
     n = 12
 
     '''
@@ -95,7 +97,11 @@ def read_data(sample, realization, structure_id):
     annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
     data = [list(f_hist_totals), list(f_shortage_sow_totals)].extend(annual_totals.tolist()[:10])
-    return data
+
+    ridgeline(data, name=f'S{args.sample}_{args.realization}_{args.structure_id}',
+              overlap=0.85, fill='yellow', labels=None, n_points=105)
+
+    return
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create distribution difference figure per ID')
@@ -103,7 +109,4 @@ if __name__ == '__main__':
     parser.add_argument('realization', type=str)
     parser.add_argument('structure_id', type=str)
     args = parser.parse_args()
-    data = read_data(args.sample, args.realization, args.structure_id)
-    print(len(data))
-    ridgeline(data, name=f'S{args.sample}_{args.realization}_{args.structure_id}',
-              overlap=0.85, fill='yellow', labels=None, n_points=105)
+    read_data(args.sample, args.realization, args.structure_id)
