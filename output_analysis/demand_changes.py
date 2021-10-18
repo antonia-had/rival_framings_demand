@@ -54,7 +54,7 @@ def plot_demand_changes(sample, realization, structure_id):
             if r not in applied_rules:
                 print(f'rule {n} applied to S{sample}_{realization} is missing')
 
-    demands_adaptive = df_demands['demand'].values #* 1233.4818 / 1000000
+    demands_adaptive = df_demands['demand'].values * 1233.4818 / 1000000
 
     # Reshape synthetic data
     # Reshape to matrix of [no. years x no. months x no. of rules]
@@ -70,10 +70,10 @@ def plot_demand_changes(sample, realization, structure_id):
     sample_total = np.sum(f_shortage_sow_totals)
     print(f'sample total is {sample_total}')
     for k in range(total_number_rules):
-        rule_total=np.sum(annual_totals[:,k])
+        rule_total=np.sum(annual_totals[k,:])
         if rule_total>sample_total:
             print(f'rule {k} is over')
-            print(annual_totals[:,k])
+            print(annual_totals[k,:])
             print(f_shortage_sow_totals)
             break
 
