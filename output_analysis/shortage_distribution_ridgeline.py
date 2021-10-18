@@ -94,7 +94,7 @@ def read_data(sample, realization, structure_id):
     # Calculate all annual totals
     annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
-    return [list(f_hist_totals), list(f_shortage_sow_totals), annual_totals.tolist()[:10]]
+    return [list(f_hist_totals), list(f_shortage_sow_totals)].extend(annual_totals.tolist()[:10])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create distribution difference figure per ID')
