@@ -57,7 +57,7 @@ def variable_effects(sample, realization, structure_id):
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(rules_sample[:, 0], rules_sample[:, 1], rules_sample[:, 2], c=rule_value, cmap='coolwarm', s=50)
+    im = ax.scatter(rules_sample[:, 0], rules_sample[:, 1], rules_sample[:, 2], c=rule_value, cmap='coolwarm', s=50)
 
     ax.set_xticks(list(np.arange(6)))
     ax.set_yticks(list(np.arange(10)))
@@ -70,6 +70,8 @@ def variable_effects(sample, realization, structure_id):
     ax.set_xlabel('Historical flow percentile trigger')
     ax.set_ylabel('Rights included (% of total number)')
     ax.set_zlabel('Demand scaling level (% of total demand)')
+
+    fig.colorbar(im, ax=ax, label='Difference in mean deliveries')
 
     fig.savefig(f'{fig_output_path}/S{sample}_{realization}_{structure_id}.png')
     fig.clf()
