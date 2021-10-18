@@ -98,6 +98,8 @@ def read_data(sample, realization, structure_id):
 
     data = [list(f_hist_totals), list(f_shortage_sow_totals)].extend(annual_totals.tolist()[:10])
 
+    print(np.shape(data))
+
     ridgeline(data, name=f'S{args.sample}_{args.realization}_{args.structure_id}',
               overlap=0.85, fill='yellow', labels=None, n_points=105)
 
