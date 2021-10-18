@@ -34,10 +34,10 @@ def ridgeline(data, name, overlap=0, labels=None, n_points=105):
         y = i*(1.0-overlap)
         ys.append(y)
         curve = pdf(xx)
-        if i==0:
+        if i == 0:
             plt.fill_between(xx, np.ones(n_points)*y,
                              curve+y, zorder=len(data)-i+1, color=history_color)
-        elif i==1:
+        elif i == 1:
             plt.fill_between(xx, np.ones(n_points)*y,
                              curve+y, zorder=len(data)-i+1, color=scenario_color)
         else:
