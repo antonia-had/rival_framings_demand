@@ -94,7 +94,8 @@ def read_data(sample, realization, structure_id):
     # Calculate all annual totals
     annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
-    return [list(f_hist_totals), list(f_shortage_sow_totals)].extend(annual_totals.tolist()[:10])
+    data = [list(f_hist_totals), list(f_shortage_sow_totals)].extend(annual_totals.tolist()[:10])
+    return data
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create distribution difference figure per ID')
@@ -103,6 +104,5 @@ if __name__ == '__main__':
     parser.add_argument('structure_id', type=str)
     args = parser.parse_args()
     data = read_data(args.sample, args.realization, args.structure_id)
-    print(data)
     ridgeline(data, name=f'S{args.sample}_{args.realization}_{args.structure_id}',
               overlap=0.85, fill='yellow', labels=None, n_points=105)
