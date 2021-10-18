@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import argparse
 from matplotlib import pyplot as plt
 plt.switch_backend('agg')
 
@@ -68,3 +69,11 @@ def variable_effects(sample, realization, structure_id):
 
     fig.savefig(f'{fig_output_path}/S{sample}_{realization}_{structure_id}.png')
     fig.clf()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Create distribution difference figure per ID')
+    parser.add_argument('sample', type=str)
+    parser.add_argument('realization', type=str)
+    parser.add_argument('structure_id', type=str)
+    args = parser.parse_args()
+    variable_effects(args.sample, args.realization, args.structure_id)
