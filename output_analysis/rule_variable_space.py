@@ -58,7 +58,7 @@ def variable_effects(sample, realization, structure_id):
 
     rules_sample = np.loadtxt('../factorial_sample.txt', dtype=int)
 
-    fig = plt.figure(1, 1, figsize=(12, 8))
+    fig = plt.figure(figsize=(12, 8))
     ax = fig.add_subplot(111, projection='3d')
     im = ax.scatter(rules_sample[:, 0], rules_sample[:, 1], rules_sample[:, 2], c=rule_value, cmap='coolwarm', s=50)
 
