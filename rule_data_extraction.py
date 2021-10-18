@@ -9,6 +9,7 @@ def create_file_per_rule(sow, rule):
     print(f'working on SOW {sow} rule {rule}')
     df = dd.read_parquet(Path(f'{statemod_outputs}/**/S{sow}_*_{rule}.parquet'),
                          engine='pyarrow-dataset').compute()
+    print(f'saving {rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet')
     df.to_parquet(Path(f'{rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet'), engine='pyarrow',
                   compression='gzip')
     return True
