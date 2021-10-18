@@ -69,7 +69,7 @@ def plotSDC(sample, realization, structure_id):
     # Calculate synthetic shortage duration curves
     # Loop through every SOW and sort
     for j in range(total_number_rules):
-        F_syn[:, j] = np.sort(annual_totals[:, j])
+        F_syn[:, j] = np.sort(annual_totals[j, :])
 
     p = np.arange(100, -10, -50)
 
