@@ -64,7 +64,7 @@ def plotSDC(sample, realization, structure_id):
     F_syn = np.zeros([int(len(histData) / n), total_number_rules])
 
     # Calculate all annual totals
-    annual_totals = np.sum(f_shortage_adaptive, axis=1)
+    annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
     # Calculate synthetic shortage duration curves
     # Loop through every SOW and sort
