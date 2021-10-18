@@ -28,7 +28,9 @@ flow_feature = ShapelyFeature(Reader('../structures_files/Shapefiles/UCRBstreams
 # with open("../curtailment_per_threshold.pkl", "rb") as fp:
 #     curtailment_per_threshold = pickle.load(fp)
 
-def draw_delivery_change_per_user(sample, realization):
+rule_outputs = '../rules_parquet'
+
+def draw_delivery_change_per_rule(rule):
 
     # Create figure to draw points on
     fig = plt.figure(figsize=(18, 9))
@@ -42,9 +44,10 @@ def draw_delivery_change_per_user(sample, realization):
     ax.add_feature(flow_feature, alpha=0.6, linewidth=1.5, zorder=4)
 
     # Read data for state of the world
-    df = pd.read_parquet(f'../xdd_parquet_flow/S{sample}_{realization}.parquet')
+    df = pd.read_parquet(f'{rule_outputs}/{rule}.parquet')
 
     for structure_id in ids_of_interest:
+
         '''
         Read and reshape flow experiment data
         '''
@@ -61,6 +64,24 @@ def draw_delivery_change_per_user(sample, realization):
         '''
         Read and reshape adaptive demand experiment data
         '''
+        df_demands = pd.read_parquet(
+            f'../temp_parquet/S{sample}_{realization}/S{sample}_{realization}_{structure_id}.parquet')
+        # Check rules applied
+        rules = df_demands['demand rule'].values
+        applied_rules = np.unique(rules)
+        total_number_rules = len(applied_rules)
+
+        deliveries_adaptive = (df_demands['demand'].values - df_demands['shortage'].values) * 1233.4818 / 1000000
+
+        # Reshape synthetic data
+        # Reshape to matrix of [no. years x no. months x no. of rules]
+        f_deliveries_adaptive = np.reshape(deliveries_adaptive, (total_number_rules, realization_years, months))
+
+        # Calculate all annual totals
+        annual_totals = np.sum(f_deliveries_adaptive, axis=2)
+
+        # Create matrix to store annual total duration curves
+        rule_value = (np.mean(annual_totals, axis=1) - base_value) * 100 / base_value
 
     points = ax.scatter(structures['X'], structures['Y'], marker='.',
                         s=structures['sizes']*10, c='#457b9d', alpha=0.4,

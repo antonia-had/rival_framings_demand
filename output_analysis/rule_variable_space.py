@@ -15,7 +15,7 @@ def variable_effects(sample, realization, structure_id):
     Read flow experiment data
     '''
     # Read data for state of the world
-    df = pd.read_parquet(f'../xdd_parquet_flow/S{sample}_{realization}.parquet')
+    df = pd.read_parquet(f'../xdd_parquet_flow/S{int(sample)-1}_{realization}.parquet')
     mask = df['structure_id'] == structure_id
     new_df = df[mask]
     deliveries_sow = (new_df['demand'].values - new_df['shortage'].values) * 1233.4818 / 1000000

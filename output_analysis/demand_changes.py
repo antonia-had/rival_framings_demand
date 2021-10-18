@@ -28,7 +28,7 @@ def plot_demand_changes(sample, realization, structure_id):
     Read and reshape flow experiment data
     '''
     # Read data for state of the world
-    df = pd.read_parquet(f'../xdd_parquet_flow/S{sample}_{realization}.parquet')
+    df = pd.read_parquet(f'../xdd_parquet_flow/S{int(sample)-1}_{realization}.parquet')
     mask = df['structure_id'] == structure_id
     new_df = df[mask]
     shortage_sow = new_df['demand'].values * 1233.4818 / 1000000
