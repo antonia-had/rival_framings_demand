@@ -35,7 +35,7 @@ def variable_effects(sample, realization, structure_id):
     applied_rules = np.unique(rules)
     total_number_rules = len(applied_rules)
     # Check rules applied
-    if total_number_rules<600:
+    if total_number_rules < 600:
         # if rules are missing, check which
         for r in range(600):
             if r not in applied_rules:
@@ -51,7 +51,7 @@ def variable_effects(sample, realization, structure_id):
     annual_totals = np.sum(f_deliveries_adaptive, axis=2)
 
     # Create matrix to store annual total duration curves
-    rule_value = (base_value - np.max(annual_totals, axis=1))*100/base_value
+    rule_value = (np.max(annual_totals, axis=1) - base_value) * 100 / base_value
 
     rules_sample = np.loadtxt('../factorial_sample.txt', dtype=int)
 
