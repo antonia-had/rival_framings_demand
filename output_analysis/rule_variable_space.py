@@ -59,9 +59,13 @@ def variable_effects(sample, realization, structure_id):
     ax = fig.add_subplot(111, projection='3d')
     ax.scatter(rules_sample[:, 0], rules_sample[:, 1], rules_sample[:, 2], c=rule_value, cmap='coolwarm', s=50)
 
-    ax.set_xticks(list(np.arange(75, 105, 5)))
-    ax.set_yticks(list(np.arange(10, 110, 10)))
-    ax.set_zticks(list(np.arange(10, 110, 10)))
+    ax.set_xticks(list(np.arange(6)))
+    ax.set_yticks(list(np.arange(10)))
+    ax.set_zticks(list(np.arange(10)))
+
+    ax.set_xticklabels(list(np.arange(75, 105, 5)))
+    ax.set_ytickslabels(list(np.arange(10, 110, 10)))
+    ax.set_ztickslabels(list(np.arange(10, 110, 10)))
 
     ax.set_xlabel('Historical flow percentile trigger')
     ax.set_ylabel('Rights included (% of total number)')
