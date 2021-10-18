@@ -1,8 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1                   # Use one node
-#SBATCH --ntasks=5                  # Run a single task
+#SBATCH --ntasks-per-node=5                  # Run a single task
 #SBATCH --time 2:00:00
-#SBATCH --exclusive
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 #SBATCH --array=1-60                # Array range
