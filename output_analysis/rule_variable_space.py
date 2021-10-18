@@ -24,7 +24,7 @@ def variable_effects(sample, realization, structure_id):
     # Reshape to annual totals
     f_deliveries_sow_totals = np.sum(f_deliveries_sow, 1)
     # Value to compare to
-    base_value = np.max(f_deliveries_sow_totals)
+    base_value = np.mean(f_deliveries_sow_totals)
 
     '''
     Read and reshape adaptive demand experiment data
@@ -51,7 +51,7 @@ def variable_effects(sample, realization, structure_id):
     annual_totals = np.sum(f_deliveries_adaptive, axis=2)
 
     # Create matrix to store annual total duration curves
-    rule_value = (np.max(annual_totals, axis=1) - base_value) * 100 / base_value
+    rule_value = (np.mean(annual_totals, axis=1) - base_value) * 100 / base_value
 
     rules_sample = np.loadtxt('../factorial_sample.txt', dtype=int)
 
@@ -71,7 +71,7 @@ def variable_effects(sample, realization, structure_id):
     ax.set_ylabel('Rights included (% of total number)')
     ax.set_zlabel('Demand scaling level (% of total demand)')
 
-    fig.colorbar(im, ax=ax, label='Difference in max deliveries (%)')
+    fig.colorbar(im, ax=ax, label='Difference in mean deliveries (%)')
 
     fig.savefig(f'{fig_output_path}/S{sample}_{realization}_{structure_id}.png')
     fig.clf()
