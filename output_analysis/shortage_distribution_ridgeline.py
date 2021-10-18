@@ -38,7 +38,7 @@ def ridgeline(data, name, overlap=0, fill=True, labels=None, n_points=105):
         plt.plot(xx, curve+y, c='k', zorder=len(data)-i+1)
     if labels:
         plt.yticks(ys, labels)
-    plt.savefig(f'{fig_output_path}/{name}.pdf')
+    plt.savefig(f'{fig_output_path}/{name}.png')
 
 
 def read_data(sample, realization, structure_id):
@@ -96,12 +96,11 @@ def read_data(sample, realization, structure_id):
     # Calculate all annual totals
     annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
-    data = [list(f_hist_totals), list(f_shortage_sow_totals)]#.extend(annual_totals.tolist()[:10])
-
-    print(np.shape(data))
+    data = [list(f_hist_totals), list(f_shortage_sow_totals)]+annual_totals.tolist()[:10]
 
     ridgeline(data, name=f'S{args.sample}_{args.realization}_{args.structure_id}',
-              overlap=0.85, fill='yellow', labels=None, n_points=105)
+              overlap=0.85, fill='yellow',
+              labels=['History', 'Hydrologic changes']+[f'Rule {x}' for x in range(1, 11)], n_points=105)
 
     return
 
