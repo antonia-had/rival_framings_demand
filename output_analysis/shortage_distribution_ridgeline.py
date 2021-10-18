@@ -96,7 +96,7 @@ def read_data(sample, realization, structure_id):
     # Calculate all annual totals
     annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
-    data = [list(f_hist_totals), list(f_shortage_sow_totals)].extend(annual_totals.tolist()[:10])
+    data = [list(f_hist_totals), list(f_shortage_sow_totals)]#.extend(annual_totals.tolist()[:10])
 
     print(np.shape(data))
 
