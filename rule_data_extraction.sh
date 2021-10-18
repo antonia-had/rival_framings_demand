@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=1                   # Use one node
-#SBATCH --ntasks-per-node=5                  # Run a single task
+#SBATCH --ntasks-per-node=4                  # Run a single task
 #SBATCH --exclusive=user
 #SBATCH --time 2:00:00
 #SBATCH --mail-user=ah986@cornell.edu
@@ -20,5 +20,6 @@ END_NUM=$(( $SLURM_ARRAY_TASK_ID * $PER_TASK ))
 
 # Run the loop of runs for this task.
 for (( rule=$START_NUM; rule<=END_NUM; rule++ )); do
+  echo This is SLURM task $SLURM_ARRAY_TASK_ID, run extraction for $rule
   srun python3 rule_data_extraction.py $rule
 done
