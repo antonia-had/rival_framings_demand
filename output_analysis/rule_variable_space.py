@@ -64,8 +64,8 @@ def variable_effects(sample, realization, structure_id):
     ax.set_zticks(list(np.arange(10)))
 
     ax.set_xticklabels(list(np.arange(75, 105, 5)))
-    ax.set_ytickslabels(list(np.arange(10, 110, 10)))
-    ax.set_ztickslabels(list(np.arange(10, 110, 10)))
+    ax.set_yticklabels(list(np.arange(10, 110, 10)))
+    ax.set_zticklabels(list(np.arange(10, 110, 10)))
 
     ax.set_xlabel('Historical flow percentile trigger')
     ax.set_ylabel('Rights included (% of total number)')
