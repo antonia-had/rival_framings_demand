@@ -11,16 +11,18 @@ plt.ioff()
 fig_output_path = '../distribution_diff_ridgeline'
 
 
-def ridgeline(data, name, overlap=0, fill=True, labels=None, n_points=105):
+def ridgeline(data, name, overlap=0, labels=None, n_points=105):
     """
     Creates a standard ridgeline plot.
     Source: https://glowingpython.blogspot.com/2020/03/ridgeline-plots-in-pure-matplotlib.html
     data, list of lists.
     overlap, overlap between distributions. 1 max overlap, 0 no overlap.
-    fill, matplotlib color to fill the distributions.
     n_points, number of points to evaluate each distribution function.
     labels, values to place on the y axis to describe the distributions.
     """
+    history_color = '#264653'
+    scenario_color = '#e76f51'
+    rule_color = '#f4a261'
     if overlap > 1 or overlap < 0:
         raise ValueError('overlap must be in [0 1]')
     xx = np.linspace(np.min(np.concatenate(data)),
@@ -32,13 +34,19 @@ def ridgeline(data, name, overlap=0, fill=True, labels=None, n_points=105):
         y = i*(1.0-overlap)
         ys.append(y)
         curve = pdf(xx)
-        if fill:
+        if i==0:
             plt.fill_between(xx, np.ones(n_points)*y,
-                             curve+y, zorder=len(data)-i+1, color=fill)
+                             curve+y, zorder=len(data)-i+1, color=history_color)
+        elif i==1:
+            plt.fill_between(xx, np.ones(n_points)*y,
+                             curve+y, zorder=len(data)-i+1, color=scenario_color)
+        else:
+            plt.fill_between(xx, np.ones(n_points)*y,
+                             curve+y, zorder=len(data)-i+1, color=rule_color)
         plt.plot(xx, curve+y, c='k', zorder=len(data)-i+1)
     if labels:
         plt.yticks(ys, labels)
-    plt.savefig(f'{fig_output_path}/{name}.png')
+    plt.savefig(f'{fig_output_path}/{name}.png', dpi=300)
 
 
 def read_data(sample, realization, structure_id):
@@ -98,9 +106,9 @@ def read_data(sample, realization, structure_id):
 
     data = [list(f_hist_totals), list(f_shortage_sow_totals)]+annual_totals.tolist()[:10]
 
-    ridgeline(data, name=f'S{args.sample}_{args.realization}_{args.structure_id}',
-              overlap=0.85, fill='yellow',
-              labels=['History', 'Hydrologic changes']+[f'Rule {x}' for x in range(1, 11)], n_points=105)
+    ridgeline(data, name=f'S{sample}_{realization}_{args.structure_id}',
+              overlap=0.85, n_points=105,
+              labels=['History', f'Scenario S{sample}_{realization}']+[f'Rule {x}' for x in range(1, 11)])
 
     return
 
