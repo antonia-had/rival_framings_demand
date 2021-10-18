@@ -92,8 +92,8 @@ def plot_demand_changes(sample, realization, structure_id):
     handles = []
     labels = []
     colors = ['#000292', '#BB4430']
-    ax1.fill_between(P, y1=np.amin(annual_totals, axis=2),
-                     y2=np.amax(annual_totals, axis=2), color=colors[1], alpha=0.5)
+    ax1.fill_between(P, y1=np.amin(annual_totals, axis=0),
+                     y2=np.amax(annual_totals, axis=0), color=colors[1], alpha=0.5)
     for j in range(total_number_rules):
         ax1.plot(P, annual_totals[j, :], c=colors[1], linewidth=1, alpha=0.7)
     ax1.plot(P, f_shortage_sow_totals, c=colors[1], linewidth=2, label='SOW without adaptive demands')
