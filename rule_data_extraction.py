@@ -1,16 +1,15 @@
 import dask.dataframe as dd
 from pathlib import Path
-import argparse
 from mpi4py import MPI
-
 
 statemod_outputs = './xdd_parquet'
 rule_outputs = './rules_parquet'
 
-def create_file_per_rule(rule):
-    df = dd.read_parquet(Path(f'{statemod_outputs}/**/S*_*_{rule}.parquet'),
+def create_file_per_rule(sow, rule):
+    print(f'working on rule {rule}')
+    df = dd.read_parquet(Path(f'{statemod_outputs}/**/S{sow}_*_{rule}.parquet'),
                          engine='pyarrow-dataset').compute()
-    df.to_parquet(Path(f'{rule_outputs}/{rule}.parquet'), engine='pyarrow',
+    df.to_parquet(Path(f'{rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet'), engine='pyarrow',
                   compression='gzip')
     return True
 
@@ -37,6 +36,7 @@ else:
 
 print("Process " + str(rank) + " working on rules from " + str(start) + " to " + str(stop))
 for k in range(start, stop):
-    rule_success = create_file_per_rule(k)
-    if not rule_outputs:
-        print(f'Failed to create file for rule {k}')
+    for sow in range(1, 101):
+        rule_success = create_file_per_rule(sow, k)
+        if not rule_outputs:
+            print(f'Failed to create file for SOW {sow} rule {k}')

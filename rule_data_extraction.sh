@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=15
-#SBATCH --ntasks-per-node=5
-#SBATCH -t 2:00:00
+#SBATCH --ntasks-per-node=10
+#SBATCH -t 5:00:00
 #SBATCH --export=ALL
 #SBATCH --exclusive
 #SBATCH --mail-user=ah986@cornell.edu
