@@ -58,7 +58,7 @@ def plotSDC(sample, realization, structure_id):
 
     # Reshape synthetic data
     # Reshape to matrix of [no. years x no. months x no. of rules]
-    f_shortage_adaptive = np.reshape(shortage_adaptive, (int(np.size(histData) / n), n, total_number_rules))
+    f_shortage_adaptive = np.reshape(shortage_adaptive, (total_number_rules, int(np.size(histData) / n), n))
 
     # Create matrix to store annual total duration curves
     F_syn = np.zeros([int(len(histData) / n), total_number_rules])

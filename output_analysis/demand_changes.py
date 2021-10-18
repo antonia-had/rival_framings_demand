@@ -54,17 +54,17 @@ def plot_demand_changes(sample, realization, structure_id):
             if r not in applied_rules:
                 print(f'rule {n} applied to S{sample}_{realization} is missing')
 
-    shortage_adaptive = df_demands['demand'].values * 1233.4818 / 1000000
+    demands_adaptive = df_demands['demand'].values #* 1233.4818 / 1000000
 
     # Reshape synthetic data
     # Reshape to matrix of [no. years x no. months x no. of rules]
-    f_shortage_adaptive = np.reshape(shortage_adaptive, (int(np.size(histData) / n), n, total_number_rules))
+    f_demands_adaptive = np.reshape(demands_adaptive, (total_number_rules, int(np.size(histData) / n), n))
 
     # Create matrix to store annual total duration curves
     F_syn = np.zeros([int(len(histData) / n), total_number_rules])
 
     # Calculate all annual totals
-    annual_totals = np.sum(f_shortage_adaptive, axis=1)
+    annual_totals = np.sum(f_demands_adaptive, axis=1)
 
     #print list of rules where totals are higher
     sample_total = np.sum(f_shortage_sow_totals)
