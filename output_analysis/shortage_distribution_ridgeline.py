@@ -104,11 +104,11 @@ def read_data(sample, realization, structure_id):
     # Calculate all annual totals
     annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
-    data = [list(f_hist_totals), list(f_shortage_sow_totals)]+annual_totals.tolist()[:10]
+    data = [list(f_hist_totals), list(f_shortage_sow_totals)]+annual_totals.tolist()[:100]
 
     ridgeline(data, name=f'S{sample}_{realization}_{args.structure_id}',
               overlap=0.85, n_points=105,
-              labels=['History', f'Scenario S{sample}_{realization}']+[f'Rule {x}' for x in range(1, 11)])
+              labels=['History', f'Scenario S{sample}_{realization}']+[f'Rule {x}' for x in range(1, 101)])
 
     return
 
