@@ -1,17 +1,20 @@
 import dask.dataframe as dd
 from pathlib import Path
 from mpi4py import MPI
+from os.path import exists
 
 statemod_outputs = './xdd_parquet'
 rule_outputs = './rules_parquet'
 
 def create_file_per_rule(sow, rule):
-    print(f'working on SOW {sow} rule {rule}')
-    df = dd.read_parquet(Path(f'{statemod_outputs}/**/S{sow}_*_{rule}.parquet'),
-                         engine='pyarrow-dataset').compute()
-    print(f'saving {rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet')
-    df.to_parquet(Path(f'{rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet'), engine='pyarrow',
-                  compression='gzip')
+    path_to_file = f'{statemod_outputs}/**/S{sow}_*_{rule}.parquet'
+    if not exists(Path(path_to_file)):
+        print(f'working on SOW {sow} rule {rule}')
+        df = dd.read_parquet(Path(path_to_file),
+                             engine='pyarrow-dataset').compute()
+        print(f'saving {rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet')
+        df.to_parquet(Path(f'{rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet'), engine='pyarrow',
+                      compression='gzip')
     return True
 
 # Begin parallel simulation

@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=15
-#SBATCH --ntasks-per-node=10
+#SBATCH --ntasks-per-node=12
 #SBATCH -t 5:00:00
 #SBATCH --export=ALL
 #SBATCH --exclusive
