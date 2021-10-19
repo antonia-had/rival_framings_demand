@@ -17,7 +17,7 @@ def deliveries_scatter(sample, realization):
     # Read data for state of the world
     df = pd.read_parquet(f'../xdd_parquet_flow/S{sample}_{realization}.parquet')
 
-    for structure_id in ids_of_interest:
+    for structure_id in ids_of_interest[:5]:
         '''
         Read and reshape flow experiment data
         '''
