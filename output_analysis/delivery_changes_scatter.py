@@ -54,10 +54,10 @@ def deliveries_scatter(sample, realization):
         annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
         for i in range(total_number_rules):
-            ax1.scatter(f_shortage_sow_totals, (annual_totals[i, :]/f_shortage_sow_totals - 1) * 100, marker='.', color='k', alpha=0.5)
+            ax1.scatter(f_shortage_sow_totals, annual_totals[i, :], marker='.', color='k', alpha=0.5)
 
     ax1.set_xlabel('Annual deliveries hydrologic scenario (Million $m^3$)', fontsize=18)
-    ax1.set_ylabel('Change in deliveries under\nadaptive conditions (%)', fontsize=18)
+    ax1.set_ylabel('Annual deliveries under\nadaptive conditions (Million $m^3$)', fontsize=18)
 
     fig.suptitle(f'Delivery changes for S{sample}_{realization}', fontsize=18)
     plt.subplots_adjust(bottom=0.2)
