@@ -55,8 +55,8 @@ def deliveries_scatter(sample, realization, structure_id):
     colors = ['#000292', '#BB4430']
     print(len(f_shortage_sow_totals))
     for i in range(total_number_rules):
-        print(len(annual_totals[i :]))
-        ax1.scatter(f_shortage_sow_totals, annual_totals[i :])
+        print(len(annual_totals[:,i]))
+        ax1.scatter(f_shortage_sow_totals, annual_totals[:,i])
     # ax1.legend(handles=handles, labels=labels, framealpha=1, fontsize=8, loc='upper left',
     #            title='Frequency in experiment', ncol=2)
     # ax1.set_xlabel('Delivery magnitude percentile', fontsize=20)
