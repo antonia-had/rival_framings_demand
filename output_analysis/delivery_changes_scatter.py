@@ -55,10 +55,8 @@ def deliveries_scatter(sample, realization, structure_id):
     colors = ['#000292', '#BB4430']
     for i in range(total_number_rules):
         ax1.scatter(f_shortage_sow_totals, annual_totals[i,:], marker='.', color='k', alpha=0.7)
-    # ax1.legend(handles=handles, labels=labels, framealpha=1, fontsize=8, loc='upper left',
-    #            title='Frequency in experiment', ncol=2)
-    # ax1.set_xlabel('Delivery magnitude percentile', fontsize=20)
-    # ax1.set_ylabel('Annual delivery (Million $m^3$)', fontsize=20)
+    ax1.set_xlabel('Annual deliveries hydrologic scenario (Million $m^3$)', fontsize=20)
+    ax1.set_ylabel('Annual deliveries under adaptive conditions (Million $m^3$)', fontsize=20)
 
     fig.suptitle('Delivery magnitudes for ' + structure_id, fontsize=16)
     plt.subplots_adjust(bottom=0.2)
