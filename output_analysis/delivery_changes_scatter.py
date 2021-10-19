@@ -59,7 +59,7 @@ def deliveries_scatter(sample, realization):
     ax1.set_xlabel('Annual deliveries hydrologic scenario (Million $m^3$)', fontsize=18)
     ax1.set_ylabel('Change in deliveries under\nadaptive conditions (%)', fontsize=18)
 
-    fig.suptitle('Delivery magnitudes for ' + structure_id, fontsize=18)
+    fig.suptitle(f'Delivery changes for S{sample}_{realization}', fontsize=18)
     plt.subplots_adjust(bottom=0.2)
     fig.savefig(f'{fig_output_path}/S{sample}_{realization}.png')
     fig.clf()
