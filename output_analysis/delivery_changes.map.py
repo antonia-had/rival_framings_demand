@@ -1,15 +1,17 @@
 import pandas as pd
+import dask.dataframe as dd
 import numpy as np
 import cartopy.feature as cpf
 import cartopy.crs as ccrs
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import argparse
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
-import pickle
+from pathlib import Path
 
 
-ids_of_interest = np.genfromtxt('ids.txt', dtype='str').tolist()
+ids_of_interest = np.genfromtxt('../ids.txt', dtype='str').tolist()
 realization_years = 105
 months = 12
 
@@ -29,8 +31,48 @@ flow_feature = ShapelyFeature(Reader('../structures_files/Shapefiles/UCRBstreams
 #     curtailment_per_threshold = pickle.load(fp)
 
 rule_outputs = '../rules_parquet'
+flow_experiment_outputs = '../xdd_parquet_flow'
+figure_directory = '../delivery_changes_map'
 
-def draw_delivery_change_per_rule(rule):
+def gen_arrow_head_marker(rot):
+    """generate a marker to plot with matplotlib scatter, plot, ...
+
+    Function taken from https://stackoverflow.com/questions/23345565/is-it-possible-to-control-matplotlib-marker-orientation
+    rot=0: positive x direction
+    Parameters
+    ----------
+    rot : float
+        rotation in degree
+        0 is positive x direction
+
+    Returns
+    -------
+    arrow_head_marker : Path
+        use this path for marker argument of plt.scatter
+    scale : float
+        multiply a argument of plt.scatter with this factor got get markers
+        with the same size independent of their rotation.
+        Paths are autoscaled to a box of size -1 <= x, y <= 1 by plt.scatter
+    """
+    arr = np.array([[.1, .3], [.1, -.3], [1, 0]])  # arrow shape
+    angle = rot / 180 * np.pi
+    rot_mat = np.array([
+        [np.cos(angle), np.sin(angle)],
+        [-np.sin(angle), np.cos(angle)]
+        ])
+    arr = np.matmul(arr, rot_mat)  # rotates the arrow
+
+    # scale
+    x0 = np.amin(arr[:, 0])
+    x1 = np.amax(arr[:, 0])
+    y0 = np.amin(arr[:, 1])
+    y1 = np.amax(arr[:, 1])
+    scale = np.amax(np.abs([x0, x1, y0, y1]))
+
+    arrow_head_marker = mpl.path.Path(arr)
+    return arrow_head_marker, scale
+
+def draw_delivery_change_per_rule(sow, rule):
 
     # Create figure to draw points on
     fig = plt.figure(figsize=(18, 9))
@@ -44,83 +86,79 @@ def draw_delivery_change_per_rule(rule):
     ax.add_feature(flow_feature, alpha=0.6, linewidth=1.5, zorder=4)
 
     # Read data for state of the world
-    df = pd.read_parquet(f'{rule_outputs}/{rule}.parquet')
+    df_sow = dd.read_parquet(Path(f'{flow_experiment_outputs}/S{sow}_*.parquet'),
+                         engine='pyarrow-dataset').compute()
 
+    # Read data for state of the world and applied rule
+    df_rule = pd.read_parquet(Path(f'{rule_outputs}/Rule_{rule}/S{sow}_{rule}.parquet'))
+
+    #Create column in structures dataframe to store change, marker and marker scaling factor
+    structures['change'] = 0
+    structures['marker'] = 0
+    structures['scale'] = 0
+
+    #Calculate rule change for every structure
     for structure_id in ids_of_interest:
+        if structure_id in structures.index:
+            # Get value for structure in base SOW
+            mask_sow = df_sow['structure_id'] == structure_id
+            new_df_sow = df_sow[mask_sow]
+            deliveries_sow = (new_df_sow['demand'].values - new_df_sow['shortage'].values) * 1233.4818 / 1000000
+            base_value = np.mean(deliveries_sow)
 
-        '''
-        Read and reshape flow experiment data
-        '''
-        mask = df['structure_id'] == structure_id
-        new_df = df[mask]
-        deliveries_sow = (new_df['demand'].values - new_df['shortage'].values) * 1233.4818 / 1000000
-        # Reshape data to a [no. years x no. months] matrix
-        f_deliveries_sow = np.reshape(deliveries_sow, (realization_years, months))
-        # Reshape to annual totals
-        f_deliveries_sow_totals = np.sum(f_deliveries_sow, 1)
-        # Value to compare to
-        base_value = np.max(f_deliveries_sow_totals)
+            #Get value for structure in run with rule
+            mask_rule = df_rule['structure_id'] == structure_id
+            new_df_rule = df_rule[mask_rule]
+            deliveries_rule = (new_df_rule['demand'].values - new_df_rule['shortage'].values) * 1233.4818 / 1000000
+            adaptive_demands_value = np.mean(deliveries_rule)
 
-        '''
-        Read and reshape adaptive demand experiment data
-        '''
-        df_demands = pd.read_parquet(
-            f'../temp_parquet/S{sample}_{realization}/S{sample}_{realization}_{structure_id}.parquet')
-        # Check rules applied
-        rules = df_demands['demand rule'].values
-        applied_rules = np.unique(rules)
-        total_number_rules = len(applied_rules)
+            structures.at[structure_id, 'change'] = (adaptive_demands_value-base_value)*100/base_value
 
-        deliveries_adaptive = (df_demands['demand'].values - df_demands['shortage'].values) * 1233.4818 / 1000000
+    #Use change to calculate marker rotation
+    max_change = np.max(structures['change'].values)
+    min_change = np.min(structures['change'].values)
+    max_absolute_change = np.max(np.abs([max_change, min_change]))
+    structures['rotation'] = [180*(max_absolute_change - value)/(max_absolute_change-min_change)
+                              for value in structures['change'].values]
 
-        # Reshape synthetic data
-        # Reshape to matrix of [no. years x no. months x no. of rules]
-        f_deliveries_adaptive = np.reshape(deliveries_adaptive, (total_number_rules, realization_years, months))
+    #Loop through every structure again to create markers
+    for structure_id in structures.index:
+        structures.at[structure_id, 'marker'], \
+        structures.at[structure_id, 'scale'] = gen_arrow_head_marker(structures.at[structure_id, 'rotation'])
+        if structures.at[structure_id, 'rotation']==90:
+            structures.at[structure_id, 'color'] = 'grey'
+        elif structures.at[structure_id, 'rotation']>90:
+            structures.at[structure_id, 'color'] = '#ee6c4d'
+        elif structures.at[structure_id, 'rotation']<90:
+            structures.at[structure_id, 'color'] = '#3d5a80'
 
-        # Calculate all annual totals
-        annual_totals = np.sum(f_deliveries_adaptive, axis=2)
+        ax.scatter(structures.at[structure_id, 'X'], structures.at[structure_id, 'Y'],
+                   marker=structures.at[structure_id, 'marker'], s=(structures.at[structure_id,'scale']*50)**2,
+                   c=structures.at[structure_id,'color'], alpha=0.8, transform=ccrs.PlateCarree(),
+                   edgecolors=None, zorder=5)
 
-        # Create matrix to store annual total duration curves
-        rule_value = (np.mean(annual_totals, axis=1) - base_value) * 100 / base_value
-
-    points = ax.scatter(structures['X'], structures['Y'], marker='.',
-                        s=structures['sizes']*10, c='#457b9d', alpha=0.4,
-                        transform=ccrs.PlateCarree(), edgecolors=None, zorder=5)
-
-    number_of_users_level = users_number
-    curtailment_applied = curtailment_level
-    users_to_draw = structures[structures.index.isin(users_per_threshold[number_of_users_level])]
-    users_to_draw.reindex(list(users_per_threshold[number_of_users_level]))
-    users_to_draw['adjusted sizes'] = pd.Series(dtype=float)
-    for i, row in users_to_draw.iterrows():
-        index = np.where(users_per_threshold[number_of_users_level]==i)[0][0]
-        original_demand = row['sizes']
-        adjusted_demand = original_demand - (original_demand * curtailment_per_threshold[number_of_users_level][index] *
-                                             curtailment_levels[curtailment_applied] / 100)
-        users_to_draw.at[i, 'adjusted sizes'] = adjusted_demand
-    ax.scatter(users_to_draw['X'], users_to_draw['Y'], marker='.',
-                        s=users_to_draw['adjusted sizes']*10, c='#457b9d', alpha=1, transform=ccrs.PlateCarree(), zorder=6)
-    ax.set_title(label=f'Reduction in demands in {no_rights[number_of_users_level]}% of rights '
-                       f'by {curtailment_levels[curtailment_applied]}% of their demand', fontfamily='sans-serif',
-                 fontsize=26, loc='left')
-    min_size=17.6
-    max_size=1942
-    marker1 = ax.scatter([], [], marker='.', s=min_size*10, c='#808080', alpha=0.4,
-                          transform=ccrs.PlateCarree(), edgecolors=None)
-    marker2 = ax.scatter([], [], marker='.', s=max_size*10, c='#808080', alpha=0.4,
+    marker, scale = gen_arrow_head_marker(180)
+    marker1 = ax.scatter([], [], marker=marker, s=(scale*50)**2, c='#ee6c4d', alpha=0.8,
                           transform=ccrs.PlateCarree(), edgecolors=None,)
-    legend_markers = [marker1, marker2]
-    labels = [str(round(min_size*0.028316847, 1)), str(round(max_size*0.028316847, 1))]
-    plt.legend(handles=legend_markers, labels=labels, loc='upper left', fontsize=16, title_fontsize=20,
-               labelspacing=2, handletextpad=2, borderpad=2, title='Decree size (m$^3$/s)')
-    fig.savefig(f'highlight_users_{no_rights[number_of_users_level]}_{curtailment_levels[curtailment_applied]}.png',
+    marker, scale = gen_arrow_head_marker(90)
+    marker2 = ax.scatter([], [], marker=marker, s=(scale*50)**2, c='grey', alpha=0.8,
+                          transform=ccrs.PlateCarree(), edgecolors=None,)
+    marker, scale = gen_arrow_head_marker(0)
+    marker3 = ax.scatter([], [], marker=marker, s=(scale*50)**2, c='#3d5a80', alpha=0.8,
+                          transform=ccrs.PlateCarree(), edgecolors=None)
+    legend_markers = [marker1, marker2, marker3]
+    labels = [f'-{round(max_absolute_change)}%', 'No change', f'+{round(max_absolute_change)}%']
+    plt.legend(handles=legend_markers, labels=labels, loc='upper left', fontsize=16, title_fontsize=20, ncol=3,
+               labelspacing=2, handletextpad=2, borderpad=2, title='Change in deliveries')
+
+    fig.savefig(f'{figure_directory}/S{sow}_{rule}.png',
                 dpi=300)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create figure of user demand reduction')
-    parser.add_argument('users_number', type=int,
-                        help='Number of rights curtailed (level values between 0-9)')
-    parser.add_argument('curtailment_level', type=int,
-                        help='Level of curtailment to apply (level values between 0-9)')
+    parser.add_argument('sow', type=int,
+                        help='Hydrologic scenario (SOW)')
+    parser.add_argument('rule', type=int,
+                        help='Adaptive rule')
     args = parser.parse_args()
-    draw_curtailed_users(args.users_number, args.curtailment_level)
+    draw_delivery_change_per_rule(args.SOW, args.rule)
