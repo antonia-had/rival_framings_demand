@@ -28,6 +28,7 @@ def deliveries_scatter(sample, realization):
         f_shortage_sow = np.reshape(shortage_sow, (years, months))
         # Reshape to annual totals
         f_shortage_sow_totals = np.sum(f_shortage_sow, 1)
+        sow_total = np.sum(f_shortage_sow_totals)
 
         '''
         Read and reshape adaptive demand experiment data
@@ -42,7 +43,7 @@ def deliveries_scatter(sample, realization):
             # if rules are missing, check which
             for r in range(600):
                 if r not in applied_rules:
-                    print(f'rule {n} applied to S{sample}_{realization} is missing')
+                    print(f'rule {r} applied to S{sample}_{realization} is missing')
 
         shortage_adaptive = (df_demands['demand'].values - df_demands['shortage'].values) * 1233.4818 / 1000000
 
@@ -54,7 +55,7 @@ def deliveries_scatter(sample, realization):
         annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
         for i in range(total_number_rules):
-            ax1.scatter(f_shortage_sow_totals, annual_totals[i, :], marker='.', color='k', alpha=0.2)
+            ax1.scatter(sow_total, np.sum(annual_totals[i, :]), marker='.', color='k', alpha=0.2)
 
     ax1.set_xlabel('Annual deliveries hydrologic scenario (Million $m^3$)', fontsize=18)
     ax1.set_ylabel('Annual deliveries under\nadaptive conditions (Million $m^3$)', fontsize=18)
