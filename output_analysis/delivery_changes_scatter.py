@@ -17,7 +17,7 @@ def deliveries_scatter(sample, realization):
     # Read data for state of the world
     df = pd.read_parquet(f'../xdd_parquet_flow/S{sample}_{realization}.parquet')
 
-    for structure_id in ids_of_interest[:10]:
+    for structure_id in ids_of_interest[:20]:
         '''
         Read and reshape flow experiment data
         '''
@@ -54,7 +54,7 @@ def deliveries_scatter(sample, realization):
         annual_totals = np.sum(f_shortage_adaptive, axis=2)
 
         for i in range(total_number_rules):
-            ax1.scatter(f_shortage_sow_totals, annual_totals[i, :], marker='.', color='k', alpha=0.5)
+            ax1.scatter(f_shortage_sow_totals, annual_totals[i, :], marker='.', color='k', alpha=0.2)
 
     ax1.set_xlabel('Annual deliveries hydrologic scenario (Million $m^3$)', fontsize=18)
     ax1.set_ylabel('Annual deliveries under\nadaptive conditions (Million $m^3$)', fontsize=18)
