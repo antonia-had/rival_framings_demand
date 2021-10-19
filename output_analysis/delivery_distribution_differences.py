@@ -7,7 +7,7 @@ import argparse
 plt.ioff()
 
 def plotSDC(sample, realization, structure_id):
-    fig_output_path = '../shortage_distribution_diff'
+    fig_output_path = '../delivery_distribution_diff'
     percentiles = np.arange(0, 100)
     n = 12
 
@@ -15,8 +15,9 @@ def plotSDC(sample, realization, structure_id):
     Read and reshape historical data
     '''
     # Read historical shortages for structure
-    historical = pd.read_csv('../structures_files/shortages.csv', index_col=0)
-    histData = historical.loc[structure_id].values * 1233.4818 / 1000000
+    historical_demands = pd.read_csv('../structures_files/demands.csv', index_col=0)
+    historical_shortages = pd.read_csv('../structures_files/shortages.csv', index_col=0)
+    histData = (historical_demands.loc[structure_id].values - historical_shortages.loc[structure_id].values) * 1233.4818 / 1000000
     # Reshape historic data to a [no. years x no. months] matrix
     f_hist = np.reshape(histData, (int(np.size(histData) / n), n))
     # Reshape to annual totals
@@ -31,7 +32,7 @@ def plotSDC(sample, realization, structure_id):
     df = pd.read_parquet(f'../xdd_parquet_flow/S{sample}_{realization}.parquet')
     mask = df['structure_id'] == structure_id
     new_df = df[mask]
-    shortage_sow = new_df['shortage'].values * 1233.4818 / 1000000
+    shortage_sow = (new_df['demand'].values - new_df['shortage'].values) * 1233.4818 / 1000000
     # Reshape data to a [no. years x no. months] matrix
     f_shortage_sow = np.reshape(shortage_sow, (int(np.size(histData) / n), n))
     # Reshape to annual totals
@@ -54,7 +55,7 @@ def plotSDC(sample, realization, structure_id):
             if r not in applied_rules:
                 print(f'rule {n} applied to S{sample}_{realization} is missing')
 
-    shortage_adaptive = df_demands['shortage'].values * 1233.4818 / 1000000
+    shortage_adaptive = (df_demands['demand'].values - df_demands['shortage'].values) * 1233.4818 / 1000000
 
     # Reshape synthetic data
     # Reshape to matrix of [no. years x no. months x no. of rules]
@@ -92,10 +93,10 @@ def plotSDC(sample, realization, structure_id):
     ax1.set_xlim(0, 100)
     ax1.legend(handles=handles, labels=labels, framealpha=1, fontsize=8, loc='upper left',
                title='Frequency in experiment', ncol=2)
-    ax1.set_xlabel('Shortage magnitude percentile', fontsize=20)
-    ax1.set_ylabel('Annual shortage (Million $m^3$)', fontsize=20)
+    ax1.set_xlabel('Delivery magnitude percentile', fontsize=20)
+    ax1.set_ylabel('Annual delivery (Million $m^3$)', fontsize=20)
 
-    fig.suptitle('Shortage magnitudes for ' + structure_id, fontsize=16)
+    fig.suptitle('Delivery magnitudes for ' + structure_id, fontsize=16)
     plt.subplots_adjust(bottom=0.2)
     fig.savefig(f'{fig_output_path}/S{sample}_{realization}_{structure_id}.png')
     fig.clf()
