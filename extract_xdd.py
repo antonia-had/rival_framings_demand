@@ -17,21 +17,27 @@ expected_column_sizes = np.asarray([
 ids_of_interest = np.genfromtxt('ids.txt', dtype='str').tolist()
 expected_line_size = expected_column_sizes.sum() + len(expected_column_sizes)
 expected_column_count = 35
-month_column = 3
-id_column = 0
+id_column = 1
 year_column = 2
+month_column = 3
 demand_column = 4
 shortage_column = 17
+outflow_column = 31
+control_location_column = 33
 id_column_name = 'structure_id'
 year_column_name = 'year'
 month_column_name = 'month'
 demand_column_name = 'demand'
 shortage_column_name = 'shortage'
+outflow_column_name = 'river_outflow'
+control_location_column_name = 'control_location'
 id_column_type = object
 year_column_type = np.uint16
 month_column_type = object
 demand_column_type = np.uint32
 shortage_column_type = np.uint32
+outflow_column_type = np.uint32
+control_location_column_type = object
 sample_column_name = 'sample'
 sample_column_type = np.uint16
 realization_column_name = 'realization'
@@ -89,7 +95,9 @@ def xxd_to_parquet(file_path):
                                 year_column,
                                 month_column,
                                 demand_column,
-                                shortage_column
+                                shortage_column,
+                                outflow_column,
+                                control_location_column
                             ]]
                         )
                     )
@@ -104,14 +112,18 @@ def xxd_to_parquet(file_path):
             year_column_name,
             month_column_name,
             demand_column_name,
-            shortage_column_name
+            shortage_column_name,
+            outflow_column_name,
+            control_location_column_name
         ],
         dtype={
             id_column_name: id_column_type,
             year_column_name: year_column_type,
             month_column_name: month_column_type,
             demand_column_name: demand_column_type,
-            shortage_column_name: shortage_column_type
+            shortage_column_name: shortage_column_type,
+            outflow_column_name: outflow_column_type,
+            control_location_column_name: control_location_column_type
         }
     )
 

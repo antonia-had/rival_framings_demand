@@ -161,4 +161,4 @@ if __name__ == '__main__':
     parser.add_argument('rule', type=int,
                         help='Adaptive rule')
     args = parser.parse_args()
-    draw_delivery_change_per_rule(args.SOW, args.rule)
+    draw_delivery_change_per_rule(args.sow, args.rule)
