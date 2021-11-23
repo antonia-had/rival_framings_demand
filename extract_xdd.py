@@ -63,7 +63,7 @@ def xxd_to_parquet(file_path):
     # read the file line by line
     with open(path, 'r') as file:
         for line in file:
-            if line[expected_column_sizes[0] + 1:expected_column_sizes[1] + 1].strip() in ids_of_interest:
+            if line[expected_column_sizes[0] + 1:expected_column_sizes[0] + 1+ expected_column_sizes[1] + 1].strip() in ids_of_interest:
                 if len(line) != expected_line_size:
                     # unexpected line length; you need to double check the expected column sizes
                     logging.error(
