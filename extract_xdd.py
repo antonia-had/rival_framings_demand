@@ -63,10 +63,7 @@ def xxd_to_parquet(file_path):
     # read the file line by line
     with open(path, 'r') as file:
         for line in file:
-            # note here that we make two simplifying assumptions:
-            #   - all structure ids of interest start with a digit
-            #   - only lines of data start with a digit
-            if line[0].isdigit() and line[0:expected_column_sizes[0] + 1].strip() in ids_of_interest:
+            if line[expected_column_sizes[0] + 1:expected_column_sizes[1] + 1].strip() in ids_of_interest:
                 if len(line) != expected_line_size:
                     # unexpected line length; you need to double check the expected column sizes
                     logging.error(
