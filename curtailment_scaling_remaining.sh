@@ -1,11 +1,10 @@
 #!/bin/bash
-#SBATCH --partition=debug
+#SBATCH --partition=shared
 #SBATCH --account=TG-EAR090013
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=100
-#SBATCH --mem=200G
-#SBATCH --time=00:30:00
+#SBATCH --time=5:00:00
 #SBATCH --mail-user=ah986@cornell.edu
 #SBATCH --mail-type=ALL
 #SBATCH --export=ALL
