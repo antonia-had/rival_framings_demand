@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=debug
-#SBATCH --account=TG-MCA08X018
+#SBATCH --account=TG-EAR090013
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=100
@@ -29,4 +29,4 @@ srun="srun --export=all"
 #   can be used to monitor progress.
 #
 parallel="parallel --delay 0.2 -j 100 --joblog curtailment_scaling_remaining_$1.log --resume"
-$srun $parallel :::: < missing_runs$1
+$srun $parallel :::: < missing_runs
