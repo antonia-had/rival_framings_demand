@@ -21,16 +21,22 @@ id_column = 0
 year_column = 2
 demand_column = 4
 shortage_column = 17
+outflow_column = 31
+control_location_column = 33
 id_column_name = 'structure_id'
 year_column_name = 'year'
 month_column_name = 'month'
 demand_column_name = 'demand'
 shortage_column_name = 'shortage'
+outflow_column_name = 'river_outflow'
+control_location_column_name = 'control_location'
 id_column_type = object
 year_column_type = np.uint16
 month_column_type = object
 demand_column_type = np.uint32
 shortage_column_type = np.uint32
+outflow_column_type = np.uint32
+control_location_column_type = object
 sample_column_name = 'sample'
 sample_column_type = np.uint16
 realization_column_name = 'realization'
@@ -51,10 +57,7 @@ def xxd_to_parquet(file_path):
     # read the file line by line
     with open(path, 'r') as file:
         for line in file:
-            # note here that we make two simplifying assumptions:
-            #   - all structure ids of interest start with a digit
-            #   - only lines of data start with a digit
-            if line[0].isdigit() and line[0:expected_column_sizes[0] + 1].strip() in ids_of_interest:
+            if line[expected_column_sizes[0] + 1:expected_column_sizes[0] + 1+ expected_column_sizes[1] + 1].strip() in ids_of_interest:
                 if len(line) != expected_line_size:
                     # unexpected line length; you need to double check the expected column sizes
                     logging.error(
@@ -83,7 +86,9 @@ def xxd_to_parquet(file_path):
                                 year_column,
                                 month_column,
                                 demand_column,
-                                shortage_column
+                                shortage_column,
+                                outflow_column,
+                                control_location_column
                             ]]
                         )
                     )
@@ -98,14 +103,18 @@ def xxd_to_parquet(file_path):
             year_column_name,
             month_column_name,
             demand_column_name,
-            shortage_column_name
+            shortage_column_name,
+            outflow_column_name,
+            control_location_column_name
         ],
         dtype={
             id_column_name: id_column_type,
             year_column_name: year_column_type,
             month_column_name: month_column_type,
             demand_column_name: demand_column_type,
-            shortage_column_name: shortage_column_type
+            shortage_column_name: shortage_column_type,
+            outflow_column_name: outflow_column_type,
+            control_location_column_name: control_location_column_type
         }
     )
 
