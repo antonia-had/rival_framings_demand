@@ -123,7 +123,7 @@ def xxd_to_parquet(file_path):
     df[sample_column_name] = sample_column_type(sample_number)
     df[realization_column_name] = realization_column_type(realization_number)
     df.to_parquet(
-        Path(f'{outputs_path}/S{sample_number}_{realization_number}.parquet'),
+        Path(f'{outputs_path}/S{sample_number+1}_{realization_number}.parquet'),
         engine='pyarrow',
         compression='gzip'
     )
