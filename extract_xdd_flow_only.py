@@ -17,7 +17,7 @@ ids_of_interest = np.genfromtxt('ids.txt', dtype='str').tolist()
 expected_line_size = expected_column_sizes.sum() + len(expected_column_sizes)
 expected_column_count = 35
 month_column = 3
-id_column = 0
+id_column = 1
 year_column = 2
 demand_column = 4
 shortage_column = 17
