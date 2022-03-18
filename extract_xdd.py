@@ -12,11 +12,11 @@ realization_number_regex = re.compile(r'_(\d+)_')
 rule_number_regex = re.compile(r'_(\d+)(?:\.xdd)?$')
 
 expected_column_sizes = np.asarray([
-            11, 12, 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 12, 11
+            11, 13, 5, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 13, 12
         ])
 ids_of_interest = np.genfromtxt('ids.txt', dtype='str').tolist()
-expected_line_size = expected_column_sizes.sum() + len(expected_column_sizes)
-expected_column_count = 35
+expected_line_size = expected_column_sizes.sum()
+expected_column_count = len(expected_column_sizes)
 id_column = 1
 year_column = 2
 month_column = 3
@@ -62,9 +62,12 @@ def xxd_to_parquet(file_path):
     stream = io.StringIO()
     # read the file line by line
     with open(path, 'r') as file:
+        id_start = np.sum(expected_column_sizes[:id_column])
+        id_end = id_start + expected_column_sizes[id_column]
         for line in file:
-            if line[expected_column_sizes[0] + 1:expected_column_sizes[0] + 1+ expected_column_sizes[1] + 1].strip() in ids_of_interest:
-                if len(line) != expected_line_size:
+            if line[id_start:id_end].strip() in ids_of_interest:
+                # check the line length; note that the line ending counts as a character, hence the +1
+                if len(line) != (expected_line_size + 1):
                     # unexpected line length; you need to double check the expected column sizes
                     logging.error(
                         f"Unexpected line length: {len(line)} instead of {expected_line_size}:\n{line}"
@@ -75,8 +78,8 @@ def xxd_to_parquet(file_path):
                 position = 0
                 for count in expected_column_sizes:
                     data.append(line[position:position + count].strip())
-                    # account for single space between columns
-                    position += count + 1
+                    # no spaces between columns
+                    position += count
                 if len(data) != expected_column_count:
                     # unexpected number of columns; you need to double check your data and settings
                     logging.error(
@@ -135,6 +138,7 @@ def xxd_to_parquet(file_path):
         compression='gzip'
     )
     return
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert .xdd to .parquet')
