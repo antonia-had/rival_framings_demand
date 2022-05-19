@@ -8,7 +8,7 @@
 #SBATCH --job-name="realization_flows"
 #SBATCH --output="./outputs/realization_flows.out"
 #SBATCH --error="./errors/realization_flows.err"
-#SBATCH --mail-user=ah986@cornell.edu
+#SBATCH --mail-user=hadjimichael@psu.edu
 #SBATCH --mail-type=ALL
 
 module load anaconda3
