@@ -6,9 +6,9 @@ for dir in scenarios/*; do
   subdir=$(echo $dir | cut -d'/' -f 2)
   for val in ${InputsArray[@]}; do
     rm $dir/$val
-    ln -s /expanse/lustre/scratch/ah986/temp_project/cm2015_StateMod/StateMod/$val $dir
+    ln -s /expanse/lustre/scratch/ah986/temp_project/project/cm2015_StateMod/StateMod/$val $dir
   done
-  ln -s /expanse/lustre/scratch/ah986/temp_project/LHsamples_wider_100_AnnQonly/cm2015x_$subdir.xbm $dir
+  ln -s /expanse/lustre/scratch/ah986/temp_project/project/LHsamples_wider_100_AnnQonly/cm2015x_$subdir.xbm $dir
   ln -s /home/ah986/statemod $dir
   mkdir xdd_parquet/$subdir
 done
