@@ -5,7 +5,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=100
 #SBATCH --time=20:00:00
-#SBATCH --mail-user=ah986@cornell.edu
+#SBATCH --mail-user=hadjimichael@psu.edu
 #SBATCH --mail-type=ALL
 #SBATCH --export=ALL
 
