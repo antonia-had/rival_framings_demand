@@ -15,7 +15,7 @@ Create `/scerarios` directory and a subdirectory for each sample and realization
 mkdir scenarios
 mkdir xdd_parquet
 cd scenarios
-for i in {0..99}; do for j in {1..10}; do mkdir S${i}_${j}; done; done
+for i in {1..100}; do for j in {1..10}; do mkdir S${i}_${j}; done; done
 ```
 Create virtual links to all files needed, by executing `link_to_inputs.sh`.
 
