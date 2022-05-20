@@ -3,7 +3,7 @@
 #SBATCH --ntasks=1                  # Run a single task
 #SBATCH --time 2:30:00
 #SBATCH --export=ALL
-#SBATCH --mail-user=ah986@cornell.edu
+#SBATCH --mail-user=hadjimichael@psu.edu
 #SBATCH --mail-type=ALL
 #SBATCH --array=1-10                # Array range
 
