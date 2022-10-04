@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=01:00:00
+#SBATCH --time=04:00:00
 #SBATCH --job-name=jupyter_launch
 #SBATCH --output=jupyter-%j.log
 #SBATCH --error=jupyter-%j.err
@@ -22,7 +22,7 @@ TUNNELPORT=`shuf -i 18501-19000 -n 1`
 # This is the machine we will connect to with SSH forward tunneling from our client.
 ssh -R$TUNNELPORT:localhost:$NOTEBOOKPORT $SLURM_SUBMIT_HOST -N -f
 
-echo "FWDSSH='ssh -L8888:localhost:$TUNNELPORT $(whoami)@$SLURM_SUBMIT_HOST.hopper.cac.cornell.edu -N'"
+echo "FWDSSH='ssh -L8888:localhost:$TUNNELPORT $(whoami)@$SLURM_SUBMIT_HOST -N'"
 
 # Start the notebook
 srun -n1 jupyter notebook --no-browser --no-mathjax --port=$NOTEBOOKPORT

@@ -36,12 +36,12 @@ month_column_type = object
 demand_column_type = np.uint32
 shortage_column_type = np.uint32
 outflow_column_type = np.uint32
-control_location_column_type = object
+control_location_column_type = str
 sample_column_name = 'sample'
 sample_column_type = np.uint16
 realization_column_name = 'realization'
 realization_column_type = np.uint8
-outputs_path = '/scratch/ah986/rival_framings_demand/xdd_parquet_flow'
+outputs_path = '/home/fs02/pmr82_0001/ah986/rival_framings_demand/xdd_parquet_flow'
 
 
 def xxd_to_parquet(file_path):
@@ -97,7 +97,7 @@ def xxd_to_parquet(file_path):
                     )
                     stream.write('\n')
     stream.seek(0)
-
+    print('here')
     df = pd.read_csv(
         stream,
         header=None,
@@ -120,7 +120,7 @@ def xxd_to_parquet(file_path):
             control_location_column_name: control_location_column_type
         }
     )
-
+    
     stream.close()
 
     df[sample_column_name] = sample_column_type(sample_number)
